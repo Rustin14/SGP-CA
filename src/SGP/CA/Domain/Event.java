@@ -1,16 +1,18 @@
 package SGP.CA.Domain;
 
+import java.util.Date;
+
 public class Event {
 
     private String eventName;
-    private String eventDate;
+    private Date eventDate;
     private String eventPlace;
     private String responsableName;
 
     public Event() {
     }
 
-    public Event(String eventName, String eventDate, String eventPlace, String responsableName) {
+    public Event(String eventName, Date eventDate, String eventPlace, String responsableName) {
         this.eventName = eventName;
         this.eventDate = eventDate;
         this.eventPlace = eventPlace;
@@ -25,11 +27,11 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public String getEventDate() {
+    public Date getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(String eventDate) {
+    public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
 

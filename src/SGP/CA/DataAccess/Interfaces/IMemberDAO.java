@@ -5,6 +5,7 @@ import SGP.CA.Domain.Member;
 import java.sql.SQLException;
 
 public interface IMemberDAO {
-    public Member searchMemberByName(String name) throws SQLException;
-    public Member getAllMembers() throws SQLException;
+    public void saveMember(Member member) throws SQLException, ClassNotFoundException;
+    public Member searchMemberByName(String name) throws SQLException, ClassNotFoundException;
+    public Member getAllMembers() throws SQLException, ClassNotFoundException;
 }
