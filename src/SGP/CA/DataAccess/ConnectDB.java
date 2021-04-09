@@ -15,7 +15,6 @@ public class ConnectDB {
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName(driverName);
         connection = DriverManager.getConnection(url, username, password);
-        System.out.println("Conexión exitosa.");
         return connection;
     }
 

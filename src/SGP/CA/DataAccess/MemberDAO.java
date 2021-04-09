@@ -3,28 +3,27 @@ package SGP.CA.DataAccess;
 import SGP.CA.DataAccess.Interfaces.IMemberDAO;
 import SGP.CA.Domain.Member;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class MemberDAO implements IMemberDAO {
 
     @Override
-    public void saveMember(Member member) throws SQLException, ClassNotFoundException {
+    public int saveMember(Member member) throws SQLException, ClassNotFoundException {
         ConnectDB databaseConnection = new ConnectDB();
         Connection connection = databaseConnection.getConnection();
         String query = "INSERT INTO member (name, firstLastName, " +
-                "secondLastName, dateOfBirth, email, password) VALUES (?,?,?,?,?,?)";
+                "secondLastName, email, password) VALUES (?,?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, member.getName());
         statement.setString(2, member.getFirstLastName());
         statement.setString(3, member.getSecondLastName());
-        java.sql.Date sqlDateOfBirth = new java.sql.Date(member.getDateOfBirth().getTime());
-        statement.setDate(4,  sqlDateOfBirth);
-        statement.setString(5, member.getEmail());
-        statement.setString(6, member.getPassword());
-        statement.executeUpdate();
+        //java.sql.Date sqlDateOfBirth = new java.sql.Date(member.getDateOfBirth().getTime());
+        //statement.setDate(4,  sqlDateOfBirth);
+        statement.setString(4, member.getEmail());
+        statement.setString(5, member.getPassword());
+        int successfulUpdate = statement.executeUpdate();
+        return successfulUpdate;
     }
 
     @Override
@@ -51,8 +50,27 @@ public class MemberDAO implements IMemberDAO {
     }
 
     @Override
-    public Member getAllMembers() throws SQLException {
-        return null;
+    public ArrayList<Member> getAllMembers() throws SQLException, ClassNotFoundException {
+        Member member = null;
+        ArrayList<Member> allMembers = new ArrayList<>();
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM member";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet results = preparedStatement.executeQuery();
+        while (results.next()) {
+            member = new Member();
+            member.setIdMember(results.getInt("idMember"));
+            member.setName(results.getString("name"));
+            member.setFirstLastName(results.getString("firstLastName"));
+            member.setSecondLastName(results.getString("secondLastName"));
+           //java.util.Date dateOfBirth = new java.util.Date(results.getDate("dateOfBirth").getTime());
+            //member.setDateOfBirth(dateOfBirth);
+            member.setEmail(results.getString("email"));
+            member.setPassword(results.getString("password"));
+            allMembers.add(member);
+        }
+        return allMembers;
     }
 
 }
