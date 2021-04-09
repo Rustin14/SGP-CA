@@ -4,10 +4,8 @@ import SGP.CA.DataAccess.EvidenceDAO;
 import SGP.CA.Domain.Evidence;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.CancellationException;
 
 public class EvidenceDAOTest {
 

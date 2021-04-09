@@ -40,6 +40,6 @@ public class EventDAOTest {
     public void getAllEventTest() throws SQLException, ClassNotFoundException {
         ArrayList<Event> allEvents = eventDAO.getAllEvent();
 
-        Assert.assertEquals(2, allEvents.size(), 0);
+        Assert.assertEquals("Examen Recepcional: Marco Rodríguez", allEvents.get(0).getEventName());
     }
 }

@@ -36,6 +36,6 @@ public class MemberDAOTest {
     public void getAllMembersTest () throws SQLException, ClassNotFoundException {
         ArrayList<Member> allMembers = memberDAO.getAllMembers();
 
-        Assert.assertEquals(3, allMembers.size(), 0);
+        Assert.assertEquals("Gabriel", allMembers.get(0).getName());
     }
 }

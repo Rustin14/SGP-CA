@@ -2,7 +2,6 @@ package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IEvidenceDAO;
 import SGP.CA.Domain.Evidence;
-
 import java.sql.*;
 import java.util.ArrayList;
 
