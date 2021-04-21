@@ -72,4 +72,15 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
         return successfulUpdate;
     }
 
+    @Override
+    public int deleteInvestigationProject(String investigationProjectTitle) throws SQLException, ClassNotFoundException{
+        ConnectDB dataBaseConnection = new ConnectDB();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM investigationProject WHERE projectTitle = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, investigationProjectTitle);
+        int successfulUpdate = statement.executeUpdate();
+        dataBaseConnection.closeConnection();
+        return successfulUpdate;
+    }
 }

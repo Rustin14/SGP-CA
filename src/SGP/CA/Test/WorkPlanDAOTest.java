@@ -52,4 +52,12 @@ public class WorkPlanDAOTest {
         int successfulSave = workPlanDAO.modifyWorkPlan(workPlan, "Test key2");
         Assert.assertEquals(1 , successfulSave, 0);
     }
+
+    @Test
+    public void deleteWorkPlanTest() throws SQLException, ClassNotFoundException{
+        String workPlanKey = "Test key3";
+
+        int successfulDelete = workPlanDAO.deleteWorkPlan(workPlanKey);
+        Assert.assertEquals(1,successfulDelete, 0);
+    }
 }

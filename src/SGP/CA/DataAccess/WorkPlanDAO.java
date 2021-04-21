@@ -66,4 +66,16 @@ public class WorkPlanDAO implements IWorkPlanDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    @Override
+    public int deleteWorkPlan(String workPlanKey) throws SQLException, ClassNotFoundException{
+        ConnectDB dataBaseConnection = new ConnectDB();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM workplan WHERE workPlanKey = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, workPlanKey);
+        int successfulUpdate = statement.executeUpdate();
+        dataBaseConnection.closeConnection();
+        return successfulUpdate;
+    }
 }

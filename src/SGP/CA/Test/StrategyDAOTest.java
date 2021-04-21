@@ -43,4 +43,12 @@ public class StrategyDAOTest {
         int successfulSave = strategyDAO.modifyStrategy(strategy, "Test Strategy2");
         Assert.assertEquals(1, successfulSave, 0);
     }
+
+    @Test
+    public void deleteStrategyTest() throws SQLException, ClassNotFoundException{
+        String strategyTitle = "Test Strategy3";
+
+        int successfulDelete = strategyDAO.deleteStrategy(strategyTitle);
+        Assert.assertEquals(1,successfulDelete, 0);
+    }
 }

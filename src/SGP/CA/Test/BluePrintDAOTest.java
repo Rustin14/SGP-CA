@@ -54,7 +54,15 @@ public class BluePrintDAOTest {
         Date testDate = new SimpleDateFormat("dd/MM/yyyy").parse(testDateString);
         bluePrint.setStartDate(testDate);
 
-        int successfulSave = bluePrintDAO.modifyBluePrint(bluePrint, "Test Title2");
-        Assert.assertEquals(1, successfulSave, 0);
+        int successfulUpdate = bluePrintDAO.modifyBluePrint(bluePrint, "Test Title2");
+        Assert.assertEquals(1, successfulUpdate, 0);
+    }
+
+    @Test
+    public void deleteBluePrintTest() throws SQLException, ClassNotFoundException{
+        String bluePrintTitle = "Test Title3";
+
+        int successfulDelete = bluePrintDAO.deleteBluePrint(bluePrintTitle);
+        Assert.assertEquals(1,successfulDelete, 0);
     }
 }

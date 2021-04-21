@@ -39,4 +39,12 @@ public class ObjectiveDAOTest {
         int successfulSave = objectiveDAO.modifyObjective(objective, "Test objective2");
         Assert.assertEquals(1, successfulSave, 0);
     }
+
+    @Test
+    public void deleteObjectiveTest() throws SQLException, ClassNotFoundException{
+        String objectiveTitle = "Test objective3";
+
+        int successfulDelete = objectiveDAO.deleteObjective(objectiveTitle);
+        Assert.assertEquals(1,successfulDelete, 0);
+    }
 }

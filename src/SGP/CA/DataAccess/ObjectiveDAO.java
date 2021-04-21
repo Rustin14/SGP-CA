@@ -56,4 +56,16 @@ public class ObjectiveDAO implements IObjectiveDAO{
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    @Override
+    public int deleteObjective (String objectiveTitle) throws SQLException, ClassNotFoundException{
+        ConnectDB dataBaseConnection = new ConnectDB();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM objective WHERE title = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, objectiveTitle);
+        int successfulUpdate = statement.executeUpdate();
+        dataBaseConnection.closeConnection();
+        return successfulUpdate;
+    }
 }

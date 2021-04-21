@@ -53,4 +53,12 @@ public class InvestigationProjectDAOTest {
         int successfulSave = investigationProjectDAO.modifyInvestigationProject(investigationProject, "Test Title2");
         Assert.assertEquals(1, successfulSave, 0);
     }
+
+    @Test
+    public void deleteInvestigationProjectTest() throws SQLException, ClassNotFoundException{
+        String investigationProjectTitle = "Test Title3";
+
+        int successfulDelete = investigationProjectDAO.deleteInvestigationProject(investigationProjectTitle);
+        Assert.assertEquals(1,successfulDelete, 0);
+    }
 }

@@ -81,4 +81,16 @@ public class BluePrintDAO implements  IBluePrintDAO{
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    @Override
+    public int deleteBluePrint(String bluePrintTitle) throws SQLException, ClassNotFoundException{
+        ConnectDB dataBaseConnection = new ConnectDB();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM blueprint WHERE blueprintTitle = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, bluePrintTitle);
+        int successfulUpdate = statement.executeUpdate();
+        dataBaseConnection.closeConnection();
+        return successfulUpdate;
+    }
 }

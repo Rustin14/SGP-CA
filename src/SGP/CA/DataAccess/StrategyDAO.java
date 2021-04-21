@@ -62,4 +62,16 @@ public class StrategyDAO implements IStrategyDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    @Override
+    public int deleteStrategy(String strategyTitle) throws SQLException,ClassNotFoundException{
+        ConnectDB dataBaseConnection = new ConnectDB();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "DELETE FROM strategy WHERE strategy = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, strategyTitle);
+        int successfulUpdate = statement.executeUpdate();
+        dataBaseConnection.closeConnection();
+        return successfulUpdate;
+    }
 }
