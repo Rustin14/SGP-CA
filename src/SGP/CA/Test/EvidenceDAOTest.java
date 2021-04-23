@@ -14,8 +14,6 @@ public class EvidenceDAOTest {
     @Test
     public void saveEvidenceTest() throws SQLException, ClassNotFoundException {
         Evidence evidence = new Evidence();
-        evidence.setEvidenceName("Test");
-        evidence.setTypeOfEvidence("Test");
         evidence.setFilePath("Test");
         evidence.setDescription("Test");
 
@@ -33,6 +31,6 @@ public class EvidenceDAOTest {
     public void getAllEvidencesTest() throws SQLException, ClassNotFoundException {
         ArrayList<Evidence> allEvidences = evidenceDAO.getAllEvidence();
 
-        Assert.assertEquals("Test", allEvidences.get(0).getEvidenceName());
+        Assert.assertEquals(1, allEvidences.get(0).getIdEvidence(), 0);
     }
 }

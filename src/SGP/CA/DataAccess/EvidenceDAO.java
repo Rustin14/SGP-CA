@@ -2,21 +2,22 @@ package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IEvidenceDAO;
 import SGP.CA.Domain.Evidence;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class EvidenceDAO implements IEvidenceDAO {
 
     @Override
-    public int saveEvidence(Evidence evidence) throws SQLException, ClassNotFoundException {
+    public int saveEvidence(Evidence evidence) throws SQLException {
         ConnectDB databaseConnection = new ConnectDB();
         Connection connection = databaseConnection.getConnection();
-        String query = "INSERT INTO evidence (evidenceName, description, filePath, typeOfEvidence) VALUES (?,?,?,?)";
+        String query = "INSERT INTO evidence (description, filePath) VALUES (?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, evidence.getEvidenceName());
-        statement.setString(2, evidence.getDescription());
-        statement.setString(3, evidence.getFilePath());
-        statement.setString(4, evidence.getTypeOfEvidence());
+        statement.setString(1, evidence.getDescription());
+        statement.setString(2, evidence.getFilePath());
         int successfulUpdate = statement.executeUpdate();
         return successfulUpdate;
     }
@@ -33,9 +34,7 @@ public class EvidenceDAO implements IEvidenceDAO {
         while (results.next()) {
             evidence = new Evidence();
             evidence.setIdEvidence(results.getInt("idEvidence"));
-            evidence.setEvidenceName(results.getString("evidenceName"));
             evidence.setDescription(results.getString("description"));
-            evidence.setTypeOfEvidence(results.getString("typeOfEvidence"));
             evidence.setFilePath(results.getString("filePath"));
         }
         return evidence;
@@ -53,9 +52,7 @@ public class EvidenceDAO implements IEvidenceDAO {
         while (results.next()) {
             evidence = new Evidence();
             evidence.setIdEvidence(results.getInt("idEvidence"));
-            evidence.setEvidenceName(results.getString("evidenceName"));
             evidence.setDescription(results.getString("description"));
-            evidence.setTypeOfEvidence(results.getString("typeOfEvidence"));
             evidence.setFilePath(results.getString("filePath"));
             allEvidences.add(evidence);
         }

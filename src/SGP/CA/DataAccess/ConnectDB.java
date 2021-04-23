@@ -12,8 +12,7 @@ public class ConnectDB {
     private static String password = "Flipper10011";
     private static Connection connection;
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName(driverName);
+    public Connection getConnection() throws SQLException {
         connection = DriverManager.getConnection(url, username, password);
         return connection;
     }
