@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class InvestigationProjectDAO implements IInvestigationProjectDAO{
@@ -82,5 +83,28 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
+    }
+
+    @Override
+    public ArrayList<InvestigationProject> getAllInvestigationProjects () throws SQLException, ClassNotFoundException{
+        InvestigationProject investigationProject = null;
+        ArrayList<InvestigationProject> allInvestigationProjects = new ArrayList<>();
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM investigationProject";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet results = preparedStatement.executeQuery();
+        while (results.next()){
+            investigationProject = new InvestigationProject();
+            investigationProject.setProjectTitle(results.getString("projectTitle"));
+            investigationProject.setParticipants(results.getString("participants"));
+            investigationProject.setAssociatedLgac(results.getString("associatedLgac"));
+            java.util.Date dateStart = new java.util.Date(results.getDate("startDate").getTime());
+            investigationProject.setStartDate(dateStart);
+            java.util.Date dateEnd = new java.util.Date(results.getDate("estimatedEndDate").getTime());
+            investigationProject.setEstimatedEndDate(dateEnd);
+            allInvestigationProjects.add(investigationProject);
+        }
+        return allInvestigationProjects;
     }
 }

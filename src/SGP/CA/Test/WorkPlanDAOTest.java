@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class WorkPlanDAOTest {
@@ -59,5 +60,11 @@ public class WorkPlanDAOTest {
 
         int successfulDelete = workPlanDAO.deleteWorkPlan(workPlanKey);
         Assert.assertEquals(1,successfulDelete, 0);
+    }
+
+    @Test
+    public void getAllWorkPlansTest () throws SQLException, ClassNotFoundException{
+        ArrayList<WorkPlan> allWorkPlans = workPlanDAO.getAllWorkPlans();
+        Assert.assertEquals("Test key",allWorkPlans.get(0).getWorkPlanKey());
     }
 }

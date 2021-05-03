@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class BluePrintDAO implements  IBluePrintDAO{
@@ -92,5 +93,31 @@ public class BluePrintDAO implements  IBluePrintDAO{
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
+    }
+
+    @Override
+    public ArrayList<BluePrint> getAllBluePrints() throws SQLException, ClassNotFoundException{
+        BluePrint bluePrint = null;
+        ArrayList<BluePrint> allBluePrints = new ArrayList<>();
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM blueprint";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet results = preparedStatement.executeQuery();
+        while (results.next()){
+            bluePrint = new BluePrint();
+            bluePrint.setBluePrintTitle(results.getString("blueprintTitle"));
+            bluePrint.setAssociatedLgac(results.getString("associatedLgac"));
+            bluePrint.setDescription(results.getString("description"));
+            bluePrint.setCoDirector(results.getString("coDirector"));
+            bluePrint.setDuration(results.getInt("duration"));
+            bluePrint.setModality(results.getString("modality"));
+            bluePrint.setStudent(results.getString("student"));
+            bluePrint.setState(results.getString("state"));
+            java.util.Date dateStart = new java.util.Date(results.getDate("startDate").getTime());
+            bluePrint.setStartDate(dateStart);
+            allBluePrints.add(bluePrint);
+        }
+        return allBluePrints;
     }
 }

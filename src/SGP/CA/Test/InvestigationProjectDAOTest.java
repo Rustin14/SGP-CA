@@ -7,6 +7,7 @@ import org.junit.Assert;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class InvestigationProjectDAOTest {
@@ -60,5 +61,11 @@ public class InvestigationProjectDAOTest {
 
         int successfulDelete = investigationProjectDAO.deleteInvestigationProject(investigationProjectTitle);
         Assert.assertEquals(1,successfulDelete, 0);
+    }
+
+    @Test
+    public void getAllInvestigationProjectsTest () throws SQLException, ClassNotFoundException{
+        ArrayList<InvestigationProject> allInvestigationProjects = investigationProjectDAO.getAllInvestigationProjects();
+        Assert.assertEquals("Test Title", allInvestigationProjects.get(0).getProjectTitle());
     }
 }

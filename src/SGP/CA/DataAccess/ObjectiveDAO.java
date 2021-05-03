@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ObjectiveDAO implements IObjectiveDAO{
 
@@ -67,5 +68,24 @@ public class ObjectiveDAO implements IObjectiveDAO{
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
+    }
+
+    @Override
+    public ArrayList<Objective> getAllObjectives () throws SQLException, ClassNotFoundException{
+        Objective objective = null;
+        ArrayList<Objective> allObjectives = new ArrayList<>();
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM objective";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet results = preparedStatement.executeQuery();
+        while (results.next()){
+            objective = new Objective();
+            objective.setObjectiveTitle(results.getString("title"));
+            objective.setDescription(results.getString("description"));
+            objective.setStrategy(results.getString("strategy"));
+            allObjectives.add(objective);
+        }
+        return allObjectives;
     }
 }

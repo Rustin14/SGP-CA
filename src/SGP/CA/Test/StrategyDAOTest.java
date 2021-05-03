@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class StrategyDAOTest {
 
@@ -50,5 +51,11 @@ public class StrategyDAOTest {
 
         int successfulDelete = strategyDAO.deleteStrategy(strategyTitle);
         Assert.assertEquals(1,successfulDelete, 0);
+    }
+
+    @Test
+    public void getAllStrategyTest () throws SQLException, ClassNotFoundException{
+        ArrayList<Strategy> allStrategies = strategyDAO.getAllStrategy();
+        Assert.assertEquals("Test Strategy", allStrategies.get(0).getStrategy());
     }
 }

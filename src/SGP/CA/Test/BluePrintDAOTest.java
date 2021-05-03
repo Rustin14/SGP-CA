@@ -4,6 +4,8 @@ import SGP.CA.DataAccess.BluePrintDAO;
 import SGP.CA.Domain.BluePrint;
 import org.junit.Test;
 import org.junit.Assert;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -65,4 +67,15 @@ public class BluePrintDAOTest {
         int successfulDelete = bluePrintDAO.deleteBluePrint(bluePrintTitle);
         Assert.assertEquals(1,successfulDelete, 0);
     }
+
+    @Test
+    public void getAllBluePrintsTest() throws SQLException, ClassNotFoundException{
+        ArrayList<BluePrint> allBluePrints = bluePrintDAO.getAllBluePrints();
+        Assert.assertEquals("Test Title", allBluePrints.get(0).getBluePrintTitle());
+    }
 }
+
+/*
+En el caso de mas de uno de longitud comparar con los atributo unicos
+ademas comparar el tamaño del array con el esperado
+ */

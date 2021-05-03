@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ObjectiveDAOTest {
 
@@ -46,5 +47,11 @@ public class ObjectiveDAOTest {
 
         int successfulDelete = objectiveDAO.deleteObjective(objectiveTitle);
         Assert.assertEquals(1,successfulDelete, 0);
+    }
+
+    @Test
+    public void getAllObjectivesTest () throws SQLException, ClassNotFoundException{
+        ArrayList<Objective> allObjectives = objectiveDAO.getAllObjectives();
+        Assert.assertEquals("Test objective", allObjectives.get(0).getObjectiveTitle());
     }
 }

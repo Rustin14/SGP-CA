@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class StrategyDAO implements IStrategyDAO {
 
@@ -73,5 +74,26 @@ public class StrategyDAO implements IStrategyDAO {
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
+    }
+
+    @Override
+    public ArrayList<Strategy> getAllStrategy () throws SQLException, ClassNotFoundException{
+        Strategy strategy = null;
+        ArrayList<Strategy> allStrategies = new ArrayList<>();
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM strategy";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet results = preparedStatement.executeQuery();
+        while (results.next()){
+            strategy = new Strategy();
+            strategy.setStrategy(results.getString("strategy"));
+            strategy.setNumber(results.getInt("number"));
+            strategy.setGoal(results.getString("goal"));
+            strategy.setAction(results.getString("action"));
+            strategy.setResult(results.getString("result"));
+            allStrategies.add(strategy);
+        }
+        return allStrategies;
     }
 }

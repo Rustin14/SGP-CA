@@ -1,6 +1,8 @@
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IWorkPlanDAO;
+
+import java.util.ArrayList;
 import java.util.Date;
 import SGP.CA.Domain.WorkPlan;
 import java.sql.Connection;
@@ -77,5 +79,27 @@ public class WorkPlanDAO implements IWorkPlanDAO {
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
+    }
+
+    @Override
+    public ArrayList<WorkPlan> getAllWorkPlans () throws SQLException, ClassNotFoundException{
+        WorkPlan workPlan = null;
+        ArrayList<WorkPlan> allWorkPlans = new ArrayList<>();
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM workplan";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet results = preparedStatement.executeQuery();
+        while (results.next()){
+            workPlan = new WorkPlan();
+            workPlan.setWorkPlanKey(results.getString("workPlanKey"));
+            java.util.Date dateStart = new java.util.Date(results.getDate("startDate").getTime());
+            workPlan.setStartDate(dateStart);
+            java.util.Date dateEnd = new java.util.Date(results.getDate("endingDate").getTime());
+            workPlan.setEndingDate(dateEnd);
+            workPlan.setObjective(results.getString("objective"));
+            allWorkPlans.add(workPlan);
+        }
+        return allWorkPlans;
     }
 }
