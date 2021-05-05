@@ -122,4 +122,32 @@ public class BluePrint {
                 "student: " + student + '\n' +
                 "description: " + description + '\n';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean iguales = false;
+        if (this.getClass() == o.getClass()){
+            BluePrint bluePrintToCompare = (BluePrint) o;
+            if (this.getBluePrintTitle() == bluePrintToCompare.getBluePrintTitle()){
+                if (this.getStartDate().equals(bluePrintToCompare.getStartDate())){
+                    if (this.getAssociatedLgac() == bluePrintToCompare.getAssociatedLgac()){
+                        if (this.getState() == bluePrintToCompare.getState()){
+                            if (this.getCoDirector() == bluePrintToCompare.getCoDirector()){
+                                if (this.getDuration() == bluePrintToCompare.getDuration()){
+                                    if (this.getModality() == bluePrintToCompare.getModality()){
+                                        if (this.getStudent() == bluePrintToCompare.getStudent()){
+                                            if (this.getDescription() == bluePrintToCompare.getDescription()){
+                                                iguales = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return iguales;
+    }
 }

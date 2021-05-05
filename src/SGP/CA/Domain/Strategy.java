@@ -72,4 +72,24 @@ public class Strategy {
                 "action: " + action + '\n' +
                 "result: " + result + '\n';
     }
+
+    @Override
+    public boolean equals(Object o){
+        boolean iguales = false;
+        if (this.getClass() == o.getClass()){
+            Strategy strategy = (Strategy) o;
+            if (this.getNumber() == strategy.getNumber()){
+                if (this.getStrategy() == strategy.getStrategy()){
+                    if (this.getGoal() == strategy.getGoal()){
+                        if (this.getAction() == strategy.getAction()){
+                            if (this.getResult() == strategy.getResult()){
+                                iguales = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return iguales;
+    }
 }

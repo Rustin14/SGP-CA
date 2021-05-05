@@ -62,4 +62,22 @@ public class WorkPlan {
                 "endingDate: " + endingDate + '\n' +
                 "objective: " + objective + '\n';
     }
+
+    @Override
+    public boolean equals(Object o){
+        boolean iguales = false;
+        if (this.getClass() == o.getClass()){
+            WorkPlan workPlan = (WorkPlan) o;
+            if (this.getWorkPlanKey() == workPlan.getWorkPlanKey()){
+                if (this.getStartDate().equals(workPlan.getStartDate())){
+                    if (this.getEndingDate().equals(workPlan.getEndingDate())){
+                        if (this.getObjective() == workPlan.getObjective()){
+                            iguales = true;
+                        }
+                    }
+                }
+            }
+        }
+        return iguales;
+    }
 }

@@ -48,4 +48,20 @@ public class Objective {
                 "description:" + description + '\n' +
                 "strategy: " + strategy + '\n';
     }
+
+    @Override
+    public boolean equals(Object o){
+        boolean iguales = false;
+        if (this.getClass() == o.getClass()){
+            Objective objective = (Objective) o;
+            if (this.getObjectiveTitle() == objective.getObjectiveTitle()){
+                if (this.getDescription() == objective.getDescription()){
+                    if (this.getStrategy() == objective.getStrategy()){
+                        iguales = true;
+                    }
+                }
+            }
+        }
+        return iguales;
+    }
 }
