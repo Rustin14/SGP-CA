@@ -78,16 +78,12 @@ public class Strategy {
         boolean iguales = false;
         if (this.getClass() == o.getClass()){
             Strategy strategy = (Strategy) o;
-            if (this.getNumber() == strategy.getNumber()){
-                if (this.getStrategy() == strategy.getStrategy()){
-                    if (this.getGoal() == strategy.getGoal()){
-                        if (this.getAction() == strategy.getAction()){
-                            if (this.getResult() == strategy.getResult()){
-                                iguales = true;
-                            }
-                        }
-                    }
-                }
+            if (this.getStrategy().equals(strategy.getStrategy()) &&
+                this.getNumber() == strategy.getNumber() &&
+                this.getGoal().equals(strategy.getGoal()) &&
+                this.getAction().equals(strategy.getAction()) &&
+                this.getResult().equals(strategy.getResult())){
+                iguales = true;
             }
         }
         return iguales;

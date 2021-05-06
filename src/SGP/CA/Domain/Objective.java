@@ -54,12 +54,10 @@ public class Objective {
         boolean iguales = false;
         if (this.getClass() == o.getClass()){
             Objective objective = (Objective) o;
-            if (this.getObjectiveTitle() == objective.getObjectiveTitle()){
-                if (this.getDescription() == objective.getDescription()){
-                    if (this.getStrategy() == objective.getStrategy()){
-                        iguales = true;
-                    }
-                }
+            if (this.getObjectiveTitle().equals(objective.getObjectiveTitle()) &&
+                this.getDescription().equals(objective.getDescription()) &&
+                this.getStrategy().equals(objective.getStrategy())){
+                iguales = true;
             }
         }
         return iguales;

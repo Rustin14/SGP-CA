@@ -19,14 +19,14 @@ public class BluePrintDAOTest {
     public void saveBluePrintTest() throws SQLException, ClassNotFoundException, ParseException {
         BluePrint bluePrint = new BluePrint();
         bluePrint.setAssociatedLgac("No");
-        bluePrint.setBluePrintTitle("Test Title");
-        bluePrint.setCoDirector("Test coDirector");
-        bluePrint.setDuration(30);
-        bluePrint.setDescription("Test description");
-        bluePrint.setModality("Test");
-        bluePrint.setState("Test");
-        bluePrint.setStudent("Test");
-        String testDateString = "10/01/2001";
+        bluePrint.setBluePrintTitle("Test Title2");
+        bluePrint.setCoDirector("Test coDirector2");
+        bluePrint.setDuration(20);
+        bluePrint.setDescription("Test description2");
+        bluePrint.setModality("Test2");
+        bluePrint.setState("Test2");
+        bluePrint.setStudent("Test2");
+        String testDateString = "22/02/2002";
         Date testDate = new SimpleDateFormat("dd/MM/yyyy").parse(testDateString);
         bluePrint.setStartDate(testDate);
 
@@ -69,9 +69,42 @@ public class BluePrintDAOTest {
     }
 
     @Test
-    public void getAllBluePrintsTest() throws SQLException, ClassNotFoundException{
+    public void getAllBluePrintsTest() throws SQLException, ClassNotFoundException, ParseException{
+        BluePrint bluePrint1 = new BluePrint();
+        bluePrint1.setAssociatedLgac("No");
+        bluePrint1.setBluePrintTitle("Test Title");
+        bluePrint1.setCoDirector("Test coDirector");
+        bluePrint1.setDuration(30);
+        bluePrint1.setDescription("Test description");
+        bluePrint1.setModality("Test");
+        bluePrint1.setState("Test");
+        bluePrint1.setStudent("Test");
+        String testDateString = "10/01/2001";
+        Date testDate = new SimpleDateFormat("dd/MM/yyyy").parse(testDateString);
+        bluePrint1.setStartDate(testDate);
+
+        BluePrint bluePrint2 = new BluePrint();
+        bluePrint2.setAssociatedLgac("No");
+        bluePrint2.setBluePrintTitle("Test Title2");
+        bluePrint2.setCoDirector("Test coDirector2");
+        bluePrint2.setDuration(20);
+        bluePrint2.setDescription("Test description2");
+        bluePrint2.setModality("Test2");
+        bluePrint2.setState("Test2");
+        bluePrint2.setStudent("Test2");
+        String testDateString2 = "22/02/2002";
+        Date testDate2 = new SimpleDateFormat("dd/MM/yyyy").parse(testDateString2);
+        bluePrint2.setStartDate(testDate2);
+
         ArrayList<BluePrint> allBluePrints = bluePrintDAO.getAllBluePrints();
-        Assert.assertEquals("Test Title", allBluePrints.get(0).getBluePrintTitle());
+        int equalObjects = 0;
+        if (bluePrint1.equals(allBluePrints.get(0))){
+            equalObjects+=1;
+        }
+        if (bluePrint2.equals(allBluePrints.get(1))){
+            equalObjects+=1;
+        }
+        Assert.assertEquals(2, equalObjects, 0);
     }
 }
 

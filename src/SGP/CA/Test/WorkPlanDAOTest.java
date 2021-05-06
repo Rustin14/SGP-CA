@@ -18,12 +18,12 @@ public class WorkPlanDAOTest {
     @Test
     public void saveWorkPlanTest() throws SQLException, ClassNotFoundException, ParseException {
         WorkPlan workPlan = new WorkPlan();
-        workPlan.setWorkPlanKey("Test key");
-        workPlan.setObjective("Test objective");
-        String testStartDateString = "10/01/2001";
+        workPlan.setWorkPlanKey("Test key2");
+        workPlan.setObjective("Test objective2");
+        String testStartDateString = "22/02/2002";
         Date testStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(testStartDateString);
         workPlan.setStartDate(testStartDate);
-        String testEndingDateString = "10/01/2001";
+        String testEndingDateString = "22/02/2022";
         Date testEndingDate = new SimpleDateFormat("dd/MM/yyyy").parse(testEndingDateString);
         workPlan.setEndingDate(testEndingDate);
 
@@ -63,8 +63,35 @@ public class WorkPlanDAOTest {
     }
 
     @Test
-    public void getAllWorkPlansTest () throws SQLException, ClassNotFoundException{
+    public void getAllWorkPlansTest () throws SQLException, ClassNotFoundException, ParseException{
+        WorkPlan workPlan1 = new WorkPlan();
+        workPlan1.setWorkPlanKey("Test key");
+        workPlan1.setObjective("Test objective");
+        String testStartDateString = "10/01/2001";
+        Date testStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(testStartDateString);
+        workPlan1.setStartDate(testStartDate);
+        String testEndingDateString = "10/01/2001";
+        Date testEndingDate = new SimpleDateFormat("dd/MM/yyyy").parse(testEndingDateString);
+        workPlan1.setEndingDate(testEndingDate);
+
+        WorkPlan workPlan2 = new WorkPlan();
+        workPlan2.setWorkPlanKey("Test key2");
+        workPlan2.setObjective("Test objective2");
+        String testStartDateString2 = "22/02/2002";
+        Date testStartDate2 = new SimpleDateFormat("dd/MM/yyyy").parse(testStartDateString2);
+        workPlan2.setStartDate(testStartDate2);
+        String testEndingDateString2 = "22/02/2022";
+        Date testEndingDate2 = new SimpleDateFormat("dd/MM/yyyy").parse(testEndingDateString2);
+        workPlan2.setEndingDate(testEndingDate2);
+
         ArrayList<WorkPlan> allWorkPlans = workPlanDAO.getAllWorkPlans();
-        Assert.assertEquals("Test key",allWorkPlans.get(0).getWorkPlanKey());
+        int equalObjects = 0;
+        if (workPlan1.equals(allWorkPlans.get(0))){
+            equalObjects+=1;
+        }
+        if (workPlan2.equals(allWorkPlans.get(1))){
+            equalObjects+=1;
+        }
+        Assert.assertEquals(2, equalObjects, 0);
     }
 }

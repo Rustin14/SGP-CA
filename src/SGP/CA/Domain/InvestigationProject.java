@@ -80,16 +80,12 @@ public class InvestigationProject {
         boolean iguales = false;
         if (this.getClass() == o.getClass()){
             InvestigationProject investigationProjectToCompare = (InvestigationProject) o;
-            if (this.getProjectTitle() == investigationProjectToCompare.getProjectTitle()){
-                if (this.getStartDate().equals(investigationProjectToCompare.getStartDate())){
-                    if (this.getAssociatedLgac() == investigationProjectToCompare.getAssociatedLgac()){
-                        if (this.getEstimatedEndDate().equals(investigationProjectToCompare.getEstimatedEndDate())){
-                            if (this.getParticipants() == investigationProjectToCompare.getParticipants()){
-                                iguales = true;
-                            }
-                        }
-                    }
-                }
+            if (this.getProjectTitle().equals(investigationProjectToCompare.getProjectTitle()) &&
+                this.getEstimatedEndDate().equals(investigationProjectToCompare.getEstimatedEndDate()) &&
+                this.getStartDate().equals(investigationProjectToCompare.getStartDate()) &&
+                this.getAssociatedLgac().equals(investigationProjectToCompare.getAssociatedLgac()) &&
+                this.getParticipants().equals(investigationProjectToCompare.getParticipants())){
+                iguales= true;
             }
         }
         return iguales;

@@ -68,14 +68,11 @@ public class WorkPlan {
         boolean iguales = false;
         if (this.getClass() == o.getClass()){
             WorkPlan workPlan = (WorkPlan) o;
-            if (this.getWorkPlanKey() == workPlan.getWorkPlanKey()){
-                if (this.getStartDate().equals(workPlan.getStartDate())){
-                    if (this.getEndingDate().equals(workPlan.getEndingDate())){
-                        if (this.getObjective() == workPlan.getObjective()){
-                            iguales = true;
-                        }
-                    }
-                }
+            if (this.getWorkPlanKey().equals(workPlan.getWorkPlanKey()) &&
+                this.getStartDate().equals(workPlan.getStartDate()) &&
+                this.getEndingDate().equals(workPlan.getEndingDate()) &&
+                this.getObjective().equals(workPlan.getObjective())){
+                iguales = true;
             }
         }
         return iguales;

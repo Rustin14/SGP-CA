@@ -15,11 +15,11 @@ public class StrategyDAOTest {
     @Test
     public void saveStrategyTest() throws SQLException, ClassNotFoundException{
         Strategy strategy = new Strategy();
-        strategy.setStrategy("Test Strategy");
-        strategy.setGoal("Test goal");
-        strategy.setAction("Test action");
-        strategy.setNumber(1);
-        strategy.setResult("Test result");
+        strategy.setStrategy("Test Strategy2");
+        strategy.setGoal("Test goal2");
+        strategy.setAction("Test action2");
+        strategy.setNumber(2);
+        strategy.setResult("Test result2");
 
         int successfulSave = strategyDAO.saveStrategy(strategy);
         Assert.assertEquals(1, successfulSave, 0);
@@ -55,7 +55,28 @@ public class StrategyDAOTest {
 
     @Test
     public void getAllStrategyTest () throws SQLException, ClassNotFoundException{
+        Strategy strategy1 = new Strategy();
+        strategy1.setStrategy("Test Strategy");
+        strategy1.setGoal("Test goal");
+        strategy1.setAction("Test action");
+        strategy1.setNumber(1);
+        strategy1.setResult("Test result");
+
+        Strategy strategy2 = new Strategy();
+        strategy2.setStrategy("Test Strategy2");
+        strategy2.setGoal("Test goal2");
+        strategy2.setAction("Test action2");
+        strategy2.setNumber(2);
+        strategy2.setResult("Test result2");
+
         ArrayList<Strategy> allStrategies = strategyDAO.getAllStrategy();
-        Assert.assertEquals("Test Strategy", allStrategies.get(0).getStrategy());
+        int equalObjects = 0;
+        if (allStrategies.get(0).equals(strategy1)){
+            equalObjects+=1;
+        }
+        if (allStrategies.get(1).equals(strategy2)){
+            equalObjects+=1;
+        }
+        Assert.assertEquals(2, equalObjects,0);
     }
 }
