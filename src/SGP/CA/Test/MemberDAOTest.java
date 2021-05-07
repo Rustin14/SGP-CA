@@ -26,14 +26,14 @@ public class MemberDAOTest {
     }
 
     @Test
-    public void searchMemberByNameTest () throws SQLException, ClassNotFoundException {
+    public void searchMemberByNameTest () throws SQLException {
         Member member = memberDAO.searchMemberByName("Gabriel");
 
         Assert.assertEquals("Gabriel", member.getName());
     }
 
     @Test
-    public void getAllMembersTest () throws SQLException, ClassNotFoundException {
+    public void getAllMembersTest () throws SQLException {
         ArrayList<Member> allMembers = memberDAO.getAllMembers();
 
         Assert.assertEquals("Gabriel", allMembers.get(0).getName());

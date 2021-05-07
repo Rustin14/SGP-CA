@@ -24,9 +24,25 @@ public class LGACDAO implements ILGACDAO {
         LGAC lgac = null;
         ConnectDB databaseConnection = new ConnectDB();
         Connection connection = databaseConnection.getConnection();
-        String query = "SELECT * FROM lgac WHERE lineName LIKE '%?%'";
+        String query = "SELECT * FROM lgac WHERE lineName LIKE '%" + lineName + "%'";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, lineName);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            lgac = new LGAC();
+            lgac.setIdLGAC(resultSet.getInt("idLGAC"));
+            lgac.setLineName(resultSet.getString("lineName"));
+        }
+        return lgac;
+    }
+
+    @Override
+    public LGAC searchLGACbyID(int idLGAC) throws SQLException {
+        LGAC lgac = null;
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM lgac WHERE idLGAC = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, idLGAC);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             lgac = new LGAC();

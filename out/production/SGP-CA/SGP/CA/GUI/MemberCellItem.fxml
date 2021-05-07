@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="251.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="memberNameLabel" layoutX="25.0" layoutY="24.0" text="Nombre de Miembro">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="60.0" text="Grado de estudios:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="maximumStudiesLabel" layoutX="206.0" layoutY="60.0" text="Label">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="24.0" layoutY="98.0" text="IES de máximos estudios:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="institutionLabel" layoutX="207.0" layoutY="98.0" text="Label">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="24.0" layoutY="136.0" text="LGAC registrada:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lgacLabel" layoutX="206.0" layoutY="136.0" text="Label">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="24.0" layoutY="173.0" text="Correo institucional:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="emailLabel" layoutX="206.0" layoutY="173.0" text="Label">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="24.0" layoutY="210.0" text="Número teléfonico:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="phoneNumberLabel" layoutX="206.0" layoutY="210.0" text="Label">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="332.0" layoutY="60.0" text="CURP:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="curpLabel" layoutX="388.0" layoutY="60.0" text="Label">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="538.0" layoutY="204.0" mnemonicParsing="false" text="Remover" />
+   </children>
+</AnchorPane>

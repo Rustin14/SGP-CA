@@ -9,6 +9,7 @@ public interface ILGACDAO {
     
     public int saveLGAC (LGAC lgac) throws SQLException;
     public LGAC searchLGACbyLineName (String lineName) throws SQLException;
+    public LGAC searchLGACbyID (int idLGAC) throws SQLException;
     public ArrayList<LGAC> getAllLines () throws SQLException;
     
 }

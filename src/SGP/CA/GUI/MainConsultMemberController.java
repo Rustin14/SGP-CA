@@ -6,13 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainRegisterMemberController extends Application {
+public class MainConsultMemberController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/RegisterMemberFXMl.fxml"));
-        primaryStage.setTitle("Registrar Miembro");
-        primaryStage.setScene(new Scene(root, 900, 600));
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultMemberFXMl.fxml"));
+        primaryStage.setTitle("Consultar Miembro");
+        primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
     }
 

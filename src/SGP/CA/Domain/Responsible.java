@@ -13,11 +13,6 @@ public class Responsible extends Member {
         this.idResponsible = idResponsible;
     }
 
-    public Responsible(int idMember, String name, String firstLastName, String secondLastName, Date dateOfBirth, int age, String email, String password, int idResponsible) {
-        super(idMember, name, firstLastName, secondLastName, dateOfBirth, age, email, password);
-        this.idResponsible = idResponsible;
-    }
-
     public int getIdResponsible() {
         return idResponsible;
     }
