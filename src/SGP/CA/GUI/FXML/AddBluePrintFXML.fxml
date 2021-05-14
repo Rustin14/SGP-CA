@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TextArea?>
@@ -10,7 +9,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.AddBluePrintController">
    <children>
@@ -78,25 +76,25 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <Button layoutX="41.0" layoutY="449.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="103.0" text="Guardar">
+      <Button fx:id="saveButton" layoutX="41.0" layoutY="449.0" mnemonicParsing="false" onAction="#saveButtonEvent" prefHeight="51.0" prefWidth="103.0" text="Guardar">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="41.0" layoutY="515.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="103.0" text="Salir">
+      <Button fx:id="exitButton" layoutX="41.0" layoutY="515.0" mnemonicParsing="false" onAction="#exitButtonEvent" prefHeight="39.0" prefWidth="103.0" text="Salir">
          <font>
             <Font size="21.0" />
          </font>
       </Button>
-      <TextArea layoutX="179.0" layoutY="504.0" prefHeight="83.0" prefWidth="523.0" />
-      <TextField layoutX="405.0" layoutY="180.0" prefHeight="24.0" prefWidth="289.0" />
-      <TextField layoutX="405.0" layoutY="215.0" prefHeight="24.0" prefWidth="289.0" />
-      <ComboBox layoutX="405.0" layoutY="251.0" prefHeight="24.0" prefWidth="207.0" />
-      <ComboBox layoutX="405.0" layoutY="288.0" prefHeight="24.0" prefWidth="207.0" />
-      <TextField layoutX="405.0" layoutY="328.0" prefHeight="24.0" prefWidth="289.0" />
-      <TextField layoutX="405.0" layoutY="362.0" />
-      <TextField layoutX="405.0" layoutY="400.0" />
-      <TextField layoutX="405.0" layoutY="441.0" prefHeight="24.0" prefWidth="289.0" />
+      <TextArea fx:id="descriptionField" layoutX="179.0" layoutY="504.0" prefHeight="83.0" prefWidth="523.0" />
+      <TextField fx:id="bluePrintTitleField" layoutX="405.0" layoutY="180.0" prefHeight="24.0" prefWidth="289.0" />
+      <TextField fx:id="startDateField" layoutX="405.0" layoutY="215.0" prefHeight="24.0" prefWidth="289.0" />
+      <TextField fx:id="coDirectorFIeld" layoutX="405.0" layoutY="328.0" prefHeight="24.0" prefWidth="289.0" />
+      <TextField fx:id="durationField" layoutX="405.0" layoutY="362.0" />
+      <TextField fx:id="modalityField" layoutX="405.0" layoutY="400.0" />
+      <TextField fx:id="studentField" layoutX="405.0" layoutY="441.0" prefHeight="24.0" prefWidth="289.0" />
       <ScrollBar layoutX="709.0" layoutY="164.0" orientation="VERTICAL" prefHeight="423.0" prefWidth="27.0" />
+      <TextField fx:id="lgacField" layoutX="405.0" layoutY="251.0" prefHeight="24.0" prefWidth="207.0" />
+      <TextField fx:id="stateField" layoutX="405.0" layoutY="288.0" prefHeight="24.0" prefWidth="207.0" />
    </children>
 </AnchorPane>

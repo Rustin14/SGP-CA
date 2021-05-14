@@ -10,15 +10,14 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.RegisterInvestigationProjectController">
    <children>
-      <Button layoutX="32.0" layoutY="434.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="114.0" text="GUARDAR">
+      <Button fx:id="saveButton" layoutX="32.0" layoutY="434.0" mnemonicParsing="false" onAction="#saveButtonEvent" prefHeight="51.0" prefWidth="114.0" text="GUARDAR">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="32.0" layoutY="501.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="114.0" text="SALIR">
+      <Button fx:id="exitButton" layoutX="32.0" layoutY="501.0" mnemonicParsing="false" onAction="#exitButtonEvent" prefHeight="51.0" prefWidth="114.0" text="SALIR">
          <font>
             <Font size="22.0" />
          </font>
@@ -72,12 +71,12 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <TextField layoutX="465.0" layoutY="220.0" prefHeight="24.0" prefWidth="329.0" />
-      <TextField layoutX="465.0" layoutY="262.0" prefHeight="24.0" prefWidth="329.0" />
-      <TextField layoutX="465.0" layoutY="302.0" prefHeight="24.0" prefWidth="329.0" />
-      <TextField layoutX="465.0" layoutY="343.0" prefHeight="24.0" prefWidth="329.0" />
-      <TextArea layoutX="260.0" layoutY="474.0" prefHeight="114.0" prefWidth="536.0" />
-      <TextField layoutX="465.0" layoutY="391.0" prefHeight="24.0" prefWidth="329.0" />
+      <TextField fx:id="projectTitleField" layoutX="465.0" layoutY="220.0" prefHeight="24.0" prefWidth="329.0" />
+      <TextField fx:id="endDateField" layoutX="465.0" layoutY="262.0" prefHeight="24.0" prefWidth="329.0" />
+      <TextField fx:id="startDateField" layoutX="465.0" layoutY="302.0" prefHeight="24.0" prefWidth="329.0" />
+      <TextField fx:id="lgacField" layoutX="465.0" layoutY="343.0" prefHeight="24.0" prefWidth="329.0" />
+      <TextArea fx:id="descriptionField" layoutX="260.0" layoutY="474.0" prefHeight="114.0" prefWidth="536.0" />
+      <TextField fx:id="participantsField" layoutX="465.0" layoutY="391.0" prefHeight="24.0" prefWidth="329.0" />
       <ScrollBar layoutX="804.0" layoutY="201.0" orientation="VERTICAL" prefHeight="383.0" prefWidth="25.0" />
    </children>
 </AnchorPane>

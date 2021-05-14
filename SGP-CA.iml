@@ -26,5 +26,30 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$USER_HOME$/Escritorio/Principios de construccion/javafx-sdk-16/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <NATIVE>
+          <root url="file://$USER_HOME$/Escritorio/Principios de construccion/javafx-sdk-16/lib" />
+        </NATIVE>
+        <SOURCES>
+          <root url="file://$USER_HOME$/Escritorio/Principios de construccion/javafx-sdk-16/lib" />
+        </SOURCES>
+        <jarDirectory url="file://$USER_HOME$/Escritorio/Principios de construccion/javafx-sdk-16/lib" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/Escritorio/Principios de construccion/javafx-sdk-16/lib" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Escritorio/Principios de construccion/junit-4.13.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
