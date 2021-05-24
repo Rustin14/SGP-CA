@@ -8,22 +8,16 @@ public class Member {
     private String firstLastName;
     private String secondLastName;
     private Date dateOfBirth;
+    private String phoneNumber;
+    private String CURP;
+    private String maximumStudyLevel;
+    private String maximumStudyLevelInstitution;
+    private int idLGAC;
     private int age;
     private String email;
     private String password;
 
     public Member() {
-    }
-
-    public Member(int idMember, String name, String firstLastName, String secondLastName, Date dateOfBirth, int age, String email, String password) {
-        this.idMember = idMember;
-        this.name = name;
-        this.firstLastName = firstLastName;
-        this.secondLastName = secondLastName;
-        this.dateOfBirth = dateOfBirth;
-        this.age = age;
-        this.email = email;
-        this.password = password;
     }
 
     public int getIdMember() {
@@ -88,5 +82,45 @@ public class Member {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCURP() {
+        return CURP;
+    }
+
+    public void setCURP(String CURP) {
+        this.CURP = CURP;
+    }
+
+    public String getMaximumStudyLevel() {
+        return maximumStudyLevel;
+    }
+
+    public void setMaximumStudyLevel(String maximumStudyLevel) {
+        this.maximumStudyLevel = maximumStudyLevel;
+    }
+
+    public String getMaximumStudyLevelInstitution() {
+        return maximumStudyLevelInstitution;
+    }
+
+    public void setMaximumStudyLevelInstitution(String maximumStudyLevelInstitution) {
+        this.maximumStudyLevelInstitution = maximumStudyLevelInstitution;
+    }
+
+    public int getIdLGAC() {
+        return idLGAC;
+    }
+
+    public void setIdLGAC(int idLGAC) {
+        this.idLGAC = idLGAC;
     }
 }

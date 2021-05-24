@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface IMemberDAO {
-    public int saveMember(Member member) throws SQLException, ClassNotFoundException;
-    public Member searchMemberByName(String name) throws SQLException, ClassNotFoundException;
-    public ArrayList<Member> getAllMembers() throws SQLException, ClassNotFoundException;
+    public int saveMember(Member member) throws SQLException;
+    public Member searchMemberByName(String name) throws SQLException;
+    public ArrayList<Member> getAllMembers() throws SQLException;
 }
