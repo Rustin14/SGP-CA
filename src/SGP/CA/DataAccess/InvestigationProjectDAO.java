@@ -16,7 +16,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO investigationProject (associatedLgac, estimatedEndDate, participants, projectTitle, " +
-                "startDate) VALUES (?,?,?,?,?)";
+                "startDate, projectManager, description) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, investigationProject.getAssociatedLgac());
         java.sql.Date sqlEstimatedEndDate= new java.sql.Date(investigationProject.getEstimatedEndDate().getTime());
@@ -25,6 +25,8 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
         statement.setString(4, investigationProject.getProjectTitle());
         java.sql.Date sqlStartDate= new java.sql.Date(investigationProject.getStartDate().getTime());
         statement.setDate(5, sqlStartDate);
+        statement.setString(6, investigationProject.getProjectManager());
+        statement.setString(7,investigationProject.getDescription());
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
@@ -48,6 +50,8 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
             investigationProject.setProjectTitle(results.getString("projectTitle"));
             Date startDate = new Date(results.getDate("startDate").getTime());
             investigationProject.setStartDate(startDate);
+            investigationProject.setProjectManager(results.getString("projectManager"));
+            investigationProject.setDescription(results.getString("description"));
         }
         dataBaseConnection.closeConnection();
         return investigationProject;
@@ -58,7 +62,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE investigationProject set associatedLgac = ?, estimatedEndDate = ?, participants = ?, projectTitle = ?, "+
-                "startDate = ? where projectTitle = ?";
+                "startDate = ?, projectManager = ?, description = ? where projectTitle = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, newInvestigationProject.getAssociatedLgac());
         java.sql.Date sqlEstimatedEndDate= new java.sql.Date(newInvestigationProject.getEstimatedEndDate().getTime());
@@ -67,7 +71,9 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
         statement.setString(4, newInvestigationProject.getProjectTitle());
         java.sql.Date sqlStartDate= new java.sql.Date(newInvestigationProject.getStartDate().getTime());
         statement.setDate(5, sqlStartDate);
-        statement.setString(6, oldInvestigationProjectTitle);
+        statement.setString(6, newInvestigationProject.getProjectManager());
+        statement.setString(7, newInvestigationProject.getDescription());
+        statement.setString(8, oldInvestigationProjectTitle);
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
@@ -103,6 +109,8 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
             investigationProject.setStartDate(dateStart);
             java.util.Date dateEnd = new java.util.Date(results.getDate("estimatedEndDate").getTime());
             investigationProject.setEstimatedEndDate(dateEnd);
+            investigationProject.setProjectManager(results.getString("projectManager"));
+            investigationProject.setDescription(results.getString("description"));
             allInvestigationProjects.add(investigationProject);
         }
         return allInvestigationProjects;

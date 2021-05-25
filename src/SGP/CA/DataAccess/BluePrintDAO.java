@@ -17,7 +17,7 @@ public class BluePrintDAO implements  IBluePrintDAO{
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO blueprint (blueprintTitle, startDate, associatedLgac, state, " +
                 "coDirector, duration, modality, student, description, director, " +
-                "receptionWorkName, requirements) VALUES (?,?,?,?,?,?,?,?,?)";
+                "receptionWorkName, requirements) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, bluePrint.getBluePrintTitle());
         java.sql.Date sqlStartDate= new java.sql.Date(bluePrint.getStartDate().getTime());
