@@ -23,6 +23,12 @@ import java.util.Date;
 public class AddBluePrintController extends Application{
 
     @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button exitButton;
+
+    @FXML
     private TextArea descriptionField;
 
     @FXML
@@ -30,6 +36,12 @@ public class AddBluePrintController extends Application{
 
     @FXML
     private TextField startDateField;
+
+    @FXML
+    private TextField lgacField;
+
+    @FXML
+    private TextField stateField;
 
     @FXML
     private TextField coDirectorFIeld;
@@ -44,13 +56,13 @@ public class AddBluePrintController extends Application{
     private TextField studentField;
 
     @FXML
-    private TextField lgacField;
+    private TextField requirementsTextField;
 
     @FXML
-    private TextField stateField;
+    private TextField receptionWorkName;
 
     @FXML
-    private Button saveButton;
+    private TextField directorTextField;
 
         @Override
         public void start(Stage primaryStage) throws Exception {
@@ -65,7 +77,7 @@ public class AddBluePrintController extends Application{
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(saveButton.getScene().getWindow());
+            stage.initOwner(exitButton.getScene().getWindow());
             stage.showAndWait();
         }
 
@@ -83,6 +95,9 @@ public class AddBluePrintController extends Application{
             bluePrint.setStudent(studentField.getText());
             bluePrint.setAssociatedLgac(lgacField.getText());
             bluePrint.setState(stateField.getText());
+            bluePrint.setRequirements(requirementsTextField.getText());
+            bluePrint.setReceptionWorkName(receptionWorkName.getText());
+            bluePrint.setDirector(directorTextField.getText());
             int action = bluePrintDAO.saveBluePrint(bluePrint);
             if (action == 1){
                 showConfirmationAlert();
