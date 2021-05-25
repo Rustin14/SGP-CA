@@ -8,9 +8,12 @@ public class BluePrint {
     private Date startDate;
     private String associatedLgac;
     private String state;
+    private String director;
     private String coDirector;
     private int duration;
     private String modality;
+    private String receptionWorkName;
+    private String requirements;
     private String student;
     private String description;
 
@@ -19,23 +22,42 @@ public class BluePrint {
         this.startDate = new Date();
         this.associatedLgac = "";
         this.state = "";
+        this.director = "";
         this.coDirector = "";
         this.duration = 0;
         this.modality = "";
+        this.receptionWorkName = "";
+        this.requirements = "";
         this.student = "";
         this.description = "";
     }
 
-    public BluePrint(String bluePrintTitle, Date startDate, String associatedLgac, String state, String coDirector, int duration, String modality, String student, String description) {
+    public BluePrint(String bluePrintTitle, Date startDate, String associatedLgac, String state, String coDirector, int duration,
+                     String modality, String student, String description, String director, String receptionWorkName, String requirements) {
         this.bluePrintTitle = bluePrintTitle;
         this.startDate = startDate;
         this.associatedLgac = associatedLgac;
         this.state = state;
+        this.director = director;
         this.coDirector = coDirector;
         this.duration = duration;
         this.modality = modality;
+        this.receptionWorkName = receptionWorkName;
+        this.requirements = requirements;
         this.student = student;
         this.description = description;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public void setReceptionWorkName(String receptionWorkName) {
+        this.receptionWorkName = receptionWorkName;
+    }
+
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
     }
 
     public void setBluePrintTitle(String bluePrintTitle) {
@@ -110,6 +132,18 @@ public class BluePrint {
         return description;
     }
 
+    public String getDirector() {
+        return director;
+    }
+
+    public String getReceptionWorkName() {
+        return receptionWorkName;
+    }
+
+    public String getRequirements() {
+        return requirements;
+    }
+
     @Override
     public String toString() {
         return "bluePrintTitle: " + bluePrintTitle + '\n' +
@@ -136,7 +170,10 @@ public class BluePrint {
                 this.getDuration() == bluePrint.getDuration() &&
                 this.getModality().equals(bluePrint.getModality()) &&
                 this.getStudent().equals(bluePrint.getStudent()) &&
-                this.getDescription().equals(bluePrint.getDescription())){
+                this.getDescription().equals(bluePrint.getDescription()) &&
+                this.getDirector().equals(bluePrint.getDirector()) &&
+                this.getReceptionWorkName().equals(bluePrint.getReceptionWorkName()) &&
+                this.getRequirements().equals(bluePrint.getRequirements())){
                 iguales = true;
             }
         }
