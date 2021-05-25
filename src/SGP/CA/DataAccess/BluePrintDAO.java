@@ -16,7 +16,8 @@ public class BluePrintDAO implements  IBluePrintDAO{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO blueprint (blueprintTitle, startDate, associatedLgac, state, " +
-                "coDirector, duration, modality, student, description) VALUES (?,?,?,?,?,?,?,?,?)";
+                "coDirector, duration, modality, student, description, director, " +
+                "receptionWorkName, requirements) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, bluePrint.getBluePrintTitle());
         java.sql.Date sqlStartDate= new java.sql.Date(bluePrint.getStartDate().getTime());
@@ -28,6 +29,9 @@ public class BluePrintDAO implements  IBluePrintDAO{
         statement.setString(7, bluePrint.getModality());
         statement.setString(8, bluePrint.getStudent());
         statement.setString(9, bluePrint.getDescription());
+        statement.setString(10, bluePrint.getDirector());
+        statement.setString(11,bluePrint.getReceptionWorkName());
+        statement.setString(12,bluePrint.getRequirements());
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
@@ -54,6 +58,9 @@ public class BluePrintDAO implements  IBluePrintDAO{
             bluePrint.setStartDate(startDate);
             bluePrint.setState(results.getString("state"));
             bluePrint.setStudent(results.getString("student"));
+            bluePrint.setDirector(results.getString("director"));
+            bluePrint.setReceptionWorkName(results.getString("receptionWorkName"));
+            bluePrint.setRequirements(results.getString("requirements"));
         }
         dataBaseConnection.closeConnection();
         return bluePrint;
@@ -64,8 +71,8 @@ public class BluePrintDAO implements  IBluePrintDAO{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE blueprint set associatedLgac = ?, blueprintTitle = ?, coDirector = ?, "+
-                "description = ?, duration = ?, modality = ?, startDate = ?, state = ?, student = ? "+
-                "where blueprintTitle = ?";
+                "description = ?, duration = ?, modality = ?, startDate = ?, state = ?, student = ?, "+
+                "director = ?, receptionWorkName = ?, requirements = ? where blueprintTitle = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, newBluePrint.getAssociatedLgac());
         statement.setString(2, newBluePrint.getBluePrintTitle());
@@ -77,7 +84,10 @@ public class BluePrintDAO implements  IBluePrintDAO{
         statement.setDate(7, sqlStartDate);
         statement.setString(8, newBluePrint.getState());
         statement.setString(9, newBluePrint.getStudent());
-        statement.setString(10, oldBluePrintTitle);
+        statement.setString(10,newBluePrint.getDirector());
+        statement.setString(11, newBluePrint.getReceptionWorkName());
+        statement.setString(12,newBluePrint.getRequirements());
+        statement.setString(13, oldBluePrintTitle);
         int successfulUpdate = statement.executeUpdate();
         dataBaseConnection.closeConnection();
         return successfulUpdate;
@@ -116,6 +126,9 @@ public class BluePrintDAO implements  IBluePrintDAO{
             bluePrint.setState(results.getString("state"));
             java.util.Date dateStart = new java.util.Date(results.getDate("startDate").getTime());
             bluePrint.setStartDate(dateStart);
+            bluePrint.setDirector(results.getString("director"));
+            bluePrint.setReceptionWorkName(results.getString("receptionWorkName"));
+            bluePrint.setRequirements(results.getString("requirements"));
             allBluePrints.add(bluePrint);
         }
         return allBluePrints;
