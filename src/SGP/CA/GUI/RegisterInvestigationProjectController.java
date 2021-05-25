@@ -34,6 +34,9 @@ public class RegisterInvestigationProjectController extends Application {
     private TextField lgacField;
 
     @FXML
+    private TextField projectManagerField;
+
+    @FXML
     private TextArea descriptionField;
 
     @FXML
@@ -63,6 +66,8 @@ public class RegisterInvestigationProjectController extends Application {
         investigationProject.setStartDate(startDate);
         investigationProject.setAssociatedLgac(lgacField.getText());
         investigationProject.setParticipants(participantsField.getText());
+        investigationProject.setProjectManager(projectManagerField.getText());
+        investigationProject.setDescription(descriptionField.getText());
         int action = investigationProjectDAO.saveInvestigationProject(investigationProject);
         if (action == 1){
             showConfirmationAlert();
