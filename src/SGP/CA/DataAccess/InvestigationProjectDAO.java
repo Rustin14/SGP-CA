@@ -58,7 +58,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public int modifyInvestigationProject (InvestigationProject newInvestigationProject, String oldInvestigationProjectTitle) throws SQLException, ClassNotFoundException{
+    public int modifyInvestigationProject (InvestigationProject newInvestigationProject, String oldInvestigationProjectTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE investigationProject set associatedLgac = ?, estimatedEndDate = ?, participants = ?, projectTitle = ?, "+
