@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import javafx.application.Application;
 import SGP.CA.Domain.InvestigationProject;
 import SGP.CA.DataAccess.InvestigationProjectDAO;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
