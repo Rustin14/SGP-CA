@@ -1,6 +1,7 @@
 package SGP.CA.GUI;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,6 +19,8 @@ import SGP.CA.DataAccess.ObjectiveDAO;
 import SGP.CA.DataAccess.StrategyDAO;
 
 import javafx.event.ActionEvent;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AddObjectiveController extends Application{
@@ -47,9 +50,6 @@ public class AddObjectiveController extends Application{
     private TextField displayResultTextField;
 
     @FXML
-    private Button deleteButton;
-
-    @FXML
     private TextField addNumberTextField;
 
     @FXML
@@ -63,9 +63,6 @@ public class AddObjectiveController extends Application{
 
     @FXML
     private TextField addResultTextField;
-
-    @FXML
-    private Button addButton;
 
     @FXML
     private Button cancelButton;
@@ -101,7 +98,8 @@ public class AddObjectiveController extends Application{
 
     @FXML
     public void cancelButtonEvent(ActionEvent event) {
-        System.out.println("Cancel button pressed");
+        Platform.exit();
+        System.exit(0);
     }
 
     @FXML
@@ -120,9 +118,7 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void saveButtonEvent(ActionEvent event) {
-        ObjectiveDAO objectiveDAO = new ObjectiveDAO();
-        StrategyDAO strategyDAO = new StrategyDAO();
+    public void saveButtonEvent(ActionEvent event) throws SQLException, ClassNotFoundException {
         if (objectiveTitleTextField.getText() == "" && descriptionTextArea.getText() == ""){
             System.out.println("No se puede registrar falta informacion");
             //TO DO
@@ -131,7 +127,24 @@ public class AddObjectiveController extends Application{
                 System.out.println("Añade por lo menos una estrategia");
                 //TO DO
             }else{
-                ArrayList<Objective> objectives = new ArrayList<>();
+                ObjectiveDAO objectiveDAO = new ObjectiveDAO();
+                StrategyDAO strategyDAO = new StrategyDAO();
+                Objective objective = new Objective();
+                objective.setObjectiveTitle(objectiveTitleTextField.getText());
+                objective.setDescription(descriptionTextArea.getText());
+                int result1 = 0;
+                int result2 = 0;
+                for (int i = 0; i < allStrategies.size(); i++){
+                    objective.setStrategy(allStrategies.get(i).getStrategy());
+                    result1 += objectiveDAO.saveObjective(objective);
+                    result2 += strategyDAO.saveStrategy(allStrategies.get(i));
+                }
+                if (result1 == allStrategies.size() && result2 == allStrategies.size()){
+                    System.out.println("Registro con exito");
+                    //TO DO
+                }else{
+                    System.out.println("Algo salio mal");
+                }
             }
         }
     }
