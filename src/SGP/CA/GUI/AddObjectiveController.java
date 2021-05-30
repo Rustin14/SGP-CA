@@ -12,14 +12,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import SGP.CA.Domain.Objective;
 import SGP.CA.Domain.Strategy;
 import SGP.CA.DataAccess.ObjectiveDAO;
 import SGP.CA.DataAccess.StrategyDAO;
-
 import javafx.event.ActionEvent;
-
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -97,9 +97,13 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void cancelButtonEvent(ActionEvent event) {
-        Platform.exit();
-        System.exit(0);
+    public void cancelButtonEvent(ActionEvent event) throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/exitAddObjectiveAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(cancelButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     @FXML
@@ -118,14 +122,12 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void saveButtonEvent(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if (objectiveTitleTextField.getText() == "" && descriptionTextArea.getText() == ""){
-            System.out.println("No se puede registrar falta informacion");
-            //TO DO
+    public void saveButtonEvent(ActionEvent event) throws SQLException, ClassNotFoundException, IOException {
+        if (objectiveTitleTextField.getText() == "" || descriptionTextArea.getText() == ""){
+            showMissingInformationAlert();
         }else{
             if (allStrategies.size() == 0){
-                System.out.println("Añade por lo menos una estrategia");
-                //TO DO
+                showMissingStrategiesAlert();
             }else{
                 ObjectiveDAO objectiveDAO = new ObjectiveDAO();
                 StrategyDAO strategyDAO = new StrategyDAO();
@@ -140,10 +142,9 @@ public class AddObjectiveController extends Application{
                     result2 += strategyDAO.saveStrategy(allStrategies.get(i));
                 }
                 if (result1 == allStrategies.size() && result2 == allStrategies.size()){
-                    System.out.println("Registro con exito");
-                    //TO DO
+                    showAddedObjectiveAlert();
                 }else{
-                    System.out.println("Algo salio mal");
+                    showFailedRegisterAlert();
                 }
             }
         }
@@ -160,6 +161,42 @@ public class AddObjectiveController extends Application{
         displayGoalTextField.setText(strategy.getGoal());
         displayActionTextField.setText(strategy.getAction());
         displayResultTextField.setText(strategy.getResult());
+    }
+
+    public void showAddedObjectiveAlert() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveAddedAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showMissingInformationAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveMissingInformationAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showMissingStrategiesAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveMissingStrategiesAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showFailedRegisterAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     public static void main(String[] args) {
