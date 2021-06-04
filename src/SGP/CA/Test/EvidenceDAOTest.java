@@ -14,7 +14,6 @@ public class EvidenceDAOTest {
     @Test
     public void saveEvidenceTest() throws SQLException, ClassNotFoundException {
         Evidence evidence = new Evidence();
-        evidence.setFilePath("Test");
         evidence.setDescription("Test");
 
         int successfulSave = evidenceDAO.saveEvidence(evidence);

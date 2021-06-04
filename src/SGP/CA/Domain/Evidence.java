@@ -1,26 +1,27 @@
 package SGP.CA.Domain;
 
+import java.util.Date;
+
 public class Evidence {
 
     private int idEvidence;
+    private String evidenceTitle;
+    private String evidenceType;
     private String description;
-    private String filePath;
+    private Date registrationDate;
+    private int active;
+
+    public static Evidence selectedEvidence;
 
 
     public Evidence() {}
 
-    public Evidence(int idEvidence, String description, String filePath) {
+    public Evidence(String evidenceTitle, String evidenceType, int idEvidence, String description, int active) {
+        this.evidenceTitle = evidenceTitle;
+        this.evidenceType = evidenceType;
         this.idEvidence = idEvidence;
         this.description = description;
-        this.filePath = filePath;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+        this.active = active;
     }
 
     public String getDescription() {
@@ -39,4 +40,35 @@ public class Evidence {
         this.idEvidence = idEvidence;
     }
 
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public String getEvidenceTitle() {
+        return evidenceTitle;
+    }
+
+    public void setEvidenceTitle(String evidenceTitle) {
+        this.evidenceTitle = evidenceTitle;
+    }
+
+    public String getEvidenceType() {
+        return evidenceType;
+    }
+
+    public void setEvidenceType(String evidenceType) {
+        this.evidenceType = evidenceType;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
 }

@@ -2,7 +2,10 @@ package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IMemberDAO;
 import SGP.CA.Domain.Member;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MemberDAO implements IMemberDAO {
@@ -27,6 +30,27 @@ public class MemberDAO implements IMemberDAO {
         statement.setInt(9, member.getIdLGAC());
         statement.setString(10, member.getEmail());
         statement.setString(11, member.getPassword());
+        int successfulUpdate = statement.executeUpdate();
+        return successfulUpdate;
+    }
+
+    public int modifyMember (Member member, int idMember) throws SQLException {
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "UPDATE member SET name = ?, firstLastName = ?, secondLastName = ?, dateOfBirth = ?, phoneNumber = ?, " +
+                "curp = ?, maximumStudyLevel = ?, maximumStudyLevelInstitution = ?, idLGAC = ?, email = ? WHERE idMember = " + idMember;
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, member.getName());
+        statement.setString(2, member.getFirstLastName());
+        statement.setString(3, member.getSecondLastName());
+        java.sql.Date sqlDateOfBirth = new java.sql.Date(member.getDateOfBirth().getTime());
+        statement.setDate(4,  sqlDateOfBirth);
+        statement.setString(5, member.getPhoneNumber());
+        statement.setString(6, member.getCURP());
+        statement.setString(7, member.getMaximumStudyLevel());
+        statement.setString(8, member.getMaximumStudyLevelInstitution());
+        statement.setInt(9, member.getIdLGAC());
+        statement.setString(10, member.getEmail());
         int successfulUpdate = statement.executeUpdate();
         return successfulUpdate;
     }
@@ -80,9 +104,20 @@ public class MemberDAO implements IMemberDAO {
             member.setDateOfBirth(dateOfBirth);
             member.setEmail(results.getString("email"));
             member.setPassword(results.getString("password"));
+            member.setActive(results.getInt("active"));
             allMembers.add(member);
         }
         return allMembers;
+    }
+
+    public int deleteMember(int idMember) throws SQLException {
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "UPDATE member SET active = 0 WHERE idMember = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, idMember);
+        int databaseResponse = preparedStatement.executeUpdate();
+        return databaseResponse;
     }
 
 }

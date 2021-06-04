@@ -18,12 +18,12 @@ public class ReceptionalWork extends Evidence {
         this.idEvidence = idEvidence;
     }
 
-    public ReceptionalWork(int idEvidence, String description, String filePath, int idWork, String workName, String authors, int idEvidence1) {
-        super(idEvidence, description, filePath);
+    public ReceptionalWork(int idEvidence, String evidenceTitle, String evidenceType, String description,
+                           int idWork, String workName, String authors, int active) {
+        super(evidenceTitle, evidenceType, idEvidence, description, active);
         this.idWork = idWork;
         this.workName = workName;
         this.authors = authors;
-        this.idEvidence = idEvidence1;
     }
 
     public int getIdWork() {

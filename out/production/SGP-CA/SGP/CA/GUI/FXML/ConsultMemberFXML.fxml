@@ -2,28 +2,42 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultMemberController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultMemberController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f5eded" height="40.0" layoutX="23.0" layoutY="32.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="552.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f5eded" height="40.0" layoutX="23.0" layoutY="32.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="848.0" />
       <Label layoutX="31.0" layoutY="35.0" text="MIEMBROS DE CA">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="419.0" layoutY="40.0" mnemonicParsing="false" text="REGISTRAR NUEVO MIEMBRO">
+      <Button fx:id="registerMemberButton" layoutX="717.0" layoutY="42.0" mnemonicParsing="false" onAction="#registerMember" text="REGISTRAR NUEVO MIEMBRO">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
-      <TextField layoutX="426.0" layoutY="81.0" prefHeight="12.0" prefWidth="149.0" />
-      <Button layoutX="347.0" layoutY="82.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Buscar" />
-      <ListView fx:id="membersListView" layoutX="25.0" layoutY="118.0" prefHeight="268.0" prefWidth="550.0" />
+      <TextField layoutX="724.0" layoutY="82.0" prefHeight="12.0" prefWidth="149.0" />
+      <Button layoutX="648.0" layoutY="82.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Buscar" />
+      <TableView fx:id="membersTable" layoutX="23.0" layoutY="123.0" prefHeight="455.0" prefWidth="848.0">
+        <columns>
+            <TableColumn fx:id="staffNumberColumn" minWidth="0.0" prefWidth="113.0" text="No. de personal" />
+          <TableColumn fx:id="memberNameColumn" prefWidth="259.0" text="Nombre(s)" />
+            <TableColumn fx:id="firstLastNameColumn" prefWidth="230.0" text="Apellido paterno" />
+            <TableColumn fx:id="secondLastNameColumn" prefWidth="245.0" text="Apellido materno" />
+        </columns>
+      </TableView>
+      <ImageView fitHeight="25.0" fitWidth="27.0" layoutX="609.0" layoutY="81.0" onMouseClicked="#populateTable" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../imgs/update.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
