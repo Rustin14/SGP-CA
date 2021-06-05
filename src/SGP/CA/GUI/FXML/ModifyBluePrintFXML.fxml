@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ModifyBluePrintController">
+   <children>
+      <Label layoutX="42.0" layoutY="40.0" text="Modificacion de anteproyecto">
+         <font>
+            <Font name="System Bold" size="33.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="39.0" stroke="BLACK" strokeType="INSIDE" width="900.0" />
+      <Label layoutX="30.0" layoutY="7.0" text="Sistema gestor de cuerpos academicos" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#aeaeae" height="476.0" layoutX="24.0" layoutY="124.0" stroke="BLACK" strokeType="INSIDE" width="846.0" />
+      <Button fx:id="saveButton" layoutX="42.0" layoutY="465.0" mnemonicParsing="false" onAction="#saveButtonEvent" text="Guardar">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancelButton" layoutX="42.0" layoutY="512.0" mnemonicParsing="false" onAction="#cancelButtonEvent" prefHeight="39.0" prefWidth="101.0" text="Salir">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <ScrollPane layoutX="167.0" layoutY="187.0" prefHeight="399.0" prefWidth="610.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="587.0" prefWidth="593.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Anteproyecto">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Line endX="462.0" layoutX="115.0" layoutY="44.0" startX="-108.0" />
+                  <Label layoutX="14.0" layoutY="55.0" text="Titulo del anteproyecto:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="89.0" text="Fecha de inicio:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="123.0" text="Lgac asociadas:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="160.0" text="Estado:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="193.0" text="Director:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="225.0" text="Co-director:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="261.0" text="Duracion:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="296.0" text="Modalidad:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="333.0" text="Nombre de trabajo recepcional:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="19.0" layoutY="366.0" text="Requisitos:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="17.0" layoutY="400.0" text="Estudiante:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="13.0" layoutY="433.0" text="Descripcion:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="receptionWorkNameTextField" layoutX="315.0" layoutY="334.0" prefHeight="24.0" prefWidth="275.0" />
+                  <TextField fx:id="bluePrintTitleTextField" layoutX="249.0" layoutY="56.0" prefHeight="24.0" prefWidth="298.0" />
+                  <TextField fx:id="starDateTextField" layoutX="194.0" layoutY="90.0" prefHeight="24.0" prefWidth="157.0" />
+                  <TextField fx:id="associatedLgacTextField" layoutX="194.0" layoutY="124.0" prefHeight="24.0" prefWidth="327.0" />
+                  <TextField fx:id="stateTextField" layoutX="102.0" layoutY="161.0" />
+                  <TextField fx:id="directorTextField" layoutX="102.0" layoutY="194.0" prefHeight="24.0" prefWidth="275.0" />
+                  <TextField fx:id="coDirectorTextField" layoutX="132.0" layoutY="226.0" prefHeight="24.0" prefWidth="245.0" />
+                  <TextField fx:id="durationTextField" layoutX="132.0" layoutY="262.0" prefHeight="24.0" prefWidth="244.0" />
+                  <TextField fx:id="modalityTextField" layoutX="132.0" layoutY="297.0" prefHeight="24.0" prefWidth="246.0" />
+                  <TextField fx:id="requirementsTextField" layoutX="132.0" layoutY="367.0" prefHeight="24.0" prefWidth="241.0" />
+                  <TextField fx:id="studentTextField" layoutX="132.0" layoutY="401.0" prefHeight="24.0" prefWidth="239.0" />
+                  <TextArea fx:id="descriptionTextArea" layoutX="13.0" layoutY="458.0" prefHeight="117.0" prefWidth="564.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <ComboBox fx:id="bluePrintsComboBox" layoutX="447.0" layoutY="147.0" onAction="#bluePrintSelectedEvent" prefHeight="24.0" prefWidth="298.0" promptText="selecciona un anteproyecto para modificar" />
+      <Label layoutX="167.0" layoutY="147.0" text="Anteproyecto seleccionado:">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
