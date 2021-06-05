@@ -10,8 +10,9 @@ public class Book extends Evidence {
 
     public Book() {}
 
-    public Book(int idEvidence, String description, String filePath, int idBook, String bookName, int numberOfPages, String authors, int yearOfPublication) {
-        super(idEvidence, description, filePath);
+    public Book(int idEvidence, String titleEvidence, String evidenceType, String description, int active,
+                int idBook, String bookName, int numberOfPages, String authors, int yearOfPublication) {
+        super(evidenceType, titleEvidence, idEvidence, description, active);
         this.idBook = idBook;
         this.bookName = bookName;
         this.numberOfPages = numberOfPages;

@@ -16,6 +16,9 @@ public class Member {
     private int age;
     private String email;
     private String password;
+    private int active;
+
+    public static Member selectedMember;
 
     public Member() {
     }
@@ -122,5 +125,13 @@ public class Member {
 
     public void setIdLGAC(int idLGAC) {
         this.idLGAC = idLGAC;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 }

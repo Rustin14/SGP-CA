@@ -8,8 +8,9 @@ public class Prototype extends Evidence {
     public Prototype() {
     }
 
-    public Prototype(int idPrototype, int idEvidence, String prototypeName, String description, String filePath) {
-        super(idEvidence, description, filePath);
+    public Prototype(int idPrototype, int idEvidence, String evidenceTitle, String evidenceType,
+                     String prototypeName, String description, int active) {
+        super(evidenceTitle, evidenceType, idEvidence,  description, active);
         this.idPrototype = idPrototype;
         this.prototypeName = prototypeName;
     }

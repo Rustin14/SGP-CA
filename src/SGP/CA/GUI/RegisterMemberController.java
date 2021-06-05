@@ -9,12 +9,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -81,6 +80,7 @@ public class RegisterMemberController implements Initializable {
             }
         });
     }
+
     public boolean validateCURP() {
         TextValidations textValidations = new TextValidations();
         if (textValidations.validateCURPFormat(CURPTF.getText())) {
@@ -171,7 +171,10 @@ public class RegisterMemberController implements Initializable {
                 sqlException.printStackTrace();
             }
 
-            alertBuilder.successAlert("¡Registro realizado!");
+        alertBuilder.successAlert("¡Registro realizado!");
+        Stage stage = (Stage) academicPositionCombo.getScene().getWindow();
+        stage.close();
+        ConsultMemberController.getInstance().populateTable();
         }
     }
 
