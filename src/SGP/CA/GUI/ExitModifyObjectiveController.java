@@ -2,7 +2,6 @@ package SGP.CA.GUI;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,25 +9,25 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ExitAddObjectiveAlertController extends Application{
+public class ExitModifyObjectiveController extends Application{
 
     @FXML
     private Button cancelButton;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/exitAddObjectiveAlertFXML.fxml"));
-        primaryStage.setTitle("añadir objetivo ");
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyObjectiveAlertFXML.fxml"));
+        primaryStage.setTitle("Salir");
         primaryStage.setScene(new Scene(root, 500, 200));
         primaryStage.show();
     }
 
-    public void acceptButtonEvent(ActionEvent event){
+    public void acceptButtonEvent(){
         Platform.exit();
         System.exit(0);
     }
 
-    public void cancelButtonEvent(ActionEvent event){
+    public void cancelButtonEvent(){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
@@ -36,4 +35,5 @@ public class ExitAddObjectiveAlertController extends Application{
     public static void main(String[] args) {
         launch(args);
     }
+
 }
