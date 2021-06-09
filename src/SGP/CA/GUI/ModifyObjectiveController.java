@@ -86,12 +86,21 @@ public class ModifyObjectiveController extends Application {
 
     }
 
-    public void saveButtonEvent(){
-
+    public void saveButtonEvent() throws IOException{
+        showModifiedObjectiveAlert();
     }
 
     public void strategyComboBoxEvent(){
 
+    }
+
+    public void showModifiedObjectiveAlert() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveModifiedAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     public static void main(String[] args) {
