@@ -24,8 +24,8 @@ public class ExitSaveProjectAlertController extends Application{
     }
 
     public void acceptButtonEvent(ActionEvent event){
-        Platform.exit();
-        System.exit(0);
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     public void cancelButtonEvent(ActionEvent event){

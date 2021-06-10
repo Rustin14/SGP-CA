@@ -1,8 +1,6 @@
 package SGP.CA.GUI;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -72,16 +70,19 @@ public class AddBluePrintController extends Application{
             primaryStage.show();
         }
 
-        public void exitButtonEvent (ActionEvent event) throws IOException{
+        public void exitButtonEvent () throws IOException{
             Stage stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(exitButton.getScene().getWindow());
             stage.showAndWait();
+
+            Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+            stagePrincipal.close();
         }
 
-        public void saveButtonEvent(ActionEvent event)throws ParseException, SQLException, ClassNotFoundException, IOException {
+        public void saveButtonEvent()throws ParseException, SQLException, ClassNotFoundException, IOException {
             BluePrint bluePrint = new BluePrint();
             BluePrintDAO bluePrintDAO = new BluePrintDAO();
             bluePrint.setBluePrintTitle(bluePrintTitleField.getText());
@@ -101,6 +102,8 @@ public class AddBluePrintController extends Application{
             int action = bluePrintDAO.saveBluePrint(bluePrint);
             if (action == 1){
                 showConfirmationAlert();
+                Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                stagePrincipal.close();
             }else{
                 System.out.println("No ha sido posible guardar");
             }

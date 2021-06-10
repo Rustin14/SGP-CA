@@ -63,7 +63,7 @@ public class ModifyInvestigationProjectController extends Application{
         primaryStage.show();
     }
 
-    public void saveButtonEvent (ActionEvent event) throws ParseException, SQLException, IOException{
+    public void saveButtonEvent () throws ParseException, SQLException, IOException{
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         String oldTitle = projectsTitleComboBox.getSelectionModel().getSelectedItem();
         InvestigationProject investigationProject = new InvestigationProject();
@@ -81,22 +81,27 @@ public class ModifyInvestigationProjectController extends Application{
         int result = investigationProjectDAO.modifyInvestigationProject(investigationProject, oldTitle);
         if (result == 1){
             showConfirmationAlert();
+            Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+            stagePrincipal.close();
         }else {
             System.out.println("Error");
             //To do
         }
     }
 
-    public void exitButtonEvent(ActionEvent event) throws IOException{
+    public void exitButtonEvent() throws IOException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(exitButton.getScene().getWindow());
         stage.showAndWait();
+
+        Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
+        stagePrincipal.close();
     }
 
-    public void projectsTitleComboBoxEvent(ActionEvent event) throws SQLException, ClassNotFoundException{
+    public void projectsTitleComboBoxEvent() throws SQLException, ClassNotFoundException{
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         String title = projectsTitleComboBox.getSelectionModel().getSelectedItem();
         InvestigationProject investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle(title);

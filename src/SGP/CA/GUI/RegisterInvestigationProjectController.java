@@ -71,6 +71,8 @@ public class RegisterInvestigationProjectController extends Application {
         int action = investigationProjectDAO.saveInvestigationProject(investigationProject);
         if (action == 1){
             showConfirmationAlert();
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            stage.close();
         }else {
             System.out.println("No se ha guardado nada");
         }
@@ -83,6 +85,9 @@ public class RegisterInvestigationProjectController extends Application {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
+
+        Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+        stagePrincipal.close();
     }
 
     public void showConfirmationAlert() throws IOException{
