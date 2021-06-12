@@ -10,7 +10,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultBluePrintController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#abaaaa" height="420.0" layoutX="33.0" layoutY="180.0" stroke="BLACK" strokeType="INSIDE" width="827.0" />
@@ -25,12 +24,12 @@
             <Font name="System Bold" size="60.0" />
          </font>
       </Label>
-      <Button fx:id="deleteButton" layoutX="617.0" layoutY="87.0" mnemonicParsing="false" text="Eliminar">
+      <Button fx:id="deleteButton" layoutX="617.0" layoutY="87.0" mnemonicParsing="false" onAction="#deleteButtonEvent" text="Eliminar">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="modifyButton" layoutX="747.0" layoutY="87.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="113.0" text="Modificar">
+      <Button fx:id="modifyButton" layoutX="747.0" layoutY="87.0" mnemonicParsing="false" onAction="#modifyButtonEvent" prefHeight="33.0" prefWidth="113.0" text="Modificar">
          <font>
             <Font size="20.0" />
          </font>

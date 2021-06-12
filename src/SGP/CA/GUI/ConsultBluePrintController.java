@@ -8,7 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import SGP.CA.DataAccess.BluePrintDAO;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class ConsultBluePrintController extends Application{
 
@@ -63,6 +68,26 @@ public class ConsultBluePrintController extends Application{
         primaryStage.setTitle("Registrar anteproyecto");
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
+    }
+
+    public void deleteButtonEvent() throws SQLException, ClassNotFoundException {
+        BluePrintDAO bluePrintDAO = new BluePrintDAO();
+        int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
+        if (result == 1){
+            //TO DO
+            System.out.println("Eliminado");
+        }else{
+            System.out.println("Fallido");
+        }
+    }
+
+    public void modifyButtonEvent() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyBluePrintFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(modifyButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     public static void main(String[] args) {
