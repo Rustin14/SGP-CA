@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultBluePrintController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#abaaaa" height="420.0" layoutX="33.0" layoutY="180.0" stroke="BLACK" strokeType="INSIDE" width="827.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="33.0" stroke="BLACK" strokeType="INSIDE" width="900.0" />
+      <Label layoutX="33.0" layoutY="4.0" text="SGP-CA" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="33.0" layoutY="63.0" text="Anteproyecto">
+         <font>
+            <Font name="System Bold" size="60.0" />
+         </font>
+      </Label>
+      <Button fx:id="deleteButton" layoutX="617.0" layoutY="87.0" mnemonicParsing="false" text="Eliminar">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="modifyButton" layoutX="747.0" layoutY="87.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="113.0" text="Modificar">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="exitButton" layoutX="46.0" layoutY="547.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="101.0" text="Salir">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <ScrollPane layoutX="183.0" layoutY="180.0" prefHeight="409.0" prefWidth="534.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="469.0" prefWidth="517.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Director(a):">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Line endX="389.0" layoutX="115.0" layoutY="41.0" startX="-100.0" />
+                  <TextField fx:id="directorTextField" editable="false" layoutX="147.0" layoutY="15.0" opacity="0.0" pickOnBounds="false" prefHeight="24.0" prefWidth="209.0" />
+                  <Label layoutX="14.0" layoutY="49.0" text="Titulo de anteproyecto:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="75.0" text="Fecha de inicio:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="102.0" text="LGAC asociadas:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="131.0" text="Estado:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="158.0" text="Codirector:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="186.0" text="Duracion:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="214.0" text="Modalidad:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="244.0" text="Nombre de trabajo recepcional:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="272.0" text="Requisitos:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="301.0" text="Estudiante:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="331.0" text="Descripción:">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="bluePrintTitleTextField" disable="true" editable="false" layoutX="208.0" layoutY="47.0" prefHeight="24.0" prefWidth="241.0" visible="false" />
+                  <TextField fx:id="startDateField" disable="true" editable="false" layoutX="175.0" layoutY="73.0" prefHeight="24.0" prefWidth="137.0" visible="false" />
+                  <TextField fx:id="associatedLGAC" disable="true" editable="false" layoutX="191.0" layoutY="100.0" prefHeight="24.0" prefWidth="225.0" visible="false" />
+                  <TextField fx:id="stateTextField" disable="true" editable="false" layoutX="103.0" layoutY="129.0" prefHeight="24.0" prefWidth="165.0" visible="false" />
+                  <TextField fx:id="coDirectorTextField" disable="true" editable="false" layoutX="126.0" layoutY="156.0" prefHeight="24.0" prefWidth="220.0" visible="false" />
+                  <TextField fx:id="durationTextField" disable="true" editable="false" layoutX="112.0" layoutY="184.0" prefHeight="24.0" prefWidth="70.0" visible="false" />
+                  <TextField fx:id="modalityTextField" editable="false" layoutX="114.0" layoutY="212.0" visible="false" />
+                  <TextField fx:id="receptionWorkNameTextField" disable="true" editable="false" layoutX="269.0" layoutY="242.0" prefHeight="24.0" prefWidth="209.0" visible="false" />
+                  <TextField fx:id="requirementsTextField" disable="true" editable="false" layoutX="114.0" layoutY="270.0" prefHeight="24.0" prefWidth="203.0" visible="false" />
+                  <TextField fx:id="studentTextField" disable="true" editable="false" layoutX="126.0" layoutY="299.0" visible="false" />
+                  <TextArea fx:id="descriptionTextArea" disable="true" editable="false" layoutX="14.0" layoutY="352.0" prefHeight="109.0" prefWidth="486.0" style="-fx-background-color: #949090;" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
