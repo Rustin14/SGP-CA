@@ -49,7 +49,7 @@
                      </font>
                   </Label>
                   <Line endX="389.0" layoutX="115.0" layoutY="41.0" startX="-100.0" />
-                  <TextField fx:id="directorTextField" editable="false" layoutX="147.0" layoutY="15.0" opacity="0.0" pickOnBounds="false" prefHeight="24.0" prefWidth="209.0" />
+                  <TextField fx:id="directorTextField" editable="false" layoutX="147.0" layoutY="15.0" pickOnBounds="false" prefHeight="24.0" prefWidth="209.0" />
                   <Label layoutX="14.0" layoutY="49.0" text="Titulo de anteproyecto:">
                      <font>
                         <Font size="17.0" />
@@ -105,17 +105,17 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="bluePrintTitleTextField" disable="true" editable="false" layoutX="208.0" layoutY="47.0" prefHeight="24.0" prefWidth="241.0" visible="false" />
-                  <TextField fx:id="startDateField" disable="true" editable="false" layoutX="175.0" layoutY="73.0" prefHeight="24.0" prefWidth="137.0" visible="false" />
-                  <TextField fx:id="associatedLGAC" disable="true" editable="false" layoutX="191.0" layoutY="100.0" prefHeight="24.0" prefWidth="225.0" visible="false" />
-                  <TextField fx:id="stateTextField" disable="true" editable="false" layoutX="103.0" layoutY="129.0" prefHeight="24.0" prefWidth="165.0" visible="false" />
-                  <TextField fx:id="coDirectorTextField" disable="true" editable="false" layoutX="126.0" layoutY="156.0" prefHeight="24.0" prefWidth="220.0" visible="false" />
-                  <TextField fx:id="durationTextField" disable="true" editable="false" layoutX="112.0" layoutY="184.0" prefHeight="24.0" prefWidth="70.0" visible="false" />
-                  <TextField fx:id="modalityTextField" editable="false" layoutX="114.0" layoutY="212.0" visible="false" />
-                  <TextField fx:id="receptionWorkNameTextField" disable="true" editable="false" layoutX="269.0" layoutY="242.0" prefHeight="24.0" prefWidth="209.0" visible="false" />
-                  <TextField fx:id="requirementsTextField" disable="true" editable="false" layoutX="114.0" layoutY="270.0" prefHeight="24.0" prefWidth="203.0" visible="false" />
-                  <TextField fx:id="studentTextField" disable="true" editable="false" layoutX="126.0" layoutY="299.0" visible="false" />
-                  <TextArea fx:id="descriptionTextArea" disable="true" editable="false" layoutX="14.0" layoutY="352.0" prefHeight="109.0" prefWidth="486.0" style="-fx-background-color: #949090;" />
+                  <TextField fx:id="bluePrintTitleTextField" editable="false" layoutX="208.0" layoutY="47.0" prefHeight="24.0" prefWidth="241.0" />
+                  <TextField fx:id="startDateField" editable="false" layoutX="175.0" layoutY="73.0" prefHeight="24.0" prefWidth="137.0" />
+                  <TextField fx:id="associatedLGAC" editable="false" layoutX="191.0" layoutY="100.0" prefHeight="24.0" prefWidth="225.0" />
+                  <TextField fx:id="stateTextField" editable="false" layoutX="103.0" layoutY="129.0" prefHeight="24.0" prefWidth="165.0" />
+                  <TextField fx:id="coDirectorTextField" editable="false" layoutX="126.0" layoutY="156.0" prefHeight="24.0" prefWidth="220.0" />
+                  <TextField fx:id="durationTextField" editable="false" layoutX="112.0" layoutY="184.0" prefHeight="24.0" prefWidth="70.0" />
+                  <TextField fx:id="modalityTextField" editable="false" layoutX="114.0" layoutY="212.0" />
+                  <TextField fx:id="receptionWorkNameTextField" editable="false" layoutX="269.0" layoutY="242.0" prefHeight="24.0" prefWidth="209.0" />
+                  <TextField fx:id="requirementsTextField" editable="false" layoutX="114.0" layoutY="270.0" prefHeight="24.0" prefWidth="203.0" />
+                  <TextField fx:id="studentTextField" editable="false" layoutX="126.0" layoutY="299.0" />
+                  <TextArea fx:id="descriptionTextArea" editable="false" layoutX="14.0" layoutY="352.0" prefHeight="109.0" prefWidth="486.0" style="-fx-background-color: #949090;" />
                </children>
             </AnchorPane>
         </content>

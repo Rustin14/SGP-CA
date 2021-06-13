@@ -1,7 +1,7 @@
 package SGP.CA.GUI;
 
+import SGP.CA.Domain.BluePrint;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import SGP.CA.Domain.InvestigationProject;
@@ -21,6 +22,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import SGP.CA.DataAccess.BluePrintDAO;
 
 public class InvestigationProjectConsultController extends Application{
 
@@ -57,9 +59,23 @@ public class InvestigationProjectConsultController extends Application{
     @FXML
     private Button addProjectButton;
 
+    @FXML
+    private ComboBox<String> bluePrintsComboBox;
+
+    @FXML
+    private TextField bluePrintTitleTextField;
+
+    @FXML
+    private TextField stateTextField;
+
+    @FXML
+    private Button consultButton;
+
     private ObservableList<String> investigationProjectTitles = FXCollections.observableArrayList();
 
     private ArrayList<InvestigationProject> investigationProjects = new ArrayList<>();
+
+    InvestigationProjectConsultController investigationProjectConsultController;
 
 
     @Override
@@ -121,14 +137,44 @@ public class InvestigationProjectConsultController extends Application{
         descriptionTextField.setText(investigationProject.getDescription());
     }
 
+    public void bluePrintsComboBoxEvent() throws SQLException, ClassNotFoundException{
+        String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
+        BluePrintDAO bluePrintDAO = new BluePrintDAO();
+        BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle(titleSelected);
+        stateTextField.setText(bluePrint.getState());
+        bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
+    }
+
+    public void consultButtonEvent() throws IOException,SQLException,ClassNotFoundException{
+        Stage stage2 = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ConsultBluePrintFXML.fxml").openStream());
+        ConsultBluePrintController consultBluePrintController = (ConsultBluePrintController) loader.getController();
+        consultBluePrintController.getBluePrintTitle(investigationProjectConsultController,bluePrintTitleTextField.getText());
+        Scene scene = new Scene(root);
+        stage2.setScene(scene);
+        stage2.alwaysOnTopProperty();
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.showAndWait();
+    }
+
     @FXML
     public void initialize() throws SQLException, ClassNotFoundException {
+        investigationProjectConsultController = this;
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         investigationProjects = investigationProjectDAO.getAllInvestigationProjects();
         for(InvestigationProject investigationProject : investigationProjects){
             investigationProjectTitles.add(investigationProject.getProjectTitle());
         }
         comboBoxProjects.setItems(investigationProjectTitles);
+        BluePrintDAO bluePrintDAO = new BluePrintDAO();
+        ArrayList<BluePrint> bluePrints = new ArrayList<>();
+        bluePrints = bluePrintDAO.getAllBluePrints();
+        ObservableList<String> bluePrintTitles = FXCollections.observableArrayList();
+        for (BluePrint bluePrint: bluePrints){
+            bluePrintTitles.add(bluePrint.getBluePrintTitle());
+        }
+        bluePrintsComboBox.setItems(bluePrintTitles);
     }
 
     public static void main(String[] args) {
