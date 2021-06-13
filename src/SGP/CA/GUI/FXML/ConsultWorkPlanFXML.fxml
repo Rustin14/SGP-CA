@@ -4,10 +4,10 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultWorkPlanController">
    <children>
@@ -63,11 +63,14 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <ComboBox layoutX="522.0" layoutY="66.0" prefHeight="24.0" prefWidth="223.0" promptText="selecciona un plan [periodo]" />
+      <ComboBox fx:id="workPlanComboBox" layoutX="522.0" layoutY="66.0" onAction="#workPlanComboBoxEvent" prefHeight="24.0" prefWidth="223.0" promptText="selecciona un plan" />
       <Button layoutX="766.0" layoutY="57.0" mnemonicParsing="false" text="Modificar">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
+      <TextField fx:id="academicBodyTextField" layoutX="324.0" layoutY="125.0" prefHeight="24.0" prefWidth="215.0" />
+      <TextField fx:id="nameTextField" layoutX="190.0" layoutY="157.0" prefHeight="24.0" prefWidth="194.0" />
+      <TextField fx:id="chargeTextField" layoutX="355.0" layoutY="192.0" prefHeight="24.0" prefWidth="183.0" />
    </children>
 </AnchorPane>
