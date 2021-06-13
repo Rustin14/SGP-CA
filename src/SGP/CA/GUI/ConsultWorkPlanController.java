@@ -1,6 +1,8 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ObjectiveDAO;
 import SGP.CA.DataAccess.WorkPlanDAO;
+import SGP.CA.Domain.Objective;
 import SGP.CA.Domain.WorkPlan;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -9,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -21,6 +24,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ConsultWorkPlanController extends Application{
+
+    @FXML
+    private Button modifyButton;
+
+    @FXML
+    private ComboBox<String> objectivesComboBox;
+
+    @FXML
+    private Button objectiveSelectedButton;
 
     @FXML
     private ComboBox<String> workPlanComboBox;
@@ -38,6 +50,8 @@ public class ConsultWorkPlanController extends Application{
 
     private ArrayList<WorkPlan> workPlans = new ArrayList<>();
 
+    private ObservableList<String> objectiveTitles = FXCollections.observableArrayList();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml"));
@@ -50,31 +64,52 @@ public class ConsultWorkPlanController extends Application{
     public void initialize() throws SQLException, ClassNotFoundException {
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         workPlans = workPlanDAO.getAllWorkPlans();
+        ArrayList<WorkPlan>auxWorkPlans = new ArrayList<>();
         for(WorkPlan workPlan: workPlans){
-            DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
-            String starDate = setDate.format(workPlan.getStartDate().getTime());
-            String endingDate = setDate.format(workPlan.getEndingDate().getTime());
-            String period = "Plan de trabajo [";
-            period+= starDate.substring(6);
-            period+= "-";
-            period+= endingDate.substring(6);
-            period+= "]";
-            workPlanPeriods.add(period);
+            if (auxWorkPlans.indexOf(workPlan) == -1){
+                DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
+                String starDate = setDate.format(workPlan.getStartDate().getTime());
+                String endingDate = setDate.format(workPlan.getEndingDate().getTime());
+                String period = "Plan de trabajo [";
+                period+= starDate.substring(6);
+                period+= "-";
+                period+= endingDate.substring(6);
+                period+= "]";
+                workPlanPeriods.add(period);
+                auxWorkPlans.add(workPlan);
+            }
         }
         workPlanPeriods.add("+Añadir plan de trabajo");
         workPlanComboBox.setItems(workPlanPeriods);
     }
 
-    public void workPlanComboBoxEvent() throws IOException {
+    public void workPlanComboBoxEvent() throws IOException ,SQLException, ClassNotFoundException{
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
-        if (selectedOption == "+Añadir plan de trabajo"){
+        if (selectedOption.equals("+Añadir plan de trabajo")){
             Stage stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("FXML/AddWorkPlanFXML.fxml"));
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(workPlanComboBox.getScene().getWindow());
             stage.showAndWait();
+        }else{
+            objectivesComboBox.getItems().clear();
+            objectiveSelectedButton.setText("");
+            int selectedIndex = workPlanComboBox.getSelectionModel().getSelectedIndex();
+            ObjectiveDAO objectiveDAO = new ObjectiveDAO();
+            ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
+            for(int i=0; i<objectives.size(); i++){
+                if (objectives.get(i).getObjectiveTitle().equals(workPlans.get(selectedIndex).getObjective())){
+                    objectiveTitles.add(objectives.get(i).getObjectiveTitle());
+                }
+            }
+            objectivesComboBox.setItems(objectiveTitles);
         }
+    }
+
+    public void objectivesComboBoxEvent(){
+        String titleSelected = objectivesComboBox.getSelectionModel().getSelectedItem();
+        objectiveSelectedButton.setText(titleSelected);
     }
 
     public static void main(String[] args) {

@@ -28,6 +28,8 @@
                         <Font size="30.0" />
                      </font>
                   </Label>
+                  <ComboBox fx:id="objectivesComboBox" layoutX="31.0" layoutY="77.0" onAction="#objectivesComboBoxEvent" prefHeight="24.0" prefWidth="274.0" promptText="[selecciona un objectivo]" />
+                  <Button fx:id="objectiveSelectedButton" layoutX="31.0" layoutY="101.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="409.0" />
                </children>
             </AnchorPane>
         </content>
@@ -64,13 +66,13 @@
          </font>
       </Label>
       <ComboBox fx:id="workPlanComboBox" layoutX="522.0" layoutY="66.0" onAction="#workPlanComboBoxEvent" prefHeight="24.0" prefWidth="223.0" promptText="selecciona un plan" />
-      <Button layoutX="766.0" layoutY="57.0" mnemonicParsing="false" text="Modificar">
+      <Button fx:id="modifyButton" layoutX="766.0" layoutY="57.0" mnemonicParsing="false" text="Modificar">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <TextField fx:id="academicBodyTextField" layoutX="324.0" layoutY="125.0" prefHeight="24.0" prefWidth="215.0" />
-      <TextField fx:id="nameTextField" layoutX="190.0" layoutY="157.0" prefHeight="24.0" prefWidth="194.0" />
-      <TextField fx:id="chargeTextField" layoutX="355.0" layoutY="192.0" prefHeight="24.0" prefWidth="183.0" />
+      <TextField fx:id="academicBodyTextField" editable="false" layoutX="324.0" layoutY="125.0" prefHeight="24.0" prefWidth="215.0" />
+      <TextField fx:id="nameTextField" editable="false" layoutX="190.0" layoutY="157.0" prefHeight="24.0" prefWidth="194.0" />
+      <TextField fx:id="chargeTextField" editable="false" layoutX="355.0" layoutY="192.0" prefHeight="24.0" prefWidth="183.0" />
    </children>
 </AnchorPane>
