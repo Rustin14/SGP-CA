@@ -16,7 +16,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -66,7 +65,7 @@ public class ConsultWorkPlanController extends Application{
         workPlans = workPlanDAO.getAllWorkPlans();
         ArrayList<WorkPlan>auxWorkPlans = new ArrayList<>();
         for(WorkPlan workPlan: workPlans){
-            if (auxWorkPlans.indexOf(workPlan) == -1){
+            if (!auxWorkPlans.contains(workPlan)){
                 DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
                 String starDate = setDate.format(workPlan.getStartDate().getTime());
                 String endingDate = setDate.format(workPlan.getEndingDate().getTime());
