@@ -57,5 +57,12 @@
       <TextField fx:id="workPlanKeyTextField" editable="false" layoutX="450.0" layoutY="141.0" prefHeight="24.0" prefWidth="240.0" />
       <TextField fx:id="startDateTextField" editable="false" layoutX="373.0" layoutY="180.0" />
       <TextField fx:id="endDateTextField" editable="false" layoutX="373.0" layoutY="224.0" />
+      <ComboBox fx:id="addObjectivesComboBox" layoutX="228.0" layoutY="432.0" prefHeight="24.0" prefWidth="295.0" promptText="[Selecciona un objetivo para agregar]" />
+      <Button fx:id="addToPlanButton" layoutX="521.0" layoutY="426.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="154.0" text="Añadir al plan">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <ComboBox fx:id="objectivesAddedComboBox" layoutX="228.0" layoutY="492.0" prefHeight="24.0" prefWidth="295.0" promptText="[Objetivos añadidos al plan]" />
    </children>
 </AnchorPane>

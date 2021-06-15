@@ -128,6 +128,21 @@ public class ConsultWorkPlanController extends Application{
         stage2.showAndWait();
     }
 
+    public void modifyButtonEvent() throws IOException, SQLException, ClassNotFoundException{
+        int indexSelected = workPlanComboBox.getSelectionModel().getSelectedIndex();
+        WorkPlan workPlan = workPlans.get(indexSelected);
+        Stage stage2 = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml").openStream());
+        ModifyWorkPlanController modifyWorkPlanController = (ModifyWorkPlanController) loader.getController();
+        modifyWorkPlanController.getWorkPlanKey(consultWorkPlanController, workPlan.getWorkPlanKey());
+        Scene scene = new Scene(root);
+        stage2.setScene(scene);
+        stage2.alwaysOnTopProperty();
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.showAndWait();
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

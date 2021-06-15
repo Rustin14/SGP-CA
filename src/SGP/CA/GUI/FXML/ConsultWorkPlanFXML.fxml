@@ -66,7 +66,7 @@
          </font>
       </Label>
       <ComboBox fx:id="workPlanComboBox" layoutX="522.0" layoutY="66.0" onAction="#workPlanComboBoxEvent" prefHeight="24.0" prefWidth="223.0" promptText="selecciona un plan" />
-      <Button fx:id="modifyButton" layoutX="766.0" layoutY="57.0" mnemonicParsing="false" text="Modificar">
+      <Button fx:id="modifyButton" layoutX="766.0" layoutY="57.0" mnemonicParsing="false" onAction="#modifyButtonEvent" text="Modificar">
          <font>
             <Font size="20.0" />
          </font>
