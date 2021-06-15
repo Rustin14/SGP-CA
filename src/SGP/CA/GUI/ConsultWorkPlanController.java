@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -51,6 +52,8 @@ public class ConsultWorkPlanController extends Application{
 
     private ObservableList<String> objectiveTitles = FXCollections.observableArrayList();
 
+    ConsultWorkPlanController consultWorkPlanController;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml"));
@@ -61,6 +64,7 @@ public class ConsultWorkPlanController extends Application{
 
     @FXML
     public void initialize() throws SQLException, ClassNotFoundException {
+        consultWorkPlanController = this;
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         workPlans = workPlanDAO.getAllWorkPlans();
         ArrayList<WorkPlan>auxWorkPlans = new ArrayList<>();
@@ -109,6 +113,19 @@ public class ConsultWorkPlanController extends Application{
     public void objectivesComboBoxEvent(){
         String titleSelected = objectivesComboBox.getSelectionModel().getSelectedItem();
         objectiveSelectedButton.setText(titleSelected);
+    }
+
+    public void objectiveSelectedEvent() throws IOException, SQLException, ClassNotFoundException{
+        Stage stage2 = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml").openStream());
+        ConsultObjectiveController consultObjectiveController = (ConsultObjectiveController) loader.getController();
+        consultObjectiveController.getObjectiveTitle(consultWorkPlanController, objectiveSelectedButton.getText());
+        Scene scene = new Scene(root);
+        stage2.setScene(scene);
+        stage2.alwaysOnTopProperty();
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.showAndWait();
     }
 
     public static void main(String[] args) {

@@ -9,7 +9,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultObjectiveController">
    <children>
       <Label layoutX="25.0" layoutY="33.0" text="Objetivo:">
@@ -19,7 +18,7 @@
       </Label>
       <TextField fx:id="objectiveTextField" editable="false" layoutX="118.0" layoutY="32.0" prefHeight="24.0" prefWidth="265.0" />
       <TextArea fx:id="descriptionTextArea" editable="false" layoutX="25.0" layoutY="62.0" prefHeight="86.0" prefWidth="592.0" />
-      <ComboBox layoutX="25.0" layoutY="161.0" prefHeight="24.0" prefWidth="205.0" promptText="[Selecciona una estrategia]" />
+      <ComboBox fx:id="strategiesComboBox" layoutX="25.0" layoutY="161.0" onAction="#strategiesComboBoxEvent" prefHeight="24.0" prefWidth="205.0" promptText="[Selecciona una estrategia]" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#757575" height="24.0" layoutX="28.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="39.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#757575" height="24.0" layoutX="67.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="165.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#757575" height="24.0" layoutX="232.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="165.0" />

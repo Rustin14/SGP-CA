@@ -29,7 +29,7 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="objectivesComboBox" layoutX="31.0" layoutY="77.0" onAction="#objectivesComboBoxEvent" prefHeight="24.0" prefWidth="274.0" promptText="[selecciona un objectivo]" />
-                  <Button fx:id="objectiveSelectedButton" layoutX="31.0" layoutY="101.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="409.0" />
+                  <Button fx:id="objectiveSelectedButton" layoutX="31.0" layoutY="101.0" mnemonicParsing="false" onAction="#objectiveSelectedEvent" prefHeight="49.0" prefWidth="409.0" />
                </children>
             </AnchorPane>
         </content>
