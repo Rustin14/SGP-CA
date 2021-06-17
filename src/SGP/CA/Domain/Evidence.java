@@ -9,6 +9,7 @@ public class Evidence {
     private String evidenceType;
     private String description;
     private Date registrationDate;
+    private Date modificationDate;
     private int active;
 
     public static Evidence selectedEvidence;
@@ -70,5 +71,21 @@ public class Evidence {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public static Evidence getSelectedEvidence() {
+        return selectedEvidence;
+    }
+
+    public static void setSelectedEvidence(Evidence selectedEvidence) {
+        Evidence.selectedEvidence = selectedEvidence;
     }
 }

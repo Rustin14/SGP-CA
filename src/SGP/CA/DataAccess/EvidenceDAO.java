@@ -2,11 +2,14 @@ package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IEvidenceDAO;
 import SGP.CA.Domain.Evidence;
+import com.mysql.cj.jdbc.CallableStatement;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EvidenceDAO implements IEvidenceDAO {
 
@@ -32,8 +35,8 @@ public class EvidenceDAO implements IEvidenceDAO {
         PreparedStatement statement = connection.prepareStatement(query);
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, idEvidence);
-        int databaseResponse = preparedStatement.executeUpdate();
-        return databaseResponse;
+        int successfulUpdate = preparedStatement.executeUpdate();
+        return successfulUpdate;
     }
 
     @Override
@@ -51,6 +54,11 @@ public class EvidenceDAO implements IEvidenceDAO {
             evidence.setIdEvidence(results.getInt("idEvidence"));
             evidence.setDescription(results.getString("description"));
             evidence.setEvidenceType(results.getString("evidenceType"));
+            java.util.Date registrationDate = new java.util.Date(results.getDate("registrationDate").getTime());
+            evidence.setRegistrationDate(registrationDate);
+            java.util.Date modificationDate = new java.util.Date(results.getDate("modificationDate").getTime());
+            evidence.setModificationDate(modificationDate);
+            evidence.setActive(results.getInt("active"));
         }
         return evidence;
     }
@@ -70,9 +78,31 @@ public class EvidenceDAO implements IEvidenceDAO {
             evidence.setIdEvidence(results.getInt("idEvidence"));
             evidence.setDescription(results.getString("description"));
             evidence.setEvidenceType(results.getString("typeOfEvidence"));
+            java.util.Date registrationDate = new java.util.Date(results.getDate("registrationDate").getTime());
+            evidence.setRegistrationDate(registrationDate);
+            java.sql.Date sqlModificationDate = results.getDate("modificationDate");
+            if (sqlModificationDate != null) {
+                java.util.Date modificationDate = new java.util.Date();
+                evidence.setModificationDate(modificationDate);
+            }
             evidence.setActive(results.getInt("active"));
             allEvidences.add(evidence);
         }
         return allEvidences;
+    }
+
+    public int modifyEvidence(Evidence evidence, int idEvidence) throws SQLException {
+        ConnectDB databaseConnection = new ConnectDB();
+        Connection connection = databaseConnection.getConnection();
+        String query = "UPDATE evidence SET evidenceName = ?, description = ?, typeOfEvidence = ?, modificationDate = ? WHERE idEvidence = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, evidence.getEvidenceTitle());
+        statement.setString(2, evidence.getDescription());
+        statement.setString(3, evidence.getEvidenceType());
+        java.sql.Date sqlModificationDate = new java.sql.Date(evidence.getModificationDate().getTime());
+        statement.setDate(4, sqlModificationDate);
+        statement.setInt(5, idEvidence);
+        int successfulUpdate = statement.executeUpdate();
+        return successfulUpdate;
     }
 }

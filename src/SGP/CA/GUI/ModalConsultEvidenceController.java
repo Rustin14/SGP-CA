@@ -8,8 +8,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 public class ModalConsultEvidenceController implements Initializable {
@@ -29,6 +32,16 @@ public class ModalConsultEvidenceController implements Initializable {
     AlertBuilder alertBuilder = new AlertBuilder();
     EvidenceDAO evidenceDAO = new EvidenceDAO();
 
+    private static ModalConsultEvidenceController instance;
+
+    public static ModalConsultEvidenceController getInstance() {
+        return instance;
+    }
+
+    public ModalConsultEvidenceController () {
+        instance = this;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setEvidenceData();
@@ -37,7 +50,10 @@ public class ModalConsultEvidenceController implements Initializable {
     public void setEvidenceData() {
         typeOfEvidenceLabel.setText(evidence.getEvidenceType());
         evidenceTitle.setText(evidence.getEvidenceTitle());
-        //dateLabel.setText(evidence.getRegistrationDate().toString());
+        String patternDate = "dd/MM/yyyy";
+        DateFormat dateFormat = new SimpleDateFormat(patternDate);
+        String registrationDate = dateFormat.format(evidence.getRegistrationDate());
+        dateLabel.setText(registrationDate);
         descriptionLabel.setText(evidence.getDescription());
     }
 
@@ -55,6 +71,17 @@ public class ModalConsultEvidenceController implements Initializable {
             Stage stage = (Stage) deleteButton.getScene().getWindow();
             stage.close();
             ConsultEvidenceController.getInstance().populateTable();
+        }
+    }
+
+    public void modifyEvidence() {
+        SceneSwitcher sceneSwitcher = new SceneSwitcher();
+        try {
+            sceneSwitcher.createDialog((Stage) deleteButton.getScene().getWindow(), "FXML/ModifyEvidenceFXML.fxml");
+        } catch (IOException ioException) {
+            AlertBuilder alertBuilder = new AlertBuilder();
+            alertBuilder.exceptionAlert("No es posible acceder a esta ventana. Intente más tarde.");
+            ioException.printStackTrace();
         }
     }
 

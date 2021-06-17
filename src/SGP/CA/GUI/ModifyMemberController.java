@@ -9,13 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,13 +44,17 @@ public class ModifyMemberController implements Initializable {
     ComboBox lgacCombo;
 
     Member member = Member.selectedMember;
+    Member modifiedMember;
     LGACDAO lgacdao = new LGACDAO();
     AlertBuilder alertBuilder = new AlertBuilder();
+    TextValidations textValidations = new TextValidations();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setMemberData();
         fillLGACCombo();
+        setMaxDate();
+        setTextLimit();
     }
 
     public boolean checkEmptyTextFields() {
@@ -63,6 +65,14 @@ public class ModifyMemberController implements Initializable {
             if (field.getText().isEmpty()) {
                 return false;
             }
+        }
+
+        if(datePicker.getValue() == null) {
+            return false;
+        }
+
+        if (lgacCombo.getSelectionModel().getSelectedItem() == null) {
+            return false;
         }
         return true;
     }
@@ -85,50 +95,66 @@ public class ModifyMemberController implements Initializable {
         phoneTextField.setText(member.getPhoneNumber());
     }
 
-    public Member createMember() {
-        Member member = new Member();
+    public boolean createMember() {
+        modifiedMember = new Member();
         if (checkEmptyTextFields()) {
-            if (validateCURP()) {
-                    LGAC lgac = new LGAC();
-                    member.setName(nameTextField.getText());
-                    member.setFirstLastName(firstLastNameTextField.getText());
-                    member.setSecondLastName(secondLastNameTextField.getText());
-                    member.setCURP(curpTextField.getText());
-                    java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(datePicker.getValue());
-                    member.setDateOfBirth(gettedDatePickerDate);
-                    member.setPhoneNumber(phoneTextField.getText());
-                    member.setMaximumStudyLevel(maximumGradeTextField.getText());
-                    member.setMaximumStudyLevelInstitution(institutionTextField.getText());
-                    try {
-                        LGACDAO lgacdao = new LGACDAO();
-                        lgac = lgacdao.searchLGACbyLineName((String) lgacCombo.getSelectionModel().getSelectedItem());
-                    } catch (SQLException sqlException) {
-                        AlertBuilder alertBuilder = new AlertBuilder();
-                        alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                        sqlException.printStackTrace();
-                    }
-                    member.setIdLGAC(lgac.getIdLGAC());
-                    member.setEmail(emailTextField.getText());
+            if (textValidations.validatePhoneNumber(phoneTextField.getText())) {
+                LGAC lgac = new LGAC();
+                modifiedMember.setName(nameTextField.getText());
+                modifiedMember.setFirstLastName(firstLastNameTextField.getText());
+                modifiedMember.setSecondLastName(secondLastNameTextField.getText());
+                modifiedMember.setCURP(curpTextField.getText());
+                java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(datePicker.getValue());
+                modifiedMember.setDateOfBirth(gettedDatePickerDate);
+                modifiedMember.setPhoneNumber(phoneTextField.getText());
+                modifiedMember.setMaximumStudyLevel(maximumGradeTextField.getText());
+                modifiedMember.setMaximumStudyLevelInstitution(institutionTextField.getText());
+                try {
+                    LGACDAO lgacdao = new LGACDAO();
+                    lgac = lgacdao.searchLGACbyLineName((String) lgacCombo.getSelectionModel().getSelectedItem());
+                } catch (SQLException sqlException) {
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
+                    sqlException.printStackTrace();
+                }
+                modifiedMember.setIdLGAC(lgac.getIdLGAC());
+                modifiedMember.setEmail(emailTextField.getText());
             } else {
                 AlertBuilder alertBuilder = new AlertBuilder();
-                alertBuilder.errorAlert("Introduzca un CURP válido.");
-                return null;
+                alertBuilder.errorAlert("El número de teléfono introducido no es válido. Introduzca un número de 10 dígitos.");
+                return false;
             }
         } else {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.errorAlert("No deje campos vacíos.");
-            return null;
-        }
-        return member;
-    }
-
-    public boolean validateCURP() {
-        TextValidations textValidations = new TextValidations();
-        if (textValidations.validateCURPFormat(curpTextField.getText())) {
-            return true;
-        } else {
             return false;
         }
+        return true;
+    }
+
+    public void setTextLimit() {
+        final int MAX_CHARS = 252;
+        final int MAX_PHONE_CHARS = 10;
+        List<TextField> textFields = Arrays.asList(nameTextField, firstLastNameTextField,
+                secondLastNameTextField, maximumGradeTextField, institutionTextField,
+                emailTextField);
+        for (TextField field : textFields) {
+            field.setTextFormatter(new TextFormatter<String>(change ->
+                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
+        }
+
+        phoneTextField.setTextFormatter(new TextFormatter<String>(change ->
+                change.getControlNewText().length() <= MAX_PHONE_CHARS ? change : null));
+    }
+
+    public void setMaxDate() {
+        LocalDate maxDate = LocalDate.now();
+        datePicker.setDayCellFactory(d ->
+                new DateCell() {
+                    @Override public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setDisable(item.isAfter(maxDate));
+                    }});
     }
 
     public void fillLGACCombo() {
@@ -153,34 +179,28 @@ public class ModifyMemberController implements Initializable {
     }
 
     public void modifyMember() {
-        Member savedMember = createMember();
-        MemberDAO memberDAO = new MemberDAO();
-        AlertBuilder alertBuilder = new AlertBuilder();
-        int idMember = 0;
-
-        try {
-            idMember = memberDAO.searchMemberByName(savedMember.getName()).getIdMember();
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-
-        if (savedMember != null) {
+        if (createMember()) {
+            MemberDAO memberDAO = new MemberDAO();
+            AlertBuilder alertBuilder = new AlertBuilder();
+            int successfulUpdate = 0;
             try {
-                memberDAO.modifyMember(savedMember, idMember);
+                successfulUpdate = memberDAO.modifyMember(modifiedMember, member.getIdMember());
             } catch (SQLException sqlException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
                 sqlException.printStackTrace();
             }
-
-            alertBuilder.successAlert("¡Registro realizado!");
-            Stage stage = (Stage) lgacCombo.getScene().getWindow();
-            stage.close();
-            Button closeWindow = ModalMemberDataController.getInstance().getButton();
-            Stage mainStage = (Stage) closeWindow.getScene().getWindow();
-            mainStage.close();
-            ConsultMemberController.getInstance().populateTable();
+            if (successfulUpdate == 1) {
+                alertBuilder.successAlert("¡Registro realizado!");
+                Stage stage = (Stage) lgacCombo.getScene().getWindow();
+                stage.close();
+                Button closeWindow = ModalMemberDataController.getInstance().getButton();
+                Stage mainStage = (Stage) closeWindow.getScene().getWindow();
+                mainStage.close();
+                ConsultMemberController.getInstance().populateTable();
+            }
         }
     }
+
 
 
 

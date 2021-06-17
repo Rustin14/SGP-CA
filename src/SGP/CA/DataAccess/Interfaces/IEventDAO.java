@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public interface IEventDAO {
 
-    public int saveEvent(Event event) throws SQLException, ClassNotFoundException;
-    public Event searchEventByEventID (int idEvent) throws SQLException, ClassNotFoundException;
-    public ArrayList<Event> getAllEvent () throws SQLException, ClassNotFoundException;
+    public int saveEvent(Event event) throws SQLException;
+    public Event searchEventByEventID (int idEvent) throws SQLException;
+    public ArrayList<Event> getAllEvent () throws SQLException;
 }

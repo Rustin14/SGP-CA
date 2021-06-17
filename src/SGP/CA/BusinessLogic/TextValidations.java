@@ -6,16 +6,10 @@ import javafx.scene.control.TextField;
 
 public class TextValidations {
 
-    public static void addTextLimiter(final TextField textField, final int maxLength) {
-        textField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> observableValue, final String oldValue, final String newValue) {
-                if (textField.getText().length() > maxLength) {
-                    String substring = textField.getText().substring(0, maxLength);
-                    textField.setText(substring);
-                }
-            }
-        });
+    public boolean validatePhoneNumber(String phoneNumber) {
+        String regexPhoneNumber = "^\\d{10}$";
+        boolean validatedPhone = phoneNumber.matches(regexPhoneNumber);
+        return  validatedPhone;
     }
 
     public boolean validateCURPFormat(String CURP) {

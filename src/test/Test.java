@@ -7,8 +7,8 @@ import java.util.Date;
 public class Test {
     public static void main(String[] args) {
         Date dateBluePrint = new Date(2021, 10, 28);
-        BluePrint testBluePrint = new BluePrint("Titulo de prueba", dateBluePrint, "No", "Completado", "Co-director", 20, "Presencial", "Estudiante1", "Descripcion");
-        System.out.println(testBluePrint);
+        //BluePrint testBluePrint = new BluePrint("Titulo de prueba", dateBluePrint, "No", "Completado", "Co-director", 20, "Presencial", "Estudiante1", "Descripcion");
+        //System.out.println(testBluePrint);
 
         Date startDateWorkPlan = new Date(2021, 11, 17);
         Date endDateWorkPlan = new Date(2021, 9, 19);
@@ -17,8 +17,8 @@ public class Test {
 
         Date endDateInvestigation = new Date(2021, 8, 17);
         Date starDateInvestigation = new Date(2021, 7, 1);
-        InvestigationProject investigationProjectTest = new InvestigationProject("Titulo del proyecto", endDateInvestigation, starDateInvestigation, "Si", "Participantes");
-        System.out.println(investigationProjectTest);
+        //InvestigationProject investigationProjectTest = new InvestigationProject("Titulo del proyecto", endDateInvestigation, starDateInvestigation, "Si", "Participantes");
+        //System.out.println(investigationProjectTest);
 
         Objective objectiveTest = new Objective("Titulo de objetivo", "Descripcion de objetivo", "Estrategia1");
         System.out.println(objectiveTest);

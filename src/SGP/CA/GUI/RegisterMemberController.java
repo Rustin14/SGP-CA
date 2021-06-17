@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,10 +57,14 @@ public class RegisterMemberController implements Initializable {
     @FXML
     ComboBox academicPositionCombo;
 
+    Member member;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         fillLGACCombo();
+        setTextLimit();
+        setMaxDate();
     }
 
     public boolean checkEmptyTextFields() {
@@ -70,15 +76,39 @@ public class RegisterMemberController implements Initializable {
                 return false;
             }
         }
+        if (birthDateTF.getValue() == null) {
+            return false;
+        }
         return true;
     }
 
-    public void changeToColaborator() {
-        academicPositionCombo.valueProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue ov, String t, String t1) {
+    public void setTextLimit() {
+        final int MAX_CHARS = 252;
+        final int MAX_CURP_CHARS = 18;
+        final int MAX_PHONE_CHARS = 10;
+        List<TextField> textFields = Arrays.asList(memberNameTF, firstLastNameTF,
+                secondLastNameTF, maximumTF, institutionTF,
+                emailTF, passwordTF, confirmPasswordTF);
+        for (TextField field : textFields) {
+            field.setTextFormatter(new TextFormatter<String>(change ->
+                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
+        }
 
-            }
-        });
+        CURPTF.setTextFormatter(new TextFormatter<String>(change ->
+                change.getControlNewText().length() <= MAX_CURP_CHARS ? change : null));
+
+        phoneNumberTF.setTextFormatter(new TextFormatter<String>(change ->
+                change.getControlNewText().length() <= MAX_PHONE_CHARS ? change : null));
+    }
+
+    public void setMaxDate() {
+        LocalDate maxDate = LocalDate.now();
+        birthDateTF.setDayCellFactory(d ->
+                new DateCell() {
+                    @Override public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setDisable(item.isAfter(maxDate));
+                    }});
     }
 
     public boolean validateCURP() {
@@ -111,70 +141,73 @@ public class RegisterMemberController implements Initializable {
         LGACCombo.getItems().addAll(lineNamesObList);
     }
 
-    public Member createMember() {
-        Member member = new Member();
+    public boolean createMember() {
+        member = new Member();
         if (checkEmptyTextFields()) {
             if (validateCURP()) {
                 TextValidations textValidations = new TextValidations();
                 if (textValidations.confirmPassword(passwordTF.getText(), confirmPasswordTF.getText())) {
-                    LGAC lgac = new LGAC();
-
-                    member.setName(memberNameTF.getText());
-                    member.setFirstLastName(firstLastNameTF.getText());
-                    member.setSecondLastName(secondLastNameTF.getText());
-                    member.setCURP(CURPTF.getText());
-                    java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(birthDateTF.getValue());
-                    member.setDateOfBirth(gettedDatePickerDate);
-                    member.setPhoneNumber(phoneNumberTF.getText());
-                    member.setMaximumStudyLevel(maximumTF.getText());
-                    member.setMaximumStudyLevelInstitution(institutionTF.getText());
-                    try {
-                        LGACDAO lgacdao = new LGACDAO();
-                        lgac = lgacdao.searchLGACbyLineName((String) LGACCombo.getSelectionModel().getSelectedItem());
-                    } catch (SQLException sqlException) {
+                    if (textValidations.validatePhoneNumber(phoneNumberTF.getText())) {
+                        LGAC lgac = new LGAC();
+                        member.setName(memberNameTF.getText());
+                        member.setFirstLastName(firstLastNameTF.getText());
+                        member.setSecondLastName(secondLastNameTF.getText());
+                        member.setCURP(CURPTF.getText());
+                        java.sql.Date gettedDatePickerDate = java.sql.Date.valueOf(birthDateTF.getValue());
+                        member.setDateOfBirth(gettedDatePickerDate);
+                        member.setPhoneNumber(phoneNumberTF.getText());
+                        member.setMaximumStudyLevel(maximumTF.getText());
+                        member.setMaximumStudyLevelInstitution(institutionTF.getText());
+                        try {
+                            LGACDAO lgacdao = new LGACDAO();
+                            lgac = lgacdao.searchLGACbyLineName((String) LGACCombo.getSelectionModel().getSelectedItem());
+                        } catch (SQLException sqlException) {
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
+                        }
+                        member.setIdLGAC(lgac.getIdLGAC());
+                        member.setEmail(emailTF.getText());
+                        member.setPassword(passwordTF.getText());
+                    } else {
                         AlertBuilder alertBuilder = new AlertBuilder();
-                        alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                        sqlException.printStackTrace();
+                        alertBuilder.errorAlert("El número de teléfono introducido no es válido. Introduzca un número de 10 dígitos.");
+                        return false;
                     }
-                    member.setIdLGAC(lgac.getIdLGAC());
-                    member.setEmail(emailTF.getText());
-                    member.setPassword(passwordTF.getText());
                 } else {
                     noCoincidenceLabel.setVisible(true);
-                    return null;
+                    return false;
                 }
             } else {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 alertBuilder.errorAlert("Introduzca un CURP válido.");
-                CURPTF.setStyle("-fx-color: red");
-                CURPLabel.setStyle("-fx-color: red");
-                return null;
+                return false;
             }
         } else {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.errorAlert("No deje campos vacíos.");
-            return null;
+            return false;
         }
-        return member;
+        return true;
     }
 
     public void registerMember() {
-        Member savedMember = createMember();
-        MemberDAO memberDAO = new MemberDAO();
-        AlertBuilder alertBuilder = new AlertBuilder();
-
-        if (savedMember != null) {
-            try {
-                memberDAO.saveMember(savedMember);
-            } catch (SQLException sqlException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                sqlException.printStackTrace();
+        if (createMember()) {
+            MemberDAO memberDAO = new MemberDAO();
+            AlertBuilder alertBuilder = new AlertBuilder();
+            int successfulSave = 0;
+                try {
+                    successfulSave = memberDAO.saveMember(member);
+                } catch (SQLIntegrityConstraintViolationException CURPDuplication) {
+                    alertBuilder.exceptionAlert("Ya hay un registro del CURP introducido en la base de datos.");
+                } catch (SQLException sqlException) {
+                    alertBuilder.exceptionAlert("No hay conexión a la base de datos. Intente más tarde.");
+                }
+            if (successfulSave == 1) {
+                alertBuilder.successAlert("¡Registro realizado!");
+                Stage stage = (Stage) academicPositionCombo.getScene().getWindow();
+                stage.close();
+                ConsultMemberController.getInstance().populateTable();
             }
-
-        alertBuilder.successAlert("¡Registro realizado!");
-        Stage stage = (Stage) academicPositionCombo.getScene().getWindow();
-        stage.close();
-        ConsultMemberController.getInstance().populateTable();
         }
     }
 
