@@ -69,7 +69,6 @@ public class AddObjectiveController extends Application{
     @FXML
     private Button saveButton;
 
-    private ArrayList<String> allStrategyTitles = new ArrayList<>();
     private ArrayList<Strategy> allStrategies = new ArrayList<>();
     private ObservableList<String> allStrategiesTitles = FXCollections.observableArrayList();
 
@@ -89,7 +88,6 @@ public class AddObjectiveController extends Application{
         strategy.setGoal(addGoalTextField.getText());
         strategy.setAction(addActionTextField.getText());
         strategy.setResult(addResultTextField.getText());
-        allStrategyTitles.add(strategy.getStrategy());
         allStrategies.add(strategy);
         allStrategiesTitles.add(strategy.getStrategy());
         strategyComboBox.setItems(allStrategiesTitles);
@@ -107,17 +105,36 @@ public class AddObjectiveController extends Application{
 
     @FXML
     public void deleteButtonEvent(ActionEvent event) {
-        String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
-        int indexSelected = allStrategyTitles.indexOf(strategySelected);
-        allStrategies.remove(indexSelected);
-        allStrategyTitles.remove(indexSelected);
-        allStrategiesTitles.remove(indexSelected);
-        strategyComboBox.setItems(allStrategiesTitles);
-        displayNumberTextField.clear();
-        displayStrategyTextField.clear();
-        displayGoalTextField.clear();
-        displayActionTextField.clear();
-        displayResultTextField.clear();
+        if (strategyComboBox.getSelectionModel().isEmpty()){
+            //TODO
+            System.out.println("No hay estrategias a eliminar");
+        }else{
+            if (allStrategiesTitles.size() == 1){
+                //TODO
+                System.out.println("Debes tener por lo menos una estrategia");
+            }else{
+                int indexSelected = strategyComboBox.getSelectionModel().getSelectedIndex();
+                if (indexSelected == 0){
+                    ObservableList<String> auxiliaryList = FXCollections.observableArrayList();
+                    ArrayList<Strategy> auxiliaryStrategiesList = new ArrayList<>();
+                    for (int i=1; i<allStrategiesTitles.size(); i++){
+                        auxiliaryList.add(allStrategiesTitles.get(i));
+                        auxiliaryStrategiesList.add(allStrategies.get(i));
+                    }
+                    allStrategiesTitles = auxiliaryList;
+                    allStrategies = auxiliaryStrategiesList;
+                }else{
+                    allStrategies.remove(indexSelected);
+                    allStrategiesTitles.remove(indexSelected);
+                }
+                strategyComboBox.setItems(allStrategiesTitles);
+                displayNumberTextField.clear();
+                displayStrategyTextField.clear();
+                displayGoalTextField.clear();
+                displayActionTextField.clear();
+                displayResultTextField.clear();
+            }
+        }
     }
 
     @FXML
@@ -152,9 +169,20 @@ public class AddObjectiveController extends Application{
     @FXML
     public void strategyComboBoxEvent(ActionEvent event) {
         String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
-        int indexSelected = allStrategyTitles.indexOf(strategySelected);
-        Strategy strategy = allStrategies.get(indexSelected);
-
+        int indexSelected = allStrategiesTitles.indexOf(strategySelected);
+        Strategy strategy;
+        if (indexSelected == 0){
+            strategy = allStrategies.get(0);
+        }else{
+            int index = 0;
+            for (int i=0; i<allStrategies.size(); i++){
+                if (allStrategies.get(i).getStrategy().equals(strategySelected)){
+                    index = i;
+                    break;
+                }
+            }
+            strategy = allStrategies.get(index);
+        }
         displayNumberTextField.setText(String.valueOf(strategy.getNumber()));
         displayStrategyTextField.setText(strategy.getStrategy());
         displayGoalTextField.setText(strategy.getGoal());

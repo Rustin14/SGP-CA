@@ -33,15 +33,15 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <Button fx:id="addObjectiveButton" layoutX="214.0" layoutY="293.0" mnemonicParsing="false" text="Agregar objetivo">
+      <Button fx:id="addObjectiveButton" layoutX="214.0" layoutY="293.0" mnemonicParsing="false" onAction="#addObjectiveEvent" text="Agregar objetivo">
          <font>
             <Font size="19.0" />
          </font>
       </Button>
       <ComboBox fx:id="objectivesComboBox" layoutX="226.0" layoutY="374.0" prefHeight="24.0" prefWidth="295.0" promptText="[Selecciona un objetivo]" />
-      <Button fx:id="modifyComboBox" layoutX="521.0" layoutY="368.0" mnemonicParsing="false" text="Modificar">
+      <Button fx:id="modifyComboBox" layoutX="521.0" layoutY="370.0" mnemonicParsing="false" onAction="#modifyObjectiveEvent" prefHeight="33.0" prefWidth="109.0" text="Modificar">
          <font>
-            <Font size="19.0" />
+            <Font size="18.0" />
          </font>
       </Button>
       <Button fx:id="saveButton" layoutX="52.0" layoutY="474.0" mnemonicParsing="false" text="GUARDAR">
@@ -57,12 +57,11 @@
       <TextField fx:id="workPlanKeyTextField" editable="false" layoutX="450.0" layoutY="141.0" prefHeight="24.0" prefWidth="240.0" />
       <TextField fx:id="startDateTextField" editable="false" layoutX="373.0" layoutY="180.0" />
       <TextField fx:id="endDateTextField" editable="false" layoutX="373.0" layoutY="224.0" />
-      <ComboBox fx:id="addObjectivesComboBox" layoutX="228.0" layoutY="432.0" prefHeight="24.0" prefWidth="295.0" promptText="[Selecciona un objetivo para agregar]" />
-      <Button fx:id="addToPlanButton" layoutX="521.0" layoutY="426.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="154.0" text="Añadir al plan">
+      <Button fx:id="addToPlanButton" layoutX="642.0" layoutY="369.0" mnemonicParsing="false" onAction="#addToPlanEvent" prefHeight="36.0" prefWidth="141.0" text="Añadir al plan">
          <font>
-            <Font size="19.0" />
+            <Font size="18.0" />
          </font>
       </Button>
-      <ComboBox fx:id="objectivesAddedComboBox" layoutX="228.0" layoutY="492.0" prefHeight="24.0" prefWidth="295.0" promptText="[Objetivos añadidos al plan]" />
+      <ComboBox fx:id="objectivesAddedComboBox" layoutX="226.0" layoutY="436.0" prefHeight="24.0" prefWidth="295.0" promptText="[Objetivos añadidos al plan]" />
    </children>
 </AnchorPane>

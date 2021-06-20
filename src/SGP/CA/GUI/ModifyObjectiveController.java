@@ -1,6 +1,12 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ObjectiveDAO;
+import SGP.CA.DataAccess.StrategyDAO;
+import SGP.CA.Domain.Objective;
+import SGP.CA.Domain.Strategy;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,10 +17,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ModifyObjectiveController extends Application {
+
+    ModifyWorkPlanController modifyWorkPlanController;
 
     @FXML
     private TextField objectiveTitleTextField;
@@ -61,6 +70,12 @@ public class ModifyObjectiveController extends Application {
     @FXML
     private Button saveButton;
 
+    private ArrayList<Strategy> strategies = new ArrayList<>();
+
+    private Objective objectiveToModify;
+
+    private ObservableList<String> strategyTitles = FXCollections.observableArrayList();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyObjectiveFXML.fxml"));
@@ -78,20 +93,83 @@ public class ModifyObjectiveController extends Application {
         stage.showAndWait();
     }
 
-    public void deleteButtonEvent(){
+    public void getObjective(ModifyWorkPlanController modifyWorkPlanController, String objectiveTitle) throws SQLException, ClassNotFoundException {
+        this.modifyWorkPlanController = modifyWorkPlanController;
+        ObjectiveDAO objectiveDAO = new ObjectiveDAO();
+        Objective objective = objectiveDAO.searchObjectiveByTitle(objectiveTitle);
+        objectiveTitleTextField.setText(objective.getObjectiveTitle());
+        descriptionTextArea.setText(objective.getDescription());
+        objectiveToModify = objective;
+        getAllStrategies();
+    }
 
+    public void deleteButtonEvent(){
+        int indexSelected = strategyComboBox.getSelectionModel().getSelectedIndex();
+        if (strategyTitles.size() == 1){
+            //TODO
+            System.out.println("Debes tener por lo menos una estrategia");
+        }else{
+            if (indexSelected == 0){
+                ObservableList<String> auxiliaryList = FXCollections.observableArrayList();
+                ArrayList<Strategy> auxiliaryStrategiesList = new ArrayList<>();
+                for (int i=1; i<strategyTitles.size(); i++){
+                    auxiliaryList.add(strategyTitles.get(i));
+                    auxiliaryStrategiesList.add(strategies.get(i));
+                }
+                strategyTitles = auxiliaryList;
+                strategies = auxiliaryStrategiesList;
+            }else{
+                strategyTitles.remove(indexSelected);
+                strategies.remove(indexSelected);
+            }
+            strategyComboBox.setItems(strategyTitles);
+            displayNumberTextField.clear();
+            displayStrategyTextField.clear();
+            displayGoalTextField.clear();
+            displayActionTextField.clear();
+            displayResultTextField.clear();
+            strategyComboBox.getSelectionModel().clearSelection();
+        }
     }
 
     public void addButtonEvent(){
-
+        Strategy strategy = new Strategy();
+        strategy.setNumber(Integer.parseInt(addNumberTextField.getText()));
+        strategy.setStrategy(addStrategyTextField.getText());
+        strategy.setGoal(addGoalTextField.getText());
+        strategy.setAction(addActionTextField.getText());
+        strategy.setResult(addResultTextField.getText());
+        strategies.add(strategy);
+        strategyTitles.add(strategy.getStrategy());
+        strategyComboBox.setItems(strategyTitles);
     }
 
     public void saveButtonEvent() throws IOException{
+        //TODO
         showModifiedObjectiveAlert();
     }
 
-    public void strategyComboBoxEvent(){
-
+    public void strategyComboBoxEvent() {
+        String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
+        int indexSelected = strategyTitles.indexOf(strategySelected);
+        Strategy strategy;
+        if (indexSelected == 0){
+            strategy = strategies.get(0);
+        }else{
+            int index = 0;
+            for (int i=0; i< strategies.size(); i++){
+                if (strategies.get(i).getStrategy().equals(strategySelected)){
+                    index = i;
+                    break;
+                }
+            }
+            strategy = strategies.get(index);
+        }
+        displayNumberTextField.setText(String.valueOf(strategy.getNumber()));
+        displayStrategyTextField.setText(strategy.getStrategy());
+        displayGoalTextField.setText(strategy.getGoal());
+        displayActionTextField.setText(strategy.getAction());
+        displayResultTextField.setText(strategy.getResult());
     }
 
     public void showModifiedObjectiveAlert() throws IOException {
@@ -102,6 +180,46 @@ public class ModifyObjectiveController extends Application {
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
     }
+
+    public void modifyButtonEvent() {
+        Strategy strategy = new Strategy();
+        strategy.setNumber(Integer.parseInt(displayNumberTextField.getText()));
+        strategy.setStrategy(displayStrategyTextField.getText());
+        strategy.setGoal(displayGoalTextField.getText());
+        strategy.setAction(displayActionTextField.getText());
+        strategy.setResult(displayResultTextField.getText());
+        if (!strategies.contains(strategy)) {
+            String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
+            int indexSelected = strategyTitles.indexOf(strategySelected);
+            strategies.get(indexSelected).setNumber(strategy.getNumber());
+            strategies.get(indexSelected).setStrategy(strategy.getStrategy());
+            strategies.get(indexSelected).setGoal(strategy.getGoal());
+            strategies.get(indexSelected).setAction(strategy.getAction());
+            strategies.get(indexSelected).setResult(strategy.getResult());
+            strategyTitles.remove(strategySelected);
+            strategyTitles.add(strategy.getStrategy());
+            strategyComboBox.setItems(strategyTitles);
+        }else{
+            System.out.println("No has modificado la estrategia");
+        }
+    }
+
+    public void getAllStrategies() throws SQLException, ClassNotFoundException {
+        ObjectiveDAO objectiveDAO = new ObjectiveDAO();
+        StrategyDAO strategyDAO = new StrategyDAO();
+        ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
+        for (int i=0; i<objectives.size(); i++) {
+            if (objectives.get(i).getObjectiveTitle().equals(objectiveTitleTextField.getText())){
+                strategyTitles.add(objectives.get(i).getStrategy());
+            }
+        }
+        strategyComboBox.setItems(strategyTitles);
+        for (int i=0; i< strategyTitles.size(); i++){
+            Strategy strategy = strategyDAO.searchStrategyByStrategy(strategyTitles.get(i));
+            strategies.add(strategy);
+        }
+    }
+
 
     public static void main(String[] args) {
         launch(args);

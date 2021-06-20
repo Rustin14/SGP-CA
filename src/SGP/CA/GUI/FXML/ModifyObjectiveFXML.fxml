@@ -85,6 +85,11 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Button>
+                  <Button fx:id="modifyButton" layoutX="22.0" layoutY="120.0" mnemonicParsing="false" onAction="#modifyButtonEvent" text="Modificar">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Button>
                </children></AnchorPane>
         </content>
       </ScrollPane>

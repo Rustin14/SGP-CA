@@ -14,9 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.sql.SQLClientInfoException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,13 +52,14 @@ public class ModifyWorkPlanController extends Application{
     private TextField endDateTextField;
 
     @FXML
-    private ComboBox<String> addObjectivesComboBox;
-
-    @FXML
     private Button addToPlanButton;
 
     @FXML
     private ComboBox<String> objectivesAddedComboBox;
+
+    ObservableList<String> objectiveTitles = FXCollections.observableArrayList();
+
+    ModifyWorkPlanController modifyWorkPlanController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -68,6 +70,7 @@ public class ModifyWorkPlanController extends Application{
     }
 
     public void getWorkPlanKey(ConsultWorkPlanController consultWorkPlanController,String workPlanKey) throws SQLException, ClassNotFoundException{
+        modifyWorkPlanController = this;
         workPlanKeyTextField.setText(workPlanKey);
         this.consultWorkPlanController = consultWorkPlanController;
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
@@ -82,12 +85,47 @@ public class ModifyWorkPlanController extends Application{
 
     public void searchObjectives() throws SQLException, ClassNotFoundException {
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
-        ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
         ObservableList<String> objectiveTitles = FXCollections.observableArrayList();
-        for (int i=0; i< objectives.size(); i++){
-            objectiveTitles.add(objectives.get(i).getObjectiveTitle());
+        ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
+        for (int i=0; i< objectives.size(); i++) {
+            if (!objectiveTitles.contains(objectives.get(i).getObjectiveTitle())) {
+                objectiveTitles.add(objectives.get(i).getObjectiveTitle());
+            }
         }
         objectivesComboBox.setItems(objectiveTitles);
+    }
+
+    public void addToPlanEvent(){
+        String objectiveSelected = objectivesComboBox.getSelectionModel().getSelectedItem();
+        if (!objectiveTitles.contains(objectiveSelected)){
+            objectiveTitles.add(objectiveSelected);
+            objectivesAddedComboBox.setItems(objectiveTitles);
+        }
+    }
+
+    public void modifyObjectiveEvent() throws IOException, SQLException, ClassNotFoundException {
+        String objectiveSelected = objectivesComboBox.getSelectionModel().getSelectedItem();
+
+        Stage stage2 = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ModifyObjectiveFXML.fxml").openStream());
+        ModifyObjectiveController modifyObjectiveController = (ModifyObjectiveController) loader.getController();
+        modifyObjectiveController.getObjective(modifyWorkPlanController, objectiveSelected);
+        Scene scene = new Scene(root);
+        stage2.setScene(scene);
+        stage2.alwaysOnTopProperty();
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.showAndWait();
+    }
+
+    public void addObjectiveEvent() throws  IOException, SQLException, ClassNotFoundException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/AddObjectiveFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(addObjectiveButton.getScene().getWindow());
+        stage.showAndWait();
+        searchObjectives();
     }
 
     public static void main(String[] args) {
