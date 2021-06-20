@@ -60,7 +60,7 @@
       <Button fx:id="modifyButton" layoutX="552.0" layoutY="360.0" mnemonicParsing="false" onAction="#modifyMember" text="Modificar" />
       <Button fx:id="cancelButton" layoutX="641.0" layoutY="360.0" mnemonicParsing="false" text="Cancelar" />
       <TextField fx:id="nameTextField" layoutX="47.0" layoutY="104.0" />
-      <TextField fx:id="curpTextField" layoutX="47.0" layoutY="166.0" />
+      <TextField fx:id="curpTextField" editable="false" layoutX="47.0" layoutY="166.0" />
       <TextField fx:id="emailTextField" layoutX="284.0" layoutY="169.0" />
       <TextField fx:id="maximumGradeTextField" layoutX="49.0" layoutY="231.0" />
       <TextField fx:id="institutionTextField" layoutX="286.0" layoutY="231.0" />

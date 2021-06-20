@@ -15,8 +15,7 @@ public class EventDAOTest {
 
     EventDAO eventDAO = new EventDAO();
 
-    @Test
-    public void saveEventTest () throws SQLException, ClassNotFoundException, ParseException {
+    /*public void saveEventTest () throws SQLException, ClassNotFoundException, ParseException {
         Event event = new Event();
         event.setEventName("Test");
         event.setEventPlace("Test");
@@ -26,8 +25,7 @@ public class EventDAOTest {
         event.setResponsableName("Test");
 
         int successfulSave = eventDAO.saveEvent(event);
-        Assert.assertEquals(1, successfulSave, 0);
-    }
+        Assert.assertEquals(1, successfulSave, 0);*/
 
     @Test
     public void searchEventByEventID () throws SQLException, ClassNotFoundException {
