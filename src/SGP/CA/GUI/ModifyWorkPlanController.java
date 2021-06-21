@@ -57,6 +57,8 @@ public class ModifyWorkPlanController extends Application{
     @FXML
     private ComboBox<String> objectivesAddedComboBox;
 
+    private WorkPlan workPlanToModify;
+
     ObservableList<String> objectiveTitles = FXCollections.observableArrayList();
 
     ModifyWorkPlanController modifyWorkPlanController;
@@ -80,6 +82,7 @@ public class ModifyWorkPlanController extends Application{
         startDateTextField.setText(starDate);
         String endDate = setDate.format(workPlan.getEndingDate().getTime());
         endDateTextField.setText(endDate);
+        workPlanToModify = workPlan;
         searchObjectives();
     }
 
@@ -93,6 +96,14 @@ public class ModifyWorkPlanController extends Application{
             }
         }
         objectivesComboBox.setItems(objectiveTitles);
+    }
+
+    public void exitButtonEvent(){
+
+    }
+
+    public void saveButtonEvent(){
+
     }
 
     public void addToPlanEvent(){
@@ -116,6 +127,7 @@ public class ModifyWorkPlanController extends Application{
         stage2.alwaysOnTopProperty();
         stage2.initModality(Modality.APPLICATION_MODAL);
         stage2.showAndWait();
+        searchObjectives();
     }
 
     public void addObjectiveEvent() throws  IOException, SQLException, ClassNotFoundException{

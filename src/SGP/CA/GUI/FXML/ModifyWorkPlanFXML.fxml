@@ -44,19 +44,19 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="saveButton" layoutX="52.0" layoutY="474.0" mnemonicParsing="false" text="GUARDAR">
+      <Button fx:id="saveButton" layoutX="52.0" layoutY="474.0" mnemonicParsing="false" onAction="#saveButtonEvent" text="GUARDAR">
          <font>
             <Font size="19.0" />
          </font>
       </Button>
-      <Button fx:id="exitButton" layoutX="52.0" layoutY="535.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="111.0" text="SALIR">
+      <Button fx:id="exitButton" layoutX="52.0" layoutY="535.0" mnemonicParsing="false" onAction="#exitButtonEvent" prefHeight="36.0" prefWidth="111.0" text="SALIR">
          <font>
             <Font size="19.0" />
          </font>
       </Button>
-      <TextField fx:id="workPlanKeyTextField" editable="false" layoutX="450.0" layoutY="141.0" prefHeight="24.0" prefWidth="240.0" />
-      <TextField fx:id="startDateTextField" editable="false" layoutX="373.0" layoutY="180.0" />
-      <TextField fx:id="endDateTextField" editable="false" layoutX="373.0" layoutY="224.0" />
+      <TextField fx:id="workPlanKeyTextField" layoutX="450.0" layoutY="141.0" prefHeight="24.0" prefWidth="240.0" />
+      <TextField fx:id="startDateTextField" layoutX="373.0" layoutY="180.0" />
+      <TextField fx:id="endDateTextField" layoutX="373.0" layoutY="224.0" />
       <Button fx:id="addToPlanButton" layoutX="642.0" layoutY="369.0" mnemonicParsing="false" onAction="#addToPlanEvent" prefHeight="36.0" prefWidth="141.0" text="Añadir al plan">
          <font>
             <Font size="18.0" />

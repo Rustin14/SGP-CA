@@ -1,8 +1,6 @@
 package SGP.CA.GUI;
 
-import SGP.CA.DataAccess.ObjectiveDAO;
 import SGP.CA.DataAccess.WorkPlanDAO;
-import SGP.CA.Domain.Objective;
 import SGP.CA.Domain.WorkPlan;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -99,11 +97,11 @@ public class ConsultWorkPlanController extends Application{
             objectivesComboBox.getItems().clear();
             objectiveSelectedButton.setText("");
             int selectedIndex = workPlanComboBox.getSelectionModel().getSelectedIndex();
-            ObjectiveDAO objectiveDAO = new ObjectiveDAO();
-            ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
-            for(int i=0; i<objectives.size(); i++){
-                if (objectives.get(i).getObjectiveTitle().equals(workPlans.get(selectedIndex).getObjective())){
-                    objectiveTitles.add(objectives.get(i).getObjectiveTitle());
+            WorkPlanDAO workPlanDAO = new WorkPlanDAO();
+            ArrayList<WorkPlan> workPlans = workPlanDAO.getAllWorkPlans();
+            for(int i=0; i<workPlans.size(); i++){
+                if (workPlans.get(i).getWorkPlanKey().equals(this.workPlans.get(selectedIndex).getWorkPlanKey())){
+                    objectiveTitles.add(workPlans.get(i).getObjective());
                 }
             }
             objectivesComboBox.setItems(objectiveTitles);
@@ -116,31 +114,42 @@ public class ConsultWorkPlanController extends Application{
     }
 
     public void objectiveSelectedEvent() throws IOException, SQLException, ClassNotFoundException{
-        Stage stage2 = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml").openStream());
-        ConsultObjectiveController consultObjectiveController = (ConsultObjectiveController) loader.getController();
-        consultObjectiveController.getObjectiveTitle(consultWorkPlanController, objectiveSelectedButton.getText());
-        Scene scene = new Scene(root);
-        stage2.setScene(scene);
-        stage2.alwaysOnTopProperty();
-        stage2.initModality(Modality.APPLICATION_MODAL);
-        stage2.showAndWait();
+        if (objectiveSelectedButton.getText() == ""){
+            //TODO
+            System.out.println("No has seleccionado ningun objetivo para consulta");
+        }else{
+            Stage stage2 = new Stage();
+            FXMLLoader loader = new FXMLLoader();
+            AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml").openStream());
+            ConsultObjectiveController consultObjectiveController = (ConsultObjectiveController) loader.getController();
+            consultObjectiveController.getObjectiveTitle(consultWorkPlanController, objectiveSelectedButton.getText());
+            Scene scene = new Scene(root);
+            stage2.setScene(scene);
+            stage2.alwaysOnTopProperty();
+            stage2.initModality(Modality.APPLICATION_MODAL);
+            stage2.showAndWait();
+        }
     }
 
     public void modifyButtonEvent() throws IOException, SQLException, ClassNotFoundException{
+        String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = workPlanComboBox.getSelectionModel().getSelectedIndex();
-        WorkPlan workPlan = workPlans.get(indexSelected);
-        Stage stage2 = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml").openStream());
-        ModifyWorkPlanController modifyWorkPlanController = (ModifyWorkPlanController) loader.getController();
-        modifyWorkPlanController.getWorkPlanKey(consultWorkPlanController, workPlan.getWorkPlanKey());
-        Scene scene = new Scene(root);
-        stage2.setScene(scene);
-        stage2.alwaysOnTopProperty();
-        stage2.initModality(Modality.APPLICATION_MODAL);
-        stage2.showAndWait();
+        if (indexSelected == -1 || selectedOption.equals("+Añadir plan de trabajo")){
+            //TODO
+            System.out.println("No has seleccionado un plan de trabajo para modificar");
+        }else{
+            WorkPlan workPlan = workPlans.get(indexSelected);
+            Stage stage2 = new Stage();
+            FXMLLoader loader = new FXMLLoader();
+            AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml").openStream());
+            ModifyWorkPlanController modifyWorkPlanController = (ModifyWorkPlanController) loader.getController();
+            modifyWorkPlanController.getWorkPlanKey(consultWorkPlanController, workPlan.getWorkPlanKey());
+            Scene scene = new Scene(root);
+            stage2.setScene(scene);
+            stage2.alwaysOnTopProperty();
+            stage2.initModality(Modality.APPLICATION_MODAL);
+            stage2.showAndWait();
+        }
     }
 
     public static void main(String[] args) {
