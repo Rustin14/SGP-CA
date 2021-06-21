@@ -105,13 +105,22 @@ public class AddBluePrintController extends Application{
                 Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
                 stagePrincipal.close();
             }else{
-                System.out.println("No ha sido posible guardar");
+                showFailedRegisterAlert();
             }
         }
 
     public void showConfirmationAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/SaveBluePrintConfirmationAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showFailedRegisterAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());

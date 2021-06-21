@@ -104,14 +104,12 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void deleteButtonEvent(ActionEvent event) {
+    public void deleteButtonEvent() throws IOException{
         if (strategyComboBox.getSelectionModel().isEmpty()){
-            //TODO
-            System.out.println("No hay estrategias a eliminar");
+            showNoStrategiesAlert();
         }else{
             if (allStrategiesTitles.size() == 1){
-                //TODO
-                System.out.println("Debes tener por lo menos una estrategia");
+                showNoStrategiesAlert();
             }else{
                 int indexSelected = strategyComboBox.getSelectionModel().getSelectedIndex();
                 if (indexSelected == 0){
@@ -220,6 +218,15 @@ public class AddObjectiveController extends Application{
     public void showFailedRegisterAlert() throws IOException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showNoStrategiesAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/NoStrategiesAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
