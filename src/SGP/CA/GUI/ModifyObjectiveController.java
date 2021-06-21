@@ -144,8 +144,33 @@ public class ModifyObjectiveController extends Application {
         strategyComboBox.setItems(strategyTitles);
     }
 
-    public void saveButtonEvent() throws IOException{
+    public void saveButtonEvent() throws IOException, SQLException, ClassNotFoundException{
         //TODO
+        ObjectiveDAO objectiveDAO = new ObjectiveDAO();
+        StrategyDAO strategyDAO = new StrategyDAO();
+        Objective objective = new Objective();
+        objective.setObjectiveTitle(objectiveTitleTextField.getText());
+        objective.setDescription(descriptionTextArea.getText());
+        int result1 = 0;
+        int result2 = 0;
+        int result3 = objectiveDAO.deleteObjective(objectiveToModify.getObjectiveTitle());
+        if (result3 >= 1){
+            for (int i=0; i< strategies.size(); i++){
+                objective.setStrategy(strategies.get(i).getStrategy());
+                result1 += objectiveDAO.saveObjective(objective);
+                result2 += strategyDAO.saveStrategy(strategies.get(i));
+            }
+            if (result1 == strategies.size() && result2 == strategies.size()){
+                //TODO
+                System.out.println("Exito!");
+            }else{
+                //TODO
+                System.out.println("Algo salio mal");
+            }
+        }else{
+            //TODO
+            System.out.println("Algo salio mal");
+        }
         showModifiedObjectiveAlert();
     }
 
