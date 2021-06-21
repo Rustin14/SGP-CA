@@ -98,12 +98,12 @@ public class ModifyWorkPlanController extends Application{
         objectivesComboBox.setItems(objectiveTitles);
     }
 
-    public void exitButtonEvent(){
-
+    public void exitButtonEvent() throws IOException {
+        showExitModifyWorkPlanAlert();
     }
 
-    public void saveButtonEvent(){
-
+    public void saveButtonEvent() throws IOException{
+        showSuccessfulUpdateAlert();
     }
 
     public void addToPlanEvent(){
@@ -138,6 +138,24 @@ public class ModifyWorkPlanController extends Application{
         stage.initOwner(addObjectiveButton.getScene().getWindow());
         stage.showAndWait();
         searchObjectives();
+    }
+
+    public void showSuccessfulUpdateAlert() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationModifyWorkPlanAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showExitModifyWorkPlanAlert() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyWorkPlanAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     public static void main(String[] args) {

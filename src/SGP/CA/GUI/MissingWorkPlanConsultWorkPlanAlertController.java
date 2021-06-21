@@ -8,28 +8,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ExitModifyWorkPlanAlertController extends Application{
+public class MissingWorkPlanConsultWorkPlanAlertController extends Application{
 
     @FXML
     private Button okButton;
 
-    @FXML
-    private Button cancelButton;
-
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyWorkPlanAlertFXML.fxml"));
-        primaryStage.setTitle("Salir");
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/MissingWorkPlanConsultWorkPlanAlertFXML.fxml"));
+        primaryStage.setTitle("Falta objetivo");
         primaryStage.setScene(new Scene(root, 500, 200));
         primaryStage.show();
     }
 
-    public void okButtonEvent (){
+    public void okButtonEvent() {
         Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
-    }
-
-    public void cancelButtonEvent(){
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 

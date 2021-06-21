@@ -115,8 +115,7 @@ public class ConsultWorkPlanController extends Application{
 
     public void objectiveSelectedEvent() throws IOException, SQLException, ClassNotFoundException{
         if (objectiveSelectedButton.getText() == ""){
-            //TODO
-            System.out.println("No has seleccionado ningun objetivo para consulta");
+            showMissingObjectiveAlert();
         }else{
             Stage stage2 = new Stage();
             FXMLLoader loader = new FXMLLoader();
@@ -135,8 +134,7 @@ public class ConsultWorkPlanController extends Application{
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = workPlanComboBox.getSelectionModel().getSelectedIndex();
         if (indexSelected == -1 || selectedOption.equals("+Añadir plan de trabajo")){
-            //TODO
-            System.out.println("No has seleccionado un plan de trabajo para modificar");
+            showMissingWorkPlanAlert();
         }else{
             WorkPlan workPlan = workPlans.get(indexSelected);
             Stage stage2 = new Stage();
@@ -150,6 +148,24 @@ public class ConsultWorkPlanController extends Application{
             stage2.initModality(Modality.APPLICATION_MODAL);
             stage2.showAndWait();
         }
+    }
+
+    public void showMissingObjectiveAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/MissingObjectiveConsultWorkPlanAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(objectiveSelectedButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showMissingWorkPlanAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/MissingWorkPlanConsultWorkPlanAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(objectiveSelectedButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     public static void main(String[] args) {
