@@ -88,9 +88,11 @@ public class AddObjectiveController extends Application{
         strategy.setGoal(addGoalTextField.getText());
         strategy.setAction(addActionTextField.getText());
         strategy.setResult(addResultTextField.getText());
-        allStrategies.add(strategy);
-        allStrategiesTitles.add(strategy.getStrategy());
-        strategyComboBox.setItems(allStrategiesTitles);
+        if (!allStrategies.contains(strategy)){
+            allStrategies.add(strategy);
+            allStrategiesTitles.add(strategy.getStrategy());
+            strategyComboBox.setItems(allStrategiesTitles);
+        }
     }
 
     @FXML
@@ -126,6 +128,7 @@ public class AddObjectiveController extends Application{
                     allStrategiesTitles.remove(indexSelected);
                 }
                 strategyComboBox.setItems(allStrategiesTitles);
+                strategyComboBox.getSelectionModel().clearSelection();
                 displayNumberTextField.clear();
                 displayStrategyTextField.clear();
                 displayGoalTextField.clear();

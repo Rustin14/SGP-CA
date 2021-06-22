@@ -132,16 +132,17 @@ public class ModifyObjectiveController extends Application {
     }
 
     public void addButtonEvent(){
-        //TODO
         Strategy strategy = new Strategy();
         strategy.setNumber(Integer.parseInt(addNumberTextField.getText()));
         strategy.setStrategy(addStrategyTextField.getText());
         strategy.setGoal(addGoalTextField.getText());
         strategy.setAction(addActionTextField.getText());
         strategy.setResult(addResultTextField.getText());
-        strategies.add(strategy);
-        strategyTitles.add(strategy.getStrategy());
-        strategyComboBox.setItems(strategyTitles);
+        if (!strategies.contains(strategy)){
+            strategies.add(strategy);
+            strategyTitles.add(strategy.getStrategy());
+            strategyComboBox.setItems(strategyTitles);
+        }
     }
 
     public void saveButtonEvent() throws IOException, SQLException{
