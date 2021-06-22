@@ -1,7 +1,6 @@
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IWorkPlanDAO;
-
 import java.util.ArrayList;
 import java.util.Date;
 import SGP.CA.Domain.WorkPlan;
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 public class WorkPlanDAO implements IWorkPlanDAO {
 
     @Override
-    public int saveWorkPlan(WorkPlan workPlan) throws SQLException, ClassNotFoundException{
+    public int saveWorkPlan(WorkPlan workPlan) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO workplan (endingDate, objective, startDate, workPlanKey) VALUES (?,?,?,?)";
@@ -30,7 +29,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public WorkPlan searchWorkPlanByWorkPlanKey (String workPlanKey) throws SQLException, ClassNotFoundException{
+    public WorkPlan searchWorkPlanByWorkPlanKey (String workPlanKey) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM workplan WHERE workPlanKey = ?";
@@ -52,7 +51,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public int modifyWorkPlan(WorkPlan newWorkPlan, String oldWorkPlanKey) throws SQLException, ClassNotFoundException{
+    public int modifyWorkPlan(WorkPlan newWorkPlan, String oldWorkPlanKey) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE workplan set endingDate = ?, objective = ?, startDate = ?, workPlanKey = ? where workPlanKey = ?";
@@ -70,7 +69,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public int deleteWorkPlan(String workPlanKey) throws SQLException, ClassNotFoundException{
+    public int deleteWorkPlan(String workPlanKey) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM workplan WHERE workPlanKey = ?";
@@ -82,7 +81,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public ArrayList<WorkPlan> getAllWorkPlans () throws SQLException, ClassNotFoundException{
+    public ArrayList<WorkPlan> getAllWorkPlans () throws SQLException{
         WorkPlan workPlan = null;
         ArrayList<WorkPlan> allWorkPlans = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();

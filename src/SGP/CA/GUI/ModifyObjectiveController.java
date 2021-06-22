@@ -144,7 +144,6 @@ public class ModifyObjectiveController extends Application {
     }
 
     public void saveButtonEvent() throws IOException, SQLException, ClassNotFoundException{
-        //Corregir runtime Exception
         if (objectiveTitleTextField.getText() == "" || descriptionTextArea.getText() == ""){
             showMissingInformationAlert();
         }else{
@@ -153,16 +152,19 @@ public class ModifyObjectiveController extends Application {
             Objective objective = new Objective();
             objective.setObjectiveTitle(objectiveTitleTextField.getText());
             objective.setDescription(descriptionTextArea.getText());
-            int result1 = 0;
-            int result2 = 0;
-            int result3 = objectiveDAO.deleteObjective(objectiveToModify.getObjectiveTitle());
-            if (result3 >= 1){
+            int resultObjectiveDAO = 0;
+            int resultStrategyDAO = 0;
+            for (int i=0; i< strategies.size(); i++){
+                strategyDAO.deleteStrategy(strategies.get(i).getStrategy());
+            }
+            int resultDeleteObjectiveDAO = objectiveDAO.deleteObjective(objectiveToModify.getObjectiveTitle());
+            if (resultDeleteObjectiveDAO >= 1){
                 for (int i=0; i< strategies.size(); i++){
                     objective.setStrategy(strategies.get(i).getStrategy());
-                    result1 += objectiveDAO.saveObjective(objective);
-                    result2 += strategyDAO.saveStrategy(strategies.get(i));
+                    resultObjectiveDAO += objectiveDAO.saveObjective(objective);
+                    resultStrategyDAO += strategyDAO.saveStrategy(strategies.get(i));
                 }
-                if (result1 == strategies.size() && result2 == strategies.size()){
+                if (resultObjectiveDAO == strategies.size() && resultStrategyDAO == strategies.size()){
                     showSuccessfulUpdateAlert();
                 }else{
                     showFailedRegisterAlert();
@@ -170,7 +172,6 @@ public class ModifyObjectiveController extends Application {
             }else{
                 showFailedRegisterAlert();
             }
-            showModifiedObjectiveAlert();
         }
     }
 
@@ -181,14 +182,15 @@ public class ModifyObjectiveController extends Application {
         if (indexSelected == 0){
             strategy = strategies.get(0);
         }else{
-            int index = 0;
+            /*int index = 0;
             for (int i=0; i< strategies.size(); i++){
                 if (strategies.get(i).getStrategy().equals(strategySelected)){
                     index = i;
                     break;
                 }
             }
-            strategy = strategies.get(index);
+            strategy = strategies.get(index);*/
+            strategy = strategies.get(indexSelected);
         }
         displayNumberTextField.setText(String.valueOf(strategy.getNumber()));
         displayStrategyTextField.setText(strategy.getStrategy());
@@ -221,10 +223,10 @@ public class ModifyObjectiveController extends Application {
             strategies.get(indexSelected).setGoal(strategy.getGoal());
             strategies.get(indexSelected).setAction(strategy.getAction());
             strategies.get(indexSelected).setResult(strategy.getResult());
-            strategyTitles.remove(strategySelected);
-            strategyTitles.add(strategy.getStrategy());
+            strategyTitles.set(indexSelected, strategy.getStrategy());
             strategyComboBox.setItems(strategyTitles);
         }else{
+            //TODO
             System.out.println("No has modificado la estrategia");
         }
     }
@@ -280,7 +282,6 @@ public class ModifyObjectiveController extends Application {
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
     }
-
 
     public static void main(String[] args) {
         launch(args);

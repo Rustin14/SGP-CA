@@ -1,6 +1,7 @@
 package SGP.CA.GUI;
 
 import SGP.CA.DataAccess.WorkPlanDAO;
+import SGP.CA.Domain.Member;
 import SGP.CA.Domain.WorkPlan;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -22,9 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ConsultWorkPlanController extends Application{
-
-    @FXML
-    private Button modifyButton;
 
     @FXML
     private ComboBox<String> objectivesComboBox;
@@ -52,17 +50,23 @@ public class ConsultWorkPlanController extends Application{
 
     ConsultWorkPlanController consultWorkPlanController;
 
+    Member member = Member.selectedMember;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml"));
         primaryStage.setTitle("Consultar plan de trabajo");
-        primaryStage.setScene(new Scene(root, 900, 600));
+        primaryStage.setScene(new Scene(root, 1000, 600));
         primaryStage.show();
     }
 
     @FXML
     public void initialize() throws SQLException, ClassNotFoundException {
         consultWorkPlanController = this;
+        searchAllWorkPlans();
+    }
+
+    public void searchAllWorkPlans() throws SQLException, ClassNotFoundException{
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         workPlans = workPlanDAO.getAllWorkPlans();
         ArrayList<WorkPlan>auxWorkPlans = new ArrayList<>();
@@ -84,27 +88,38 @@ public class ConsultWorkPlanController extends Application{
         workPlanComboBox.setItems(workPlanPeriods);
     }
 
-    public void workPlanComboBoxEvent() throws IOException ,SQLException, ClassNotFoundException{
+    public void workPlanComboBoxEvent() throws ClassNotFoundException{
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
-        if (selectedOption.equals("+Añadir plan de trabajo")){
-            Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/AddWorkPlanFXML.fxml"));
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(workPlanComboBox.getScene().getWindow());
-            stage.showAndWait();
-        }else{
-            objectivesComboBox.getItems().clear();
-            objectiveSelectedButton.setText("");
-            int selectedIndex = workPlanComboBox.getSelectionModel().getSelectedIndex();
-            WorkPlanDAO workPlanDAO = new WorkPlanDAO();
-            ArrayList<WorkPlan> workPlans = workPlanDAO.getAllWorkPlans();
-            for(int i=0; i<workPlans.size(); i++){
-                if (workPlans.get(i).getWorkPlanKey().equals(this.workPlans.get(selectedIndex).getWorkPlanKey())){
-                    objectiveTitles.add(workPlans.get(i).getObjective());
+        try {
+            if (selectedOption.equals("+Añadir plan de trabajo")) {
+                Stage stage = new Stage();
+                Parent root = FXMLLoader.load(getClass().getResource("FXML/AddWorkPlanFXML.fxml"));
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(workPlanComboBox.getScene().getWindow());
+                stage.showAndWait();
+            } else {
+                objectivesComboBox.getItems().clear();
+                objectiveSelectedButton.setText("");
+                int selectedIndex = workPlanComboBox.getSelectionModel().getSelectedIndex();
+                WorkPlanDAO workPlanDAO = new WorkPlanDAO();
+                ArrayList<WorkPlan> workPlans = workPlanDAO.getAllWorkPlans();
+                for (int i = 0; i < workPlans.size(); i++) {
+                    if (workPlans.get(i).getWorkPlanKey().equals(this.workPlans.get(selectedIndex).getWorkPlanKey())) {
+                        objectiveTitles.add(workPlans.get(i).getObjective());
+                    }
                 }
+                objectivesComboBox.setItems(objectiveTitles);
             }
-            objectivesComboBox.setItems(objectiveTitles);
+        }catch (IOException ioException){
+            //TODO
+            System.out.println("Excepcion atrapada");
+        }catch(SQLException sqlException){
+            //TODO
+            System.out.println("Excepcion atrapada");
+        }catch (NullPointerException nullPointerException){
+            workPlanComboBox.getSelectionModel().clearSelection();
+            workPlanComboBox.setPromptText("Selecciona un plan");
         }
     }
 
@@ -133,7 +148,7 @@ public class ConsultWorkPlanController extends Application{
     public void modifyButtonEvent() throws IOException, SQLException, ClassNotFoundException{
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = workPlanComboBox.getSelectionModel().getSelectedIndex();
-        if (indexSelected == -1 || selectedOption.equals("+Añadir plan de trabajo")){
+        if (workPlanComboBox.getSelectionModel().getSelectedItem() == null || selectedOption.equals("+Añadir plan de trabajo")){
             showMissingWorkPlanAlert();
         }else{
             WorkPlan workPlan = workPlans.get(indexSelected);
@@ -147,6 +162,8 @@ public class ConsultWorkPlanController extends Application{
             stage2.alwaysOnTopProperty();
             stage2.initModality(Modality.APPLICATION_MODAL);
             stage2.showAndWait();
+            workPlanPeriods.clear();
+            searchAllWorkPlans();
         }
     }
 
