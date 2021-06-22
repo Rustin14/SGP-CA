@@ -2,7 +2,6 @@ package SGP.CA.GUI;
 
 import SGP.CA.DataAccess.ObjectiveDAO;
 import SGP.CA.DataAccess.StrategyDAO;
-import SGP.CA.DataAccess.WorkPlanDAO;
 import SGP.CA.Domain.Objective;
 import SGP.CA.Domain.Strategy;
 import javafx.application.Application;

@@ -2,7 +2,6 @@ package SGP.CA.GUI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,7 +55,7 @@ public class ModifyInvestigationProjectController extends Application{
     @FXML
     private ComboBox<String> projectsTitleComboBox;
 
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyInvestigationProjectFXML.fxml"));
         primaryStage.setTitle("Modificar proyecto");
         primaryStage.setScene(new Scene(root, 900, 600));
@@ -85,7 +84,7 @@ public class ModifyInvestigationProjectController extends Application{
             stagePrincipal.close();
         }else {
             System.out.println("Error");
-            //To do
+            //Todo
         }
     }
 
@@ -101,7 +100,7 @@ public class ModifyInvestigationProjectController extends Application{
         stagePrincipal.close();
     }
 
-    public void projectsTitleComboBoxEvent() throws SQLException, ClassNotFoundException{
+    public void projectsTitleComboBoxEvent() throws SQLException{
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         String title = projectsTitleComboBox.getSelectionModel().getSelectedItem();
         InvestigationProject investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle(title);
@@ -118,7 +117,7 @@ public class ModifyInvestigationProjectController extends Application{
     }
 
     @FXML
-    public void initialize() throws SQLException, ClassNotFoundException{
+    public void initialize() throws SQLException{
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         ArrayList<InvestigationProject> allProjects = investigationProjectDAO.getAllInvestigationProjects();
         ObservableList<String> allProjectsTile = FXCollections.observableArrayList();

@@ -68,14 +68,14 @@ public class ModifyWorkPlanController extends Application{
     private ModifyWorkPlanController modifyWorkPlanController;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml"));
         primaryStage.setTitle("Plan de trabajo");
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
     }
 
-    public void getWorkPlanKey(ConsultWorkPlanController consultWorkPlanController,String workPlanKey) throws SQLException, ClassNotFoundException{
+    public void getWorkPlanKey(ConsultWorkPlanController consultWorkPlanController,String workPlanKey) throws SQLException{
         modifyWorkPlanController = this;
         workPlanKeyTextField.setText(workPlanKey);
         this.consultWorkPlanController = consultWorkPlanController;
@@ -121,7 +121,7 @@ public class ModifyWorkPlanController extends Application{
         showExitModifyWorkPlanAlert();
     }
 
-    public void saveButtonEvent() throws IOException, ParseException, SQLException, ClassNotFoundException {
+    public void saveButtonEvent() throws IOException, ParseException, SQLException{
         WorkPlan workPlan = new WorkPlan();
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         workPlan.setWorkPlanKey(workPlanKeyTextField.getText());
@@ -155,7 +155,7 @@ public class ModifyWorkPlanController extends Application{
         }
     }
 
-    public void modifyObjectiveEvent() throws IOException, SQLException, ClassNotFoundException {
+    public void modifyObjectiveEvent() throws IOException, SQLException{
         String objectiveSelected = objectivesComboBox.getSelectionModel().getSelectedItem();
         Stage stage2 = new Stage();
         FXMLLoader loader = new FXMLLoader();

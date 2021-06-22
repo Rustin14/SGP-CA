@@ -77,7 +77,7 @@ public class ModifyObjectiveController extends Application {
     private ObservableList<String> strategyTitles = FXCollections.observableArrayList();
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyObjectiveFXML.fxml"));
         primaryStage.setTitle("Edicion");
         primaryStage.setScene(new Scene(root, 900, 600));
@@ -93,7 +93,7 @@ public class ModifyObjectiveController extends Application {
         stage.showAndWait();
     }
 
-    public void getObjective(ModifyWorkPlanController modifyWorkPlanController, String objectiveTitle) throws SQLException, ClassNotFoundException {
+    public void getObjective(ModifyWorkPlanController modifyWorkPlanController, String objectiveTitle) throws SQLException{
         this.modifyWorkPlanController = modifyWorkPlanController;
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
         Objective objective = objectiveDAO.searchObjectiveByTitle(objectiveTitle);
@@ -143,7 +143,7 @@ public class ModifyObjectiveController extends Application {
         strategyComboBox.setItems(strategyTitles);
     }
 
-    public void saveButtonEvent() throws IOException, SQLException, ClassNotFoundException{
+    public void saveButtonEvent() throws IOException, SQLException{
         if (objectiveTitleTextField.getText() == "" || descriptionTextArea.getText() == ""){
             showMissingInformationAlert();
         }else{
@@ -199,15 +199,6 @@ public class ModifyObjectiveController extends Application {
         displayResultTextField.setText(strategy.getResult());
     }
 
-    public void showModifiedObjectiveAlert() throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveModifiedAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(saveButton.getScene().getWindow());
-        stage.showAndWait();
-    }
-
     public void modifyButtonEvent() {
         Strategy strategy = new Strategy();
         strategy.setNumber(Integer.parseInt(displayNumberTextField.getText()));
@@ -231,7 +222,7 @@ public class ModifyObjectiveController extends Application {
         }
     }
 
-    public void getAllStrategies() throws SQLException, ClassNotFoundException {
+    public void getAllStrategies() throws SQLException{
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
         StrategyDAO strategyDAO = new StrategyDAO();
         ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();

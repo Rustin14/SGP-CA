@@ -79,7 +79,7 @@ public class InvestigationProjectConsultController extends Application{
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("FXML/InvestigationProjectConsultFXML.fxml"));
         primaryStage.setTitle("Consultar proyecto");
         primaryStage.setScene(new Scene(root, 900, 600));
@@ -159,7 +159,7 @@ public class InvestigationProjectConsultController extends Application{
     }
 
     @FXML
-    public void initialize() throws SQLException, ClassNotFoundException {
+    public void initialize() throws SQLException{
         investigationProjectConsultController = this;
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         investigationProjects = investigationProjectDAO.getAllInvestigationProjects();

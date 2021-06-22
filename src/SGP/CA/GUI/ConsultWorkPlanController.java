@@ -145,7 +145,7 @@ public class ConsultWorkPlanController extends Application{
         }
     }
 
-    public void modifyButtonEvent() throws IOException, SQLException, ClassNotFoundException{
+    public void modifyButtonEvent() throws IOException, SQLException{
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = workPlanComboBox.getSelectionModel().getSelectedIndex();
         if (workPlanComboBox.getSelectionModel().getSelectedItem() == null || selectedOption.equals("+Añadir plan de trabajo")){

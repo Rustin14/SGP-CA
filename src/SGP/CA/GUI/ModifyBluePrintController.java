@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -84,7 +83,7 @@ public class ModifyBluePrintController extends Application {
         primaryStage.show();
     }
 
-    public void bluePrintSelectedEvent() throws SQLException, ClassNotFoundException {
+    public void bluePrintSelectedEvent() throws SQLException{
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
         BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle(titleSelected);
@@ -109,7 +108,7 @@ public class ModifyBluePrintController extends Application {
         System.exit(0);
     }
 
-    public void saveButtonEvent() throws ParseException, SQLException,ClassNotFoundException {
+    public void saveButtonEvent() throws ParseException, SQLException{
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
         BluePrint bluePrint = new BluePrint();
@@ -130,15 +129,15 @@ public class ModifyBluePrintController extends Application {
         int result = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
         if (result == 1){
             System.out.println("Modificacion exitosa");
-            //TO DO
+            //TODO
         }else{
             System.out.println("No se pudo modificar");
-            //TO DO
+            //TODO
         }
     }
 
     @FXML
-    public void initialize() throws SQLException, ClassNotFoundException {
+    public void initialize() throws SQLException{
         bluePrints = bluePrintDAO.getAllBluePrints();
         for (BluePrint blueprint : bluePrints){
             titles.add(blueprint.getBluePrintTitle());

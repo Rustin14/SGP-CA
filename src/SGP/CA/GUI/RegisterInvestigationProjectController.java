@@ -1,6 +1,5 @@
 package SGP.CA.GUI;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,14 +46,14 @@ public class RegisterInvestigationProjectController extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("FXML/RegisterInvestigationProjectFXML.fxml"));
         primaryStage.setTitle("Registrar proyecto");
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
     }
 
-    public void saveButtonEvent (ActionEvent event) throws ParseException, SQLException, ClassNotFoundException, IOException {
+    public void saveButtonEvent () throws ParseException, SQLException, IOException {
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setProjectTitle(projectTitleField.getText());
@@ -74,11 +73,12 @@ public class RegisterInvestigationProjectController extends Application {
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
         }else {
+            //TODO
             System.out.println("No se ha guardado nada");
         }
     }
 
-    public void exitButtonEvent(ActionEvent event) throws IOException{
+    public void exitButtonEvent() throws IOException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
         stage.setScene(new Scene(root));

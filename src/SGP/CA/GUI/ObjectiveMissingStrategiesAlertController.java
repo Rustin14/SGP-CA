@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 public class ObjectiveMissingStrategiesAlertController extends Application{
 
@@ -14,7 +15,7 @@ public class ObjectiveMissingStrategiesAlertController extends Application{
     private Button okButton;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveMissingStrategiesAlertFXML.fxml"));
         primaryStage.setTitle("Falta estrategias");
         primaryStage.setScene(new Scene(root, 500, 200));
