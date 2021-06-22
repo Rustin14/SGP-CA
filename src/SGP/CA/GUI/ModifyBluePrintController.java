@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,6 +16,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import SGP.CA.DataAccess.BluePrintDAO;
 import SGP.CA.Domain.BluePrint;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -102,13 +105,11 @@ public class ModifyBluePrintController extends Application {
         descriptionTextArea.setText(bluePrint.getDescription());
     }
 
-    public void cancelButtonEvent() {
-        System.out.println("TO DO");
-        Platform.exit();
-        System.exit(0);
+    public void cancelButtonEvent() throws IOException {
+        showExitAlert();
     }
 
-    public void saveButtonEvent() throws ParseException, SQLException{
+    public void saveButtonEvent() throws ParseException, SQLException, IOException{
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
         BluePrint bluePrint = new BluePrint();
@@ -126,13 +127,11 @@ public class ModifyBluePrintController extends Application {
         bluePrint.setRequirements(requirementsTextField.getText());
         bluePrint.setStudent(studentTextField.getText());
         bluePrint.setDescription(descriptionTextArea.getText());
-        int result = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
-        if (result == 1){
-            System.out.println("Modificacion exitosa");
-            //TODO
+        int rowsAffectedBluePrintDAO = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
+        if (rowsAffectedBluePrintDAO == 1){
+            showSuccessfulModifyConfirmationAlert();
         }else{
-            System.out.println("No se pudo modificar");
-            //TODO
+            showFailedOperationAlert();
         }
     }
 
@@ -143,6 +142,33 @@ public class ModifyBluePrintController extends Application {
             titles.add(blueprint.getBluePrintTitle());
         }
         bluePrintsComboBox.setItems(titles);
+    }
+
+    public void showFailedOperationAlert() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showSuccessfulModifyConfirmationAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationModifyBluePrintAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showExitAlert() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyBluePrintAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(cancelButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     public static void main(String[] args) {

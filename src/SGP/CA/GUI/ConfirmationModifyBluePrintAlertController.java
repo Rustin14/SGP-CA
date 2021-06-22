@@ -7,17 +7,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
-public class FailedRegisterAlertController extends Application{
+public class ConfirmationModifyBluePrintAlertController extends Application{
 
     @FXML
     private Button okButton;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
-        primaryStage.setTitle("Operacion inconclusa");
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationModifyBluePrintAlertFXML.fxml"));
+        primaryStage.setTitle("Anteproyecto Modificado");
         primaryStage.setScene(new Scene(root, 500, 200));
         primaryStage.show();
     }
@@ -30,4 +31,5 @@ public class FailedRegisterAlertController extends Application{
     public static void main(String[] args) {
         launch(args);
     }
+
 }

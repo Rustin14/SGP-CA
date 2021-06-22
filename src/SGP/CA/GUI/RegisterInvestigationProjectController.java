@@ -67,14 +67,13 @@ public class RegisterInvestigationProjectController extends Application {
         investigationProject.setParticipants(participantsField.getText());
         investigationProject.setProjectManager(projectManagerField.getText());
         investigationProject.setDescription(descriptionField.getText());
-        int action = investigationProjectDAO.saveInvestigationProject(investigationProject);
-        if (action == 1){
+        int rowsAffectedInvestigationProjectDAO = investigationProjectDAO.saveInvestigationProject(investigationProject);
+        if (rowsAffectedInvestigationProjectDAO == 1){
             showConfirmationAlert();
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
         }else {
-            //TODO
-            System.out.println("No se ha guardado nada");
+            showFailedOperationAlert();
         }
     }
 
@@ -85,7 +84,6 @@ public class RegisterInvestigationProjectController extends Application {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
-
         Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
         stagePrincipal.close();
     }
@@ -93,6 +91,15 @@ public class RegisterInvestigationProjectController extends Application {
     public void showConfirmationAlert() throws IOException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showFailedOperationAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());

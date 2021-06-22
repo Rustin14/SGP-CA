@@ -34,7 +34,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="exitButton" layoutX="46.0" layoutY="547.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="101.0" text="Salir">
+      <Button fx:id="exitButton" layoutX="46.0" layoutY="547.0" mnemonicParsing="false" onAction="#exitButtonEvent" prefHeight="39.0" prefWidth="101.0" text="Salir">
          <font>
             <Font size="20.0" />
          </font>

@@ -91,7 +91,6 @@ public class ConsultWorkPlanController extends Application{
             }
         }
         workPlanPeriods = noRepeatedPlansList;
-
         workPlanPeriods.add("+Añadir plan de trabajo");
         workPlanComboBox.setItems(workPlanPeriods);
     }

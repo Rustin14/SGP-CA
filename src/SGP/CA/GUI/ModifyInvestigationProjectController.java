@@ -77,14 +77,13 @@ public class ModifyInvestigationProjectController extends Application{
         investigationProject.setParticipants(participantsField.getText());
         investigationProject.setProjectManager(projectManagerField.getText());
         investigationProject.setDescription(descriptionField.getText());
-        int result = investigationProjectDAO.modifyInvestigationProject(investigationProject, oldTitle);
-        if (result == 1){
+        int rowsAffectedInvestigationProjectDAO = investigationProjectDAO.modifyInvestigationProject(investigationProject, oldTitle);
+        if (rowsAffectedInvestigationProjectDAO == 1){
             showConfirmationAlert();
             Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
             stagePrincipal.close();
         }else {
-            System.out.println("Error");
-            //Todo
+            showFailedOperationAlert();
         }
     }
 
@@ -130,6 +129,15 @@ public class ModifyInvestigationProjectController extends Application{
     public void showConfirmationAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showFailedOperationAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());

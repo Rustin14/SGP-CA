@@ -74,14 +74,17 @@ public class ConsultBluePrintController extends Application{
         primaryStage.show();
     }
 
-    public void deleteButtonEvent() throws SQLException{
+    public void exitButtonEvent(){
+        //TODO
+    }
+
+    public void deleteButtonEvent() throws SQLException, IOException{
         BluePrintDAO bluePrintDAO = new BluePrintDAO();
         int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
         if (result == 1){
-            //TODO
-            System.out.println("Eliminado");
+            showSuccessfulDeleteAlert();
         }else{
-            System.out.println("Fallido");
+            showFailedOperationAlert();
         }
     }
 
@@ -117,6 +120,24 @@ public class ConsultBluePrintController extends Application{
         requirementsTextField.setText(bluePrint.getRequirements());
         studentTextField.setText(bluePrint.getStudent());
         descriptionTextArea.setText(bluePrint.getDescription());
+    }
+
+    public void showFailedOperationAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(deleteButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showSuccessfulDeleteAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationDeleteBluePrintAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(deleteButton.getScene().getWindow());
+        stage.showAndWait();
     }
 
     public static void main(String[] args) {

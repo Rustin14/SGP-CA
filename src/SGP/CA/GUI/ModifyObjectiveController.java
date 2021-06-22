@@ -132,6 +132,7 @@ public class ModifyObjectiveController extends Application {
     }
 
     public void addButtonEvent(){
+        //TODO
         Strategy strategy = new Strategy();
         strategy.setNumber(Integer.parseInt(addNumberTextField.getText()));
         strategy.setStrategy(addStrategyTextField.getText());
@@ -179,27 +180,28 @@ public class ModifyObjectiveController extends Application {
         String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = strategyTitles.indexOf(strategySelected);
         Strategy strategy;
-        if (indexSelected == 0){
-            strategy = strategies.get(0);
-        }else{
-            /*int index = 0;
-            for (int i=0; i< strategies.size(); i++){
-                if (strategies.get(i).getStrategy().equals(strategySelected)){
-                    index = i;
-                    break;
-                }
+        try {
+            if (indexSelected == 0) {
+                strategy = strategies.get(0);
+            } else {
+                strategy = strategies.get(indexSelected);
             }
-            strategy = strategies.get(index);*/
-            strategy = strategies.get(indexSelected);
+            displayNumberTextField.setText(String.valueOf(strategy.getNumber()));
+            displayStrategyTextField.setText(strategy.getStrategy());
+            displayGoalTextField.setText(strategy.getGoal());
+            displayActionTextField.setText(strategy.getAction());
+            displayResultTextField.setText(strategy.getResult());
+        }catch (IndexOutOfBoundsException indexOutOfBoundsException){
+            strategyComboBox.getSelectionModel().clearSelection();
+            displayNumberTextField.clear();
+            displayStrategyTextField.clear();
+            displayGoalTextField.clear();
+            displayActionTextField.clear();
+            displayResultTextField.clear();
         }
-        displayNumberTextField.setText(String.valueOf(strategy.getNumber()));
-        displayStrategyTextField.setText(strategy.getStrategy());
-        displayGoalTextField.setText(strategy.getGoal());
-        displayActionTextField.setText(strategy.getAction());
-        displayResultTextField.setText(strategy.getResult());
     }
 
-    public void modifyButtonEvent() {
+    public void modifyButtonEvent() throws IOException{
         Strategy strategy = new Strategy();
         strategy.setNumber(Integer.parseInt(displayNumberTextField.getText()));
         strategy.setStrategy(displayStrategyTextField.getText());
@@ -217,8 +219,7 @@ public class ModifyObjectiveController extends Application {
             strategyTitles.set(indexSelected, strategy.getStrategy());
             strategyComboBox.setItems(strategyTitles);
         }else{
-            //TODO
-            System.out.println("No has modificado la estrategia");
+            showNoStrategyModifiedAlert();
         }
     }
 
@@ -268,6 +269,15 @@ public class ModifyObjectiveController extends Application {
     public void showInvalidDeleteStrategyAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/InvalidDeleteStrategyModifyObjectiveAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showNoStrategyModifiedAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/NoStrategyModifiedAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
