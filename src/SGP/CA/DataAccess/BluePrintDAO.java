@@ -12,7 +12,7 @@ import java.util.Date;
 public class BluePrintDAO implements  IBluePrintDAO{
 
     @Override
-    public int saveBluePrint(BluePrint bluePrint) throws SQLException, ClassNotFoundException{
+    public int saveBluePrint(BluePrint bluePrint) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO blueprint (blueprintTitle, startDate, associatedLgac, state, " +
@@ -38,7 +38,7 @@ public class BluePrintDAO implements  IBluePrintDAO{
     }
 
     @Override
-    public BluePrint searchBluePrintByTitle(String bluePrintTitle) throws SQLException, ClassNotFoundException{
+    public BluePrint searchBluePrintByTitle(String bluePrintTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM blueprint WHERE blueprintTitle = ?";
@@ -67,7 +67,7 @@ public class BluePrintDAO implements  IBluePrintDAO{
     }
 
     @Override
-    public int modifyBluePrint(BluePrint newBluePrint, String oldBluePrintTitle) throws SQLException, ClassNotFoundException{
+    public int modifyBluePrint(BluePrint newBluePrint, String oldBluePrintTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE blueprint set associatedLgac = ?, blueprintTitle = ?, coDirector = ?, "+
@@ -94,7 +94,7 @@ public class BluePrintDAO implements  IBluePrintDAO{
     }
 
     @Override
-    public int deleteBluePrint(String bluePrintTitle) throws SQLException, ClassNotFoundException{
+    public int deleteBluePrint(String bluePrintTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM blueprint WHERE blueprintTitle = ?";
@@ -106,7 +106,7 @@ public class BluePrintDAO implements  IBluePrintDAO{
     }
 
     @Override
-    public ArrayList<BluePrint> getAllBluePrints() throws SQLException, ClassNotFoundException{
+    public ArrayList<BluePrint> getAllBluePrints() throws SQLException{
         BluePrint bluePrint = null;
         ArrayList<BluePrint> allBluePrints = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();

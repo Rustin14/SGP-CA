@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ObjectiveDAO implements IObjectiveDAO{
 
     @Override
-    public int saveObjective(Objective objective) throws SQLException, ClassNotFoundException{
+    public int saveObjective(Objective objective) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO objective (description, strategy, title) VALUES (?,?,?)";
@@ -25,7 +25,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public Objective searchObjectiveByTitle(String objectiveTitle) throws SQLException, ClassNotFoundException{
+    public Objective searchObjectiveByTitle(String objectiveTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM objective WHERE title = ?";
@@ -44,7 +44,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public int modifyObjective (Objective newObjective, String oldObjectiveTitle) throws SQLException, ClassNotFoundException{
+    public int modifyObjective (Objective newObjective, String oldObjectiveTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE objective set description = ?, strategy = ?, title = ? where title = ?";
@@ -59,7 +59,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public int deleteObjective (String objectiveTitle) throws SQLException, ClassNotFoundException{
+    public int deleteObjective (String objectiveTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM objective WHERE title = ?";
@@ -71,7 +71,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public ArrayList<Objective> getAllObjectives () throws SQLException, ClassNotFoundException{
+    public ArrayList<Objective> getAllObjectives () throws SQLException{
         Objective objective = null;
         ArrayList<Objective> allObjectives = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();

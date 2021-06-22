@@ -12,7 +12,7 @@ import java.util.Date;
 public class InvestigationProjectDAO implements IInvestigationProjectDAO{
 
     @Override
-    public int saveInvestigationProject(InvestigationProject investigationProject) throws SQLException, ClassNotFoundException{
+    public int saveInvestigationProject(InvestigationProject investigationProject) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO investigationProject (associatedLgac, estimatedEndDate, participants, projectTitle, " +
@@ -33,7 +33,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public InvestigationProject searchInvestigationProjectByTitle(String investigationProjectTitle) throws SQLException, ClassNotFoundException{
+    public InvestigationProject searchInvestigationProjectByTitle(String investigationProjectTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM investigationProject WHERE projectTitle = ?";
@@ -80,7 +80,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public int deleteInvestigationProject(String investigationProjectTitle) throws SQLException, ClassNotFoundException{
+    public int deleteInvestigationProject(String investigationProjectTitle) throws SQLException{
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM investigationProject WHERE projectTitle = ?";
@@ -92,7 +92,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public ArrayList<InvestigationProject> getAllInvestigationProjects () throws SQLException, ClassNotFoundException{
+    public ArrayList<InvestigationProject> getAllInvestigationProjects () throws SQLException{
         InvestigationProject investigationProject = null;
         ArrayList<InvestigationProject> allInvestigationProjects = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();

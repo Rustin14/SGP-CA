@@ -53,7 +53,7 @@ public class ConsultWorkPlanController extends Application{
     Member member = Member.selectedMember;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml"));
         primaryStage.setTitle("Consultar plan de trabajo");
         primaryStage.setScene(new Scene(root, 1000, 600));
@@ -61,12 +61,12 @@ public class ConsultWorkPlanController extends Application{
     }
 
     @FXML
-    public void initialize() throws SQLException, ClassNotFoundException {
+    public void initialize() throws SQLException{
         consultWorkPlanController = this;
         searchAllWorkPlans();
     }
 
-    public void searchAllWorkPlans() throws SQLException, ClassNotFoundException{
+    public void searchAllWorkPlans() throws SQLException{
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         workPlans = workPlanDAO.getAllWorkPlans();
         ArrayList<WorkPlan>auxWorkPlans = new ArrayList<>();
@@ -88,7 +88,7 @@ public class ConsultWorkPlanController extends Application{
         workPlanComboBox.setItems(workPlanPeriods);
     }
 
-    public void workPlanComboBoxEvent() throws ClassNotFoundException{
+    public void workPlanComboBoxEvent(){
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
         try {
             if (selectedOption.equals("+Añadir plan de trabajo")) {
