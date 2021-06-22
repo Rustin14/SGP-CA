@@ -128,7 +128,7 @@ public class ConsultWorkPlanController extends Application{
         objectiveSelectedButton.setText(titleSelected);
     }
 
-    public void objectiveSelectedEvent() throws IOException, SQLException, ClassNotFoundException{
+    public void objectiveSelectedEvent() throws IOException, SQLException{
         if (objectiveSelectedButton.getText() == ""){
             showMissingObjectiveAlert();
         }else{

@@ -122,7 +122,7 @@ public class InvestigationProjectConsultController extends Application{
         stage.showAndWait();
     }
 
-    public void comboBoxProjectsEvent() throws SQLException, ClassNotFoundException{
+    public void comboBoxProjectsEvent() throws SQLException{
         String selectedTitle = comboBoxProjects.getSelectionModel().getSelectedItem();
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         InvestigationProject investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle(selectedTitle);
@@ -137,7 +137,7 @@ public class InvestigationProjectConsultController extends Application{
         descriptionTextField.setText(investigationProject.getDescription());
     }
 
-    public void bluePrintsComboBoxEvent() throws SQLException, ClassNotFoundException{
+    public void bluePrintsComboBoxEvent() throws SQLException{
         String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
         BluePrintDAO bluePrintDAO = new BluePrintDAO();
         BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle(titleSelected);
@@ -145,7 +145,7 @@ public class InvestigationProjectConsultController extends Application{
         bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
     }
 
-    public void consultButtonEvent() throws IOException,SQLException,ClassNotFoundException{
+    public void consultButtonEvent() throws IOException,SQLException{
         Stage stage2 = new Stage();
         FXMLLoader loader = new FXMLLoader();
         AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ConsultBluePrintFXML.fxml").openStream());
@@ -168,8 +168,7 @@ public class InvestigationProjectConsultController extends Application{
         }
         comboBoxProjects.setItems(investigationProjectTitles);
         BluePrintDAO bluePrintDAO = new BluePrintDAO();
-        ArrayList<BluePrint> bluePrints = new ArrayList<>();
-        bluePrints = bluePrintDAO.getAllBluePrints();
+        ArrayList<BluePrint> bluePrints = bluePrintDAO.getAllBluePrints();
         ObservableList<String> bluePrintTitles = FXCollections.observableArrayList();
         for (BluePrint bluePrint: bluePrints){
             bluePrintTitles.add(bluePrint.getBluePrintTitle());

@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface IWorkPlanDAO {
-    int saveWorkPlan(WorkPlan workPlan) throws SQLException, ClassNotFoundException;
-    WorkPlan searchWorkPlanByWorkPlanKey (String workPlanKey) throws SQLException, ClassNotFoundException;
-    int modifyWorkPlan(WorkPlan newWorkPlan, String oldWorkPlanKey) throws SQLException, ClassNotFoundException;
-    int deleteWorkPlan(String workPlanKey) throws SQLException, ClassNotFoundException;
-    ArrayList<WorkPlan> getAllWorkPlans () throws SQLException, ClassNotFoundException;
+    int saveWorkPlan(WorkPlan workPlan) throws SQLException;
+    WorkPlan searchWorkPlanByWorkPlanKey (String workPlanKey) throws SQLException;
+    int modifyWorkPlan(WorkPlan newWorkPlan, String oldWorkPlanKey) throws SQLException;
+    int deleteWorkPlan(String workPlanKey) throws SQLException;
+    ArrayList<WorkPlan> getAllWorkPlans () throws SQLException;
 }

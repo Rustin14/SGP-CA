@@ -81,7 +81,7 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void addButtonEvent(ActionEvent event) {
+    public void addButtonEvent() {
         Strategy strategy = new Strategy();
         strategy.setNumber(Integer.parseInt(addNumberTextField.getText()));
         strategy.setStrategy(addStrategyTextField.getText());
@@ -94,7 +94,7 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void cancelButtonEvent(ActionEvent event) throws IOException{
+    public void cancelButtonEvent() throws IOException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/exitAddObjectiveAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -136,8 +136,8 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void saveButtonEvent(ActionEvent event) throws SQLException, ClassNotFoundException, IOException {
-        if (objectiveTitleTextField.getText() == "" || descriptionTextArea.getText() == ""){
+    public void saveButtonEvent() throws SQLException, IOException {
+        if (objectiveTitleTextField.getText().equals("") || descriptionTextArea.getText().equals("")){
             showMissingInformationAlert();
         }else{
             if (allStrategies.size() == 0){
@@ -165,7 +165,7 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void strategyComboBoxEvent(ActionEvent event) {
+    public void strategyComboBoxEvent() {
         String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = allStrategiesTitles.indexOf(strategySelected);
         Strategy strategy;

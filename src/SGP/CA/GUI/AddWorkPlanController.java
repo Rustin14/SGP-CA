@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import SGP.CA.Domain.WorkPlan;
 import SGP.CA.DataAccess.WorkPlanDAO;
-
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,25 +44,25 @@ public class AddWorkPlanController extends Application {
     public void cancelButtonEvent(){
         Platform.exit();
         System.exit(0);
-        //TO DO
+        //TODO
     }
 
-    public void saveButtonEvent() throws ParseException, SQLException, ClassNotFoundException {
+    public void saveButtonEvent() throws ParseException, SQLException{
         WorkPlan workPlan = new WorkPlan();
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         workPlan.setWorkPlanKey(workPlanKeyTextField.getText());
         String stringStartDate = startDateTextField.getText();
         Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
         workPlan.setStartDate(startDate);
-        String stringEndtDate = endDateTextField.getText();
-        Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
+        String stringEndDate = endDateTextField.getText();
+        Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringEndDate);
         workPlan.setEndingDate(endDate);
         int result = workPlanDAO.saveWorkPlan(workPlan);
         if (result == 1){
-            //TO DO
+            //TODO
             System.out.println("Registrado");
         }else{
-            //TO DO
+            //TODO
             System.out.println("Error");
         }
     }

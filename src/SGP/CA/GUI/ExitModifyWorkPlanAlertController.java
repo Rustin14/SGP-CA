@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 public class ExitModifyWorkPlanAlertController extends Application{
 
@@ -16,7 +17,7 @@ public class ExitModifyWorkPlanAlertController extends Application{
     @FXML
     private Button cancelButton;
 
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyWorkPlanAlertFXML.fxml"));
         primaryStage.setTitle("Salir");
         primaryStage.setScene(new Scene(root, 500, 200));

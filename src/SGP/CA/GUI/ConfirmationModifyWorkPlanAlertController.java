@@ -7,13 +7,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 public class ConfirmationModifyWorkPlanAlertController extends Application{
 
     @FXML
     private Button okButton;
 
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationModifyWorkPlanAlertFXML.fxml"));
         primaryStage.setTitle("Confirmacion");
         primaryStage.setScene(new Scene(root, 500, 200));

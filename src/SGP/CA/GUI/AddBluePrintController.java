@@ -82,7 +82,7 @@ public class AddBluePrintController extends Application{
             stagePrincipal.close();
         }
 
-        public void saveButtonEvent()throws ParseException, SQLException, ClassNotFoundException, IOException {
+        public void saveButtonEvent()throws ParseException, SQLException, IOException {
             BluePrint bluePrint = new BluePrint();
             BluePrintDAO bluePrintDAO = new BluePrintDAO();
             bluePrint.setBluePrintTitle(bluePrintTitleField.getText());

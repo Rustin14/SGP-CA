@@ -12,7 +12,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import SGP.CA.DataAccess.BluePrintDAO;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -75,11 +74,11 @@ public class ConsultBluePrintController extends Application{
         primaryStage.show();
     }
 
-    public void deleteButtonEvent() throws SQLException, ClassNotFoundException {
+    public void deleteButtonEvent() throws SQLException{
         BluePrintDAO bluePrintDAO = new BluePrintDAO();
         int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
         if (result == 1){
-            //TO DO
+            //TODO
             System.out.println("Eliminado");
         }else{
             System.out.println("Fallido");
@@ -95,14 +94,14 @@ public class ConsultBluePrintController extends Application{
         stage.showAndWait();
     }
 
-    public void getBluePrintTitle(InvestigationProjectConsultController stage2Controller, String bluePrintTitle) throws SQLException, ClassNotFoundException{
+    public void getBluePrintTitle(InvestigationProjectConsultController stage2Controller, String bluePrintTitle) throws SQLException{
         bluePrintTitleTextField.setText(bluePrintTitle);
         investigationProjectConsultController = stage2Controller;
         searchProject();
     }
 
 
-    public void searchProject() throws SQLException, ClassNotFoundException{
+    public void searchProject() throws SQLException{
         BluePrintDAO bluePrintDAO = new BluePrintDAO();
         BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle(bluePrintTitleTextField.getText());
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");

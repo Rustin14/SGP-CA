@@ -59,13 +59,13 @@ public class ConsultObjectiveController extends Application{
         primaryStage.show();
     }
 
-    public void getObjectiveTitle(ConsultWorkPlanController consultWorkPlanController,String objectiveTitle) throws SQLException, ClassNotFoundException {
+    public void getObjectiveTitle(ConsultWorkPlanController consultWorkPlanController,String objectiveTitle) throws SQLException{
         objectiveTextField.setText(objectiveTitle);
         this.consultWorkPlanController =consultWorkPlanController;
         searchObjective();
     }
 
-    public void searchObjective() throws SQLException, ClassNotFoundException {
+    public void searchObjective() throws SQLException{
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
         Objective objective = objectiveDAO.searchObjectiveByTitle(objectiveTextField.getText());
         descriptionTextArea.setText(objective.getDescription());
@@ -79,7 +79,7 @@ public class ConsultObjectiveController extends Application{
         strategiesComboBox.setItems(strategies);
     }
 
-    public void strategiesComboBoxEvent() throws  SQLException, ClassNotFoundException {
+    public void strategiesComboBoxEvent() throws  SQLException{
         String strategySelected = strategiesComboBox.getSelectionModel().getSelectedItem();
         StrategyDAO strategyDAO = new StrategyDAO();
         Strategy strategy = strategyDAO.searchStrategyByStrategy(strategySelected);

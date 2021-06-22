@@ -91,7 +91,7 @@ public class ModifyWorkPlanController extends Application{
         searchObjectivesOfCurrentWorkPlan();
     }
 
-    public void searchObjectives() throws SQLException, ClassNotFoundException {
+    public void searchObjectives() throws SQLException{
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
         ObservableList<String> objectiveTitlesRegistered = FXCollections.observableArrayList();
         ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
@@ -103,7 +103,7 @@ public class ModifyWorkPlanController extends Application{
         objectivesComboBox.setItems(objectiveTitlesRegistered);
     }
 
-    public void searchObjectivesOfCurrentWorkPlan() throws SQLException, ClassNotFoundException{
+    public void searchObjectivesOfCurrentWorkPlan() throws SQLException{
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         ArrayList<WorkPlan> workPlans = workPlanDAO.getAllWorkPlans();
         for (int i=0; i<workPlans.size(); i++){
@@ -170,7 +170,7 @@ public class ModifyWorkPlanController extends Application{
         searchObjectives();
     }
 
-    public void addObjectiveEvent() throws  IOException, SQLException, ClassNotFoundException{
+    public void addObjectiveEvent() throws  IOException, SQLException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/AddObjectiveFXML.fxml"));
         stage.setScene(new Scene(root));
