@@ -84,6 +84,15 @@ public class ConsultWorkPlanController extends Application{
                 auxWorkPlans.add(workPlan);
             }
         }
+
+        ObservableList<String> noRepeatedPlansList = FXCollections.observableArrayList();
+        for (int i=0; i< workPlanPeriods.size(); i++){
+            if (!noRepeatedPlansList.contains(workPlanPeriods.get(i))){
+                noRepeatedPlansList.add(workPlanPeriods.get(i));
+            }
+        }
+        workPlanPeriods = noRepeatedPlansList;
+
         workPlanPeriods.add("+Añadir plan de trabajo");
         workPlanComboBox.setItems(workPlanPeriods);
     }

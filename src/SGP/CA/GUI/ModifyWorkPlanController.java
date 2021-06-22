@@ -134,7 +134,7 @@ public class ModifyWorkPlanController extends Application{
         workPlan.setEndingDate(endDate);
         workPlanDAO.deleteWorkPlan(workPlanToModify.getWorkPlanKey());
         int resultWorkPlanDAO = 0;
-        for (int i=0; i<objectiveTitles.size(); ){
+        for (int i=0; i<objectiveTitles.size(); i++){
             workPlan.setObjective(objectiveTitles.get(i));
             resultWorkPlanDAO += workPlanDAO.saveWorkPlan(workPlan);
         }
