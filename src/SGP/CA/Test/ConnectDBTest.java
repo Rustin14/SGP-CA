@@ -13,7 +13,7 @@ public class ConnectDBTest {
     ConnectDB connectDB = new ConnectDB();
 
     @Test
-    public void connectDBtest() throws SQLException, ClassNotFoundException{
+    public void connectDBtest() throws SQLException{
         Connection connection = connectDB.getConnection();
         Assert.assertNotNull(connection);
     }

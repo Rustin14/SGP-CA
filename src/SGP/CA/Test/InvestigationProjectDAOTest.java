@@ -15,7 +15,7 @@ public class InvestigationProjectDAOTest {
     InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
 
     @Test
-    public void saveInvestigationProjectTest() throws SQLException, ClassNotFoundException, ParseException {
+    public void saveInvestigationProjectTest() throws SQLException, ParseException {
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setProjectTitle("Test Title");
         investigationProject.setAssociatedLgac("No");
@@ -34,14 +34,14 @@ public class InvestigationProjectDAOTest {
     }
 
     @Test
-    public void searchInvestigationProjectByTitle()throws SQLException, ClassNotFoundException{
+    public void searchInvestigationProjectByTitle()throws SQLException {
         InvestigationProject investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle("Test Title");
 
         Assert.assertEquals("Test Title", investigationProject.getProjectTitle());
     }
 
     @Test
-    public void modifyInvestigationProject () throws SQLException, ClassNotFoundException, ParseException {
+    public void modifyInvestigationProject () throws SQLException, ParseException {
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setProjectTitle("Test Title2");
         investigationProject.setAssociatedLgac("No");
@@ -60,7 +60,7 @@ public class InvestigationProjectDAOTest {
     }
 
     @Test
-    public void deleteInvestigationProjectTest() throws SQLException, ClassNotFoundException{
+    public void deleteInvestigationProjectTest() throws SQLException {
         String investigationProjectTitle = "Test Title";
 
         int successfulDelete = investigationProjectDAO.deleteInvestigationProject(investigationProjectTitle);
@@ -68,7 +68,7 @@ public class InvestigationProjectDAOTest {
     }
 
     @Test
-    public void getAllInvestigationProjectsTest () throws SQLException, ClassNotFoundException, ParseException{
+    public void getAllInvestigationProjectsTest () throws SQLException, ParseException{
         InvestigationProject investigationProject1 = new InvestigationProject();
         investigationProject1.setProjectTitle("Test Title2");
         investigationProject1.setAssociatedLgac("No");

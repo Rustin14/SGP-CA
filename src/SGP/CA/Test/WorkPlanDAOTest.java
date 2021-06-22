@@ -16,7 +16,7 @@ public class WorkPlanDAOTest {
     WorkPlanDAO workPlanDAO = new WorkPlanDAO();
 
     @Test
-    public void saveWorkPlanTest() throws SQLException, ClassNotFoundException, ParseException {
+    public void saveWorkPlanTest() throws SQLException, ParseException {
         WorkPlan workPlan = new WorkPlan();
         workPlan.setWorkPlanKey("Test key2");
         workPlan.setObjective("Test objective2");
@@ -32,14 +32,14 @@ public class WorkPlanDAOTest {
     }
 
     @Test
-    public void searchWorkPlanByWorkPlanKeyTest () throws SQLException, ClassNotFoundException {
+    public void searchWorkPlanByWorkPlanKeyTest () throws SQLException {
         WorkPlan workPlan = workPlanDAO.searchWorkPlanByWorkPlanKey("Test key");
 
         Assert.assertEquals("Test key",workPlan.getWorkPlanKey());
     }
 
     @Test
-    public void modifyWorkPlan() throws SQLException, ClassNotFoundException, ParseException {
+    public void modifyWorkPlan() throws SQLException, ParseException {
         WorkPlan workPlan = new WorkPlan();
         workPlan.setWorkPlanKey("Test key3");
         workPlan.setObjective("Test objective3");
@@ -55,7 +55,7 @@ public class WorkPlanDAOTest {
     }
 
     @Test
-    public void deleteWorkPlanTest() throws SQLException, ClassNotFoundException{
+    public void deleteWorkPlanTest() throws SQLException {
         String workPlanKey = "Test key3";
 
         int successfulDelete = workPlanDAO.deleteWorkPlan(workPlanKey);
@@ -63,7 +63,7 @@ public class WorkPlanDAOTest {
     }
 
     @Test
-    public void getAllWorkPlansTest () throws SQLException, ClassNotFoundException, ParseException{
+    public void getAllWorkPlansTest () throws SQLException, ParseException {
         WorkPlan workPlan1 = new WorkPlan();
         workPlan1.setWorkPlanKey("Test key");
         workPlan1.setObjective("Test objective");

@@ -13,7 +13,7 @@ public class StrategyDAOTest {
     StrategyDAO strategyDAO = new StrategyDAO();
 
     @Test
-    public void saveStrategyTest() throws SQLException, ClassNotFoundException{
+    public void saveStrategyTest() throws SQLException{
         Strategy strategy = new Strategy();
         strategy.setStrategy("Test Strategy2");
         strategy.setGoal("Test goal2");
@@ -26,14 +26,14 @@ public class StrategyDAOTest {
     }
 
     @Test
-    public void searchStrategyByStrategyTest () throws SQLException,ClassNotFoundException{
+    public void searchStrategyByStrategyTest () throws SQLException {
         Strategy strategy = strategyDAO.searchStrategyByStrategy("Test Strategy");
 
         Assert.assertEquals("Test Strategy", strategy.getStrategy());
     }
 
     @Test
-    public void modifyStrategy() throws SQLException,ClassNotFoundException {
+    public void modifyStrategy() throws SQLException {
         Strategy strategy = new Strategy();
         strategy.setStrategy("Test Strategy3");
         strategy.setGoal("Test goal3");
@@ -46,7 +46,7 @@ public class StrategyDAOTest {
     }
 
     @Test
-    public void deleteStrategyTest() throws SQLException, ClassNotFoundException{
+    public void deleteStrategyTest() throws SQLException {
         String strategyTitle = "Test Strategy3";
 
         int successfulDelete = strategyDAO.deleteStrategy(strategyTitle);
@@ -54,7 +54,7 @@ public class StrategyDAOTest {
     }
 
     @Test
-    public void getAllStrategyTest () throws SQLException, ClassNotFoundException{
+    public void getAllStrategyTest () throws SQLException {
         Strategy strategy1 = new Strategy();
         strategy1.setStrategy("Test Strategy");
         strategy1.setGoal("Test goal");

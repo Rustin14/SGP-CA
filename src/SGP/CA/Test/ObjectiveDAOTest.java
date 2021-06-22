@@ -13,7 +13,7 @@ public class ObjectiveDAOTest {
     ObjectiveDAO objectiveDAO = new ObjectiveDAO();
 
     @Test
-    public void saveObjectiveTest() throws SQLException, ClassNotFoundException{
+    public void saveObjectiveTest() throws SQLException{
         Objective objective = new Objective();
         objective.setObjectiveTitle("Test objective2");
         objective.setDescription("Test description2");
@@ -24,14 +24,14 @@ public class ObjectiveDAOTest {
     }
 
     @Test
-    public void searchObjectiveByTitleTest() throws SQLException, ClassNotFoundException {
+    public void searchObjectiveByTitleTest() throws SQLException{
         Objective objective = objectiveDAO.searchObjectiveByTitle("Test objective");
 
         Assert.assertEquals("Test objective",objective.getObjectiveTitle());
     }
 
     @Test
-    public void modifyObjective () throws SQLException, ClassNotFoundException {
+    public void modifyObjective () throws SQLException{
         Objective objective = new Objective();
         objective.setObjectiveTitle("Test objective3");
         objective.setDescription("Test description3");
@@ -42,7 +42,7 @@ public class ObjectiveDAOTest {
     }
 
     @Test
-    public void deleteObjectiveTest() throws SQLException, ClassNotFoundException{
+    public void deleteObjectiveTest() throws SQLException{
         String objectiveTitle = "Test objective3";
 
         int successfulDelete = objectiveDAO.deleteObjective(objectiveTitle);
@@ -50,7 +50,7 @@ public class ObjectiveDAOTest {
     }
 
     @Test
-    public void getAllObjectivesTest () throws SQLException, ClassNotFoundException{
+    public void getAllObjectivesTest () throws SQLException{
         Objective objective1 = new Objective();
         objective1.setObjectiveTitle("Test objective");
         objective1.setDescription("Test description");

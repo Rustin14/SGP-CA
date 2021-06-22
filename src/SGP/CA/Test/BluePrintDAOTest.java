@@ -16,7 +16,7 @@ public class BluePrintDAOTest {
     BluePrintDAO bluePrintDAO = new BluePrintDAO();
 
     @Test
-    public void saveBluePrintTest() throws SQLException, ClassNotFoundException, ParseException {
+    public void saveBluePrintTest() throws SQLException, ParseException {
         BluePrint bluePrint = new BluePrint();
         bluePrint.setAssociatedLgac("No");
         bluePrint.setBluePrintTitle("Test Title");
@@ -38,14 +38,14 @@ public class BluePrintDAOTest {
     }
 
     @Test
-    public void searchBluePrintByTitle() throws SQLException, ClassNotFoundException{
+    public void searchBluePrintByTitle() throws SQLException{
         BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle("Test Title");
 
         Assert.assertEquals("Test Title", bluePrint.getBluePrintTitle());
     }
 
     @Test
-    public void modifyBluePrint() throws SQLException, ClassNotFoundException, ParseException {
+    public void modifyBluePrint() throws SQLException, ParseException {
         BluePrint bluePrint = new BluePrint();
         bluePrint.setAssociatedLgac("No");
         bluePrint.setBluePrintTitle("Test Title2");
@@ -67,7 +67,7 @@ public class BluePrintDAOTest {
     }
 
     @Test
-    public void deleteBluePrintTest() throws SQLException, ClassNotFoundException{
+    public void deleteBluePrintTest() throws SQLException{
         String bluePrintTitle = "Test Title3";
 
         int successfulDelete = bluePrintDAO.deleteBluePrint(bluePrintTitle);
@@ -75,7 +75,7 @@ public class BluePrintDAOTest {
     }
 
     @Test
-    public void getAllBluePrintsTest() throws SQLException, ClassNotFoundException, ParseException{
+    public void getAllBluePrintsTest() throws SQLException, ParseException {
         BluePrint bluePrint1 = new BluePrint();
         bluePrint1.setAssociatedLgac("No");
         bluePrint1.setBluePrintTitle("Test Title");
