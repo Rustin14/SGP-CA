@@ -10,10 +10,12 @@ public class Event {
     private Date registrationDate;
     private Date eventDate;
     private String eventPlace;
+    private String responsableName;
+    private String eventHour;
     private int idMember;
     private int active;
 
-    Event selectedEvent;
+    public static Event selectedEvent;
 
     public Event() {
     }
@@ -80,5 +82,29 @@ public class Event {
 
     public void setIdMember(int idMember) {
         this.idMember = idMember;
+    }
+
+    public String getResponsableName() {
+        return responsableName;
+    }
+
+    public void setResponsableName(String responsableName) {
+        this.responsableName = responsableName;
+    }
+
+    public static Event getSelectedEvent() {
+        return selectedEvent;
+    }
+
+    public static void setSelectedEvent(Event selectedEvent) {
+        Event.selectedEvent = selectedEvent;
+    }
+
+    public String getEventHour() {
+        return eventHour;
+    }
+
+    public void setEventHour(String eventHour) {
+        this.eventHour = eventHour;
     }
 }

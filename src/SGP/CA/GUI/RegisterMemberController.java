@@ -3,6 +3,7 @@ package SGP.CA.GUI;
 import SGP.CA.BusinessLogic.TextValidations;
 import SGP.CA.DataAccess.LGACDAO;
 import SGP.CA.DataAccess.MemberDAO;
+import SGP.CA.DataAccess.ResponsibleDAO;
 import SGP.CA.Domain.LGAC;
 import SGP.CA.Domain.Member;
 import javafx.beans.value.ChangeListener;
@@ -56,6 +57,8 @@ public class RegisterMemberController implements Initializable {
     Label CURPLabel;
     @FXML
     ComboBox academicPositionCombo;
+    @FXML
+    ComboBox memberTypeCombo;
 
     Member member;
 
@@ -65,6 +68,12 @@ public class RegisterMemberController implements Initializable {
         fillLGACCombo();
         setTextLimit();
         setMaxDate();
+        setMemberTypeCombo();
+    }
+
+    public void setMemberTypeCombo() {
+        ObservableList<String> memberTypes = FXCollections.observableArrayList("Miembro", "Responsable");
+        memberTypeCombo.setItems(memberTypes);
     }
 
     public boolean checkEmptyTextFields() {
@@ -77,6 +86,10 @@ public class RegisterMemberController implements Initializable {
             }
         }
         if (birthDateTF.getValue() == null) {
+            return false;
+        }
+
+        if (memberTypeCombo.getSelectionModel().isEmpty()) {
             return false;
         }
         return true;
@@ -168,6 +181,10 @@ public class RegisterMemberController implements Initializable {
                         member.setIdLGAC(lgac.getIdLGAC());
                         member.setEmail(emailTF.getText());
                         member.setPassword(passwordTF.getText());
+                        String memberType = (String) memberTypeCombo.getSelectionModel().getSelectedItem();
+                        if (memberType.equals("Responsable")) {
+                            member.setIsResponsible(1);
+                        }
                     } else {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         alertBuilder.errorAlert("El número de teléfono introducido no es válido. Introduzca un número de 10 dígitos.");
@@ -190,6 +207,24 @@ public class RegisterMemberController implements Initializable {
         return true;
     }
 
+    public void registerResponsible () {
+        MemberDAO memberDAO = new MemberDAO();
+        ResponsibleDAO responsibleDAO = new ResponsibleDAO();
+        AlertBuilder alertBuilder = new AlertBuilder();
+        Member responsible = new Member();
+        try {
+            responsible = memberDAO.searchMemberByName(member.getName());
+        } catch (SQLException sqlException) {
+            alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Inténtalo más tarde.");
+        }
+        try {
+            responsibleDAO.saveResponsible(responsible.getIdMember());
+        } catch (SQLException sqlException) {
+            alertBuilder.exceptionAlert("No hay conexión a la base de datos. Intente más tarde.");
+            sqlException.printStackTrace();
+        }
+    }
+
     public void registerMember() {
         if (createMember()) {
             MemberDAO memberDAO = new MemberDAO();
@@ -197,6 +232,9 @@ public class RegisterMemberController implements Initializable {
             int successfulSave = 0;
                 try {
                     successfulSave = memberDAO.saveMember(member);
+                    if (member.getIsResponsible() == 1) {
+                        registerResponsible();
+                    }
                 } catch (SQLIntegrityConstraintViolationException CURPDuplication) {
                     alertBuilder.exceptionAlert("Ya hay un registro del CURP introducido en la base de datos.");
                 } catch (SQLException sqlException) {

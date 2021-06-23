@@ -7,18 +7,12 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.FXML.ModalConsultEventFXML">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ModalConsultEventController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="34.0" layoutX="-5.0" stroke="BLACK" strokeType="INSIDE" width="610.0" />
       <Label layoutX="12.0" layoutY="9.0" text="SGP-CA" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="usernameLabel" layoutX="489.0" layoutY="8.0" text="Nombre Usuario" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="13.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eee8e8" height="339.0" layoutX="24.0" layoutY="49.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="568.0" />
@@ -27,12 +21,12 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="modifyButton" layoutX="474.0" layoutY="65.0" mnemonicParsing="false" text="MODIFICAR EVENTO">
+      <Button fx:id="modifyButton" layoutX="474.0" layoutY="65.0" mnemonicParsing="false" onAction="#modifyEvent" text="MODIFICAR EVENTO">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
-      <Button fx:id="deleteButton" layoutX="365.0" layoutY="65.0" mnemonicParsing="false" text="ELIMINAR EVENTO">
+      <Button fx:id="deleteButton" layoutX="365.0" layoutY="65.0" mnemonicParsing="false" onAction="#deleteEvent" text="ELIMINAR EVENTO">
          <font>
             <Font size="10.0" />
          </font>
@@ -56,12 +50,12 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="48.0" layoutY="213.0" text="Lugar">
+      <Label layoutX="46.0" layoutY="243.0" text="Lugar">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="48.0" layoutY="243.0" text="Tipo de evento">
+      <Label layoutX="46.0" layoutY="273.0" text="Responsable">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -69,7 +63,13 @@
       <Label fx:id="titleEventLabel" layoutX="155.0" layoutY="124.0" text="Label" />
       <Label fx:id="registrationDateLabel" layoutX="154.0" layoutY="154.0" text="Label" />
       <Label fx:id="eventDateLabel" layoutX="154.0" layoutY="184.0" text="Label" />
-      <Label fx:id="eventPlaceLabel" layoutX="154.0" layoutY="214.0" text="Label" />
-      <Label fx:id="eventTypeLabel" layoutX="154.0" layoutY="244.0" text="Label" />
+      <Label fx:id="eventPlaceLabel" layoutX="152.0" layoutY="244.0" text="Label" />
+      <Label fx:id="responsableLabel" layoutX="152.0" layoutY="274.0" text="Label" />
+      <Label layoutX="47.0" layoutY="213.0" text="Hora">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="eventHourLabel" layoutX="153.0" layoutY="214.0" text="Label" />
    </children>
 </AnchorPane>

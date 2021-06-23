@@ -17,8 +17,10 @@ public class Member {
     private String email;
     private String password;
     private int active;
+    private int isResponsible;
 
     public static Member selectedMember;
+    public static Member signedMember;
 
     public Member() {
     }
@@ -133,5 +135,21 @@ public class Member {
 
     public void setActive(int active) {
         this.active = active;
+    }
+
+    public int getIsResponsible() {
+        return isResponsible;
+    }
+
+    public void setIsResponsible(int isResponsible) {
+        this.isResponsible = isResponsible;
+    }
+
+    public static Member getSelectedMember() {
+        return selectedMember;
+    }
+
+    public static void setSelectedMember(Member selectedMember) {
+        Member.selectedMember = selectedMember;
     }
 }

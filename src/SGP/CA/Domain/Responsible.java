@@ -1,16 +1,10 @@
 package SGP.CA.Domain;
-
-import java.util.Date;
-
 public class Responsible extends Member {
 
     private int idResponsible;
+    private int idMember;
 
     public Responsible() {
-    }
-
-    public Responsible(int idResponsible) {
-        this.idResponsible = idResponsible;
     }
 
     public int getIdResponsible() {
@@ -19,5 +13,15 @@ public class Responsible extends Member {
 
     public void setIdResponsible(int idResponsible) {
         this.idResponsible = idResponsible;
+    }
+
+    @Override
+    public int getIdMember() {
+        return idMember;
+    }
+
+    @Override
+    public void setIdMember(int idMember) {
+        this.idMember = idMember;
     }
 }

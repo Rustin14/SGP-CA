@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ModalParticipantsController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dadada" height="37.0" layoutX="-2.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="603.0" />
+      <Label layoutX="9.0" layoutY="9.0" text="PARTICIPANTES">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TableView fx:id="availableMembersTable" layoutX="18.0" layoutY="75.0" prefHeight="110.0" prefWidth="564.0">
+        <columns>
+          <TableColumn fx:id="memberNameColumn" prefWidth="174.5" text="Nombre" />
+            <TableColumn fx:id="firstLastNameColumn" prefWidth="194.5" text="Apellido paterno" />
+            <TableColumn fx:id="secondLastNameColumn" prefWidth="193.0" text="Apellido materno" />
+        </columns>
+      </TableView>
+      <Label layoutX="16.0" layoutY="43.0" text="Miembro disponibles:" />
+      <Label layoutX="16.0" layoutY="57.0" text="(Doble click para seleccionar)">
+         <font>
+            <Font name="System Italic" size="8.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="195.0" text="Miembros seleccionados para participal:" />
+      <Label layoutX="15.0" layoutY="209.0" text="(Doble click para deseleccionar)">
+         <font>
+            <Font name="System Italic" size="8.0" />
+         </font>
+      </Label>
+      <TableView fx:id="selectedMembersTable" layoutX="15.0" layoutY="227.0" prefHeight="110.0" prefWidth="564.0">
+         <columns>
+            <TableColumn fx:id="selectedMemberNameColumn" prefWidth="158.0" text="Nombre" />
+            <TableColumn fx:id="selectedFirstLastNameColumn" prefWidth="217.0" text="Apellido paterno" />
+            <TableColumn fx:id="selectedSecondLastNameColumn" prefWidth="188.0" text="Apellido materno" />
+         </columns>
+      </TableView>
+      <Button fx:id="exitButton" layoutX="541.0" layoutY="359.0" mnemonicParsing="false" text="Salir" />
+      <Button fx:id="acceptButton" layoutX="467.0" layoutY="359.0" mnemonicParsing="false" text="Aceptar" />
+   </children>
+</AnchorPane>

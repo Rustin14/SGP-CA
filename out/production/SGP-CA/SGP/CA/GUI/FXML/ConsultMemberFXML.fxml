@@ -11,22 +11,21 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultMemberController">
+<AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultMemberController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f5eded" height="40.0" layoutX="23.0" layoutY="32.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="848.0" />
-      <Label layoutX="31.0" layoutY="35.0" text="MIEMBROS DE CA">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f5eded" height="40.0" layoutX="204.0" layoutY="31.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="848.0" />
+      <Label layoutX="212.0" layoutY="35.0" text="MIEMBROS DE CA">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="registerMemberButton" layoutX="717.0" layoutY="42.0" mnemonicParsing="false" onAction="#registerMember" text="REGISTRAR NUEVO MIEMBRO">
+      <Button fx:id="registerMemberButton" layoutX="898.0" layoutY="40.0" mnemonicParsing="false" onAction="#registerMember" text="REGISTRAR NUEVO MIEMBRO">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
-      <TextField layoutX="724.0" layoutY="82.0" prefHeight="12.0" prefWidth="149.0" />
-      <Button layoutX="648.0" layoutY="82.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Buscar" />
-      <TableView fx:id="membersTable" layoutX="23.0" layoutY="123.0" prefHeight="455.0" prefWidth="848.0">
+      <TextField fx:id="searchBar" layoutX="905.0" layoutY="81.0" prefHeight="12.0" prefWidth="149.0" promptText="Buscar" />
+      <TableView fx:id="membersTable" layoutX="206.0" layoutY="118.0" prefHeight="455.0" prefWidth="848.0">
         <columns>
             <TableColumn fx:id="staffNumberColumn" minWidth="0.0" prefWidth="113.0" text="No. de personal" />
           <TableColumn fx:id="memberNameColumn" prefWidth="259.0" text="Nombre(s)" />
@@ -34,10 +33,28 @@
             <TableColumn fx:id="secondLastNameColumn" prefWidth="245.0" text="Apellido materno" />
         </columns>
       </TableView>
-      <ImageView fitHeight="25.0" fitWidth="27.0" layoutX="609.0" layoutY="81.0" onMouseClicked="#populateTable" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="25.0" fitWidth="27.0" layoutX="873.0" layoutY="80.0" onMouseClicked="#populateTable" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../imgs/update.png" />
          </image>
       </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="620.0" layoutX="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="189.0" />
+      <Label layoutX="40.0" layoutY="25.0" text="SGP-CA">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="80.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
+      <Label layoutX="20.0" layoutY="86.0" onMouseClicked="#goToResponsibleProfile" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="128.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
+      <Label layoutX="20.0" layoutY="132.0" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

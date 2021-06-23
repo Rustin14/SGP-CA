@@ -16,7 +16,7 @@ public class MemberDAO implements IMemberDAO {
         Connection connection = databaseConnection.getConnection();
         String query = "INSERT INTO member (name, firstLastName, " +
                 "secondLastName, dateOfBirth, phoneNumber, CURP, maximumStudyLevel, " +
-                "maximumStudyLevelInstitution, idLGAC, email, password) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                "maximumStudyLevelInstitution, idLGAC, email, password, isResponsible) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, member.getName());
         statement.setString(2, member.getFirstLastName());
@@ -30,6 +30,7 @@ public class MemberDAO implements IMemberDAO {
         statement.setInt(9, member.getIdLGAC());
         statement.setString(10, member.getEmail());
         statement.setString(11, member.getPassword());
+        statement.setInt(12, member.getIsResponsible());
         int successfulUpdate = statement.executeUpdate();
         return successfulUpdate;
     }
@@ -71,9 +72,18 @@ public class MemberDAO implements IMemberDAO {
             member.setFirstLastName(results.getString("firstLastName"));
             member.setSecondLastName(results.getString("secondLastName"));
             java.util.Date dateOfBirth = new java.util.Date(results.getDate("dateOfBirth").getTime());
+            member.setPhoneNumber(results.getString("phoneNumber"));
+            member.setCURP(results.getString("CURP"));
+            member.setMaximumStudyLevel(results.getString("maximumStudyLevel"));
+            member.setMaximumStudyLevelInstitution(results.getString("maximumStudyLevelInstitution"));
+            member.setIdLGAC(results.getInt("idLGAC"));
+            member.setEmail(results.getString("email"));
+            member.setPassword(results.getString("password"));
             member.setDateOfBirth(dateOfBirth);
             member.setEmail(results.getString("email"));
             member.setPassword(results.getString("password"));
+            member.setActive(results.getInt("active"));
+            member.setIsResponsible(results.getInt("isResponsible"));
         }
         return member;
     }
@@ -102,9 +112,8 @@ public class MemberDAO implements IMemberDAO {
             member.setEmail(results.getString("email"));
             member.setPassword(results.getString("password"));
             member.setDateOfBirth(dateOfBirth);
-            member.setEmail(results.getString("email"));
-            member.setPassword(results.getString("password"));
             member.setActive(results.getInt("active"));
+            member.setIsResponsible(results.getInt("isResponsible"));
             allMembers.add(member);
         }
         return allMembers;
