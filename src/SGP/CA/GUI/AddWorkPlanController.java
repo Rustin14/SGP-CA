@@ -60,8 +60,7 @@ public class AddWorkPlanController extends Application {
         workPlan.setEndingDate(endDate);
         int rowsAffectedWorkPlanDAO = workPlanDAO.saveWorkPlan(workPlan);
         if (rowsAffectedWorkPlanDAO == 1){
-            //TODO
-            System.out.println("Registrado");
+            showConfirmationRegisterAlert();
         }else{
             showFailedOperationAlert();
         }
@@ -79,6 +78,15 @@ public class AddWorkPlanController extends Application {
     public void showExitRegisterWorkPlanAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitAddBluePrintAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showConfirmationRegisterAlert() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationRegisterWorkPlanAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());

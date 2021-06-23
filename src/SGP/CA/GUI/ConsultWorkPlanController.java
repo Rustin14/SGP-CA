@@ -119,11 +119,13 @@ public class ConsultWorkPlanController extends Application{
                 objectivesComboBox.setItems(objectiveTitles);
             }
         }catch (IOException ioException){
-            //TODO
-            System.out.println("Excepcion atrapada");
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String messageException = "No se cargo corectamente el componente del sistema";
+            alertBuilder.exceptionAlert(messageException);
         }catch(SQLException sqlException){
-            //TODO
-            System.out.println("Excepcion atrapada");
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String messageException = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(messageException);
         }catch (NullPointerException nullPointerException){
             workPlanComboBox.getSelectionModel().clearSelection();
             workPlanComboBox.setPromptText("Selecciona un plan");
