@@ -152,6 +152,7 @@
                   </Label>
                   <ComboBox fx:id="LGACCombo" layoutX="627.0" layoutY="317.0" prefWidth="150.0" visibleRowCount="2" />
                   <Label fx:id="noCoincidenceLabel" layoutX="499.0" layoutY="438.0" text="¡Contraseñas no coinciden!" visible="false" />
+                  <ComboBox fx:id="memberTypeCombo" layoutX="40.0" layoutY="99.0" prefWidth="150.0" />
                </children>
             </AnchorPane>
          </center>

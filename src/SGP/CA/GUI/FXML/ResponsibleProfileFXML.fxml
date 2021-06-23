@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ResponsibleProfileController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="611.0" layoutX="-2.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="187.0" />
+      <Label layoutX="30.0" layoutY="15.0" text="SGP-CA">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="535.0" layoutX="205.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="832.0" />
+      <Label fx:id="fullNameLabel" layoutX="232.0" layoutY="94.0" text="Label">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="responsibleLabel" layoutX="233.0" layoutY="129.0" text="Responsable">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="institutionLabel" layoutX="233.0" layoutY="166.0" text="Label">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="maxStudiesLabel" layoutX="233.0" layoutY="203.0" text="Label">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="profileLabel" layoutX="232.0" layoutY="57.0" text="PERFIL">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="70.0" stroke="BLACK" strokeType="INSIDE" width="185.0" />
+      <Label layoutX="10.0" layoutY="76.0" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="118.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
+      <Label layoutX="10.0" layoutY="122.0" onMouseClicked="#consultMembers" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="111.0" fitWidth="90.0" layoutX="915.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../imgs/unnamed.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

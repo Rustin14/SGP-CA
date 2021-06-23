@@ -9,27 +9,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.ResourceBundle;
-import java.util.List;
-import java.util.Date;
+import java.time.ZoneId;
+import java.util.*;
 
-
-public class ScheduleEventController implements Initializable {
+public class ModifyEventController implements Initializable {
 
     @FXML
     TextField eventTitleTextField;
@@ -44,8 +35,9 @@ public class ScheduleEventController implements Initializable {
     @FXML
     TextField hourTextField;
     @FXML
-    Button scheduleButton;
+    Button modifyButton;
 
+    Event selectedEvent = Event.selectedEvent;
     TextValidations textValidations = new TextValidations();
     ArrayList<Member> allActiveMembers = new ArrayList<>();
     int selectedIndex = 0;
@@ -53,10 +45,27 @@ public class ScheduleEventController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fillMembersCombo();
+        setEventData();
+        setRegistrationDate();
         setTextLimit();
         setMinimumDate();
-        setRegistrationDate();
+        fillMembersCombo();
+    }
+
+    public void setEventData() {
+        eventTitleTextField.setText(selectedEvent.getEventName());
+        eventPlaceTextField.setText(selectedEvent.getEventPlace());
+        LocalDate registrationDate = selectedEvent.getRegistrationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        eventResponsableCombo.setValue(selectedEvent.getResponsableName());
+        eventDatePicker.setValue(registrationDate);
+        hourTextField.setText(selectedEvent.getEventHour());
+    }
+
+    public void setRegistrationDate() {
+        String patternDate = "dd/MM/yyyy";
+        DateFormat dateFormat = new SimpleDateFormat(patternDate);
+        String registrationDate = dateFormat.format(selectedEvent.getRegistrationDate());
+        registrationDateTextField.setText(registrationDate);
     }
 
     public void fillMembersCombo() {
@@ -107,13 +116,6 @@ public class ScheduleEventController implements Initializable {
                     }});
     }
 
-    public void setRegistrationDate() {
-        String patternDate = "dd/MM/yyyy";
-        DateFormat dateFormat = new SimpleDateFormat(patternDate);
-        String registrationDate = dateFormat.format(Calendar.getInstance().getTime());
-        registrationDateTextField.setText(registrationDate);
-    }
-
     public boolean validateTextFields() {
         AlertBuilder alertBuilder = new AlertBuilder();
         List<TextField> textFields = Arrays.asList(eventTitleTextField, eventPlaceTextField, hourTextField);
@@ -142,8 +144,9 @@ public class ScheduleEventController implements Initializable {
 
     public boolean createEvent() {
         Event event = new Event();
-        Member member = new Member();
-        if(validateTextFields()) {
+        Member member;
+        if (validateTextFields()) {
+            event.setIdEvent(selectedEvent.getIdEvent());
             event.setEventName(eventTitleTextField.getText());
             event.setResponsableName(eventResponsableCombo.getSelectionModel().getSelectedItem().toString());
             selectedIndex = eventResponsableCombo.getSelectionModel().getSelectedIndex();
@@ -161,12 +164,12 @@ public class ScheduleEventController implements Initializable {
         return true;
     }
 
-    public void scheduleEvent() {
+    public void modifyEvent() {
         EventDAO eventDAO = new EventDAO();
         int successfulSave = 0;
         if (createEvent()) {
             try {
-                successfulSave = eventDAO.saveEvent(createdEvent);
+                successfulSave = eventDAO.modifyEvent(createdEvent);
             } catch (SQLException sqlException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
@@ -175,7 +178,7 @@ public class ScheduleEventController implements Initializable {
         } if (successfulSave == 1) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.successAlert("¡Registro exitoso!");
-            Stage currentStage = (Stage) scheduleButton.getScene().getWindow();
+            Stage currentStage = (Stage) modifyButton.getScene().getWindow();
             currentStage.close();
             ConsultEventsController.getInstance().populateTable();
         }

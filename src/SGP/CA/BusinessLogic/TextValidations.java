@@ -1,9 +1,5 @@
 package SGP.CA.BusinessLogic;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.TextField;
-
 public class TextValidations {
 
     public boolean validatePhoneNumber(String phoneNumber) {
@@ -24,6 +20,12 @@ public class TextValidations {
             return true;
         }
         return false;
+    }
+
+    public boolean validateHourFormat(String hour) {
+        String regexHour = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
+        boolean validated = hour.matches(regexHour);
+        return validated;
     }
 
 

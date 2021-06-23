@@ -3,14 +3,19 @@ package SGP.CA.GUI;
 import SGP.CA.DataAccess.EvidenceDAO;
 import SGP.CA.Domain.Evidence;
 import SGP.CA.Domain.Member;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,6 +30,8 @@ public class ConsultEvidenceController implements Initializable {
     TableColumn evidenceTitleColumn;
     @FXML
     TableColumn evidenceTypeColumn;
+    @FXML
+    TextField searchBar;
 
     private static ConsultEvidenceController consultEvidenceControllerInstance;
 
@@ -38,15 +45,19 @@ public class ConsultEvidenceController implements Initializable {
 
     EvidenceDAO evidenceDAO = new EvidenceDAO();
     ArrayList<Evidence> allEvidence = new ArrayList<Evidence>();
+    ObservableList<Evidence> evidenceList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setListView();
-        openMemberDataModal();
+        openEvidenceDataModal();
+        searchEvidence();
     }
 
     public void populateTable() {
         ArrayList<Evidence> allActiveEvidences = new ArrayList<>();
+        ObservableList<Evidence> auxiliarEvidenceList = FXCollections.observableArrayList();
+
         try {
             allEvidence = evidenceDAO.getAllEvidence();
         } catch (SQLException sqlException) {
@@ -57,9 +68,11 @@ public class ConsultEvidenceController implements Initializable {
         for (int i = 0; i < allEvidence.size(); i++) {
             if (allEvidence.get(i).getActive() == 1) {
                 allActiveEvidences.add(allEvidence.get(i));
+                auxiliarEvidenceList.add(allEvidence.get(i));
             }
         }
-        evidenceTable.getItems().setAll(allActiveEvidences);
+        evidenceList = auxiliarEvidenceList;
+        searchEvidence();
     }
 
     public void registerEvidence() {
@@ -78,7 +91,7 @@ public class ConsultEvidenceController implements Initializable {
         populateTable();
     }
 
-    public void openMemberDataModal() {
+    public void openEvidenceDataModal() {
         evidenceTable.setRowFactory( tv -> {
             TableRow<Evidence> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -96,6 +109,42 @@ public class ConsultEvidenceController implements Initializable {
             });
             return row ;
         });
+    }
+
+    public void searchEvidence() {
+        FilteredList<Evidence> filteredData = new FilteredList<>(evidenceList, b -> true);
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(evidence -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (evidence.getEvidenceTitle().toLowerCase().indexOf(lowerCaseFilter) != -1 ) {
+                    return true; // Filter matches first name.
+                } else {
+                    return false; // Does not match.
+                }
+            });
+        });
+        SortedList<Evidence> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(evidenceTable.comparatorProperty());
+        evidenceTable.setItems(sortedData);
+    }
+
+    public void consultEvents() {
+        AlertBuilder alertBuilder = new AlertBuilder();
+        if(!ScreenController.instance.isScreenOnMap("consultEvent")) {
+            try {
+                ScreenController.instance.addScreen("consultEvent", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsFXML.fxml")));
+            } catch (IOException ioException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
+            }
+        }
+        ScreenController.instance.activate("consultEvent");
+    }
+
+    public void goToProfile() {
+        ScreenController.instance.activate("memberProf");
     }
 
 

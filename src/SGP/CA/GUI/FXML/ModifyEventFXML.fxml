@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="446.0" prefWidth="639.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ScheduleEventController">
+<AnchorPane prefHeight="446.0" prefWidth="639.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ModifyEventController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="33.0" layoutX="-2.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" width="641.0" />
       <Label layoutX="12.0" layoutY="8.0" text="SGP-CA" textFill="WHITE">
@@ -18,13 +18,13 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dddada" height="370.0" layoutX="24.0" layoutY="56.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="591.0" />
-      <Label layoutX="42.0" layoutY="69.0" text="CALENDARIZACIÓN">
+      <Label layoutX="42.0" layoutY="69.0" text="MODIFICAR EVENTO">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#aaaaab" height="276.0" layoutX="39.0" layoutY="111.0" stroke="WHITE" strokeType="INSIDE" width="558.0" />
-      <Button fx:id="scheduleButton" layoutX="521.0" layoutY="343.0" mnemonicParsing="false" onAction="#scheduleEvent" text="Agendar" />
+      <Button fx:id="modifyButton" layoutX="519.0" layoutY="346.0" mnemonicParsing="false" onAction="#modifyEvent" text="Modificar" />
       <Button fx:id="exitButton" layoutX="42.0" layoutY="392.0" mnemonicParsing="false" text="Salir" />
       <Label layoutX="65.0" layoutY="133.0" text="Título" textAlignment="RIGHT">
          <font>
