@@ -74,8 +74,8 @@ public class ConsultBluePrintController extends Application{
         primaryStage.show();
     }
 
-    public void exitButtonEvent(){
-        //TODO
+    public void exitButtonEvent() throws IOException{
+        showExitConsultConfirmation();
     }
 
     public void deleteButtonEvent() throws SQLException, IOException{
@@ -134,6 +134,15 @@ public class ConsultBluePrintController extends Application{
     public void showSuccessfulDeleteAlert() throws IOException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationDeleteBluePrintAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(deleteButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showExitConsultConfirmation() throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitConsultBluePrintAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(deleteButton.getScene().getWindow());
