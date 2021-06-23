@@ -16,7 +16,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class AddBluePrintController extends Application{
 
@@ -95,43 +98,71 @@ public class AddBluePrintController extends Application{
         }
 
         public void saveButtonEvent () {
-            BluePrint bluePrint = new BluePrint();
-            BluePrintDAO bluePrintDAO = new BluePrintDAO();
-            bluePrint.setBluePrintTitle(bluePrintTitleField.getText());
-            bluePrint.setDescription(descriptionField.getText());
-            bluePrint.setCoDirector(coDirectorFIeld.getText());
-            bluePrint.setDuration(Integer.parseInt(durationField.getText()));
-            bluePrint.setModality(modalityField.getText());
-            bluePrint.setStudent(studentField.getText());
-            bluePrint.setAssociatedLgac(lgacField.getText());
-            bluePrint.setState(stateField.getText());
-            bluePrint.setRequirements(requirementsTextField.getText());
-            bluePrint.setReceptionWorkName(receptionWorkName.getText());
-            bluePrint.setDirector(directorTextField.getText());
-            try {
-                String stringStartDate = startDateField.getText();
-                Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
-                bluePrint.setStartDate(startDate);
-                int action = bluePrintDAO.saveBluePrint(bluePrint);
-                if (action == 1){
-                    showConfirmationAlert();
-                    Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
-                    stagePrincipal.close();
-                }else{
-                    showFailedRegisterAlert();
-                }
-            }catch (ParseException parseException){
+            boolean noEmptyTextFields = checkEmptyTextFields();
+            if (!noEmptyTextFields){
                 AlertBuilder alertBuilder = new AlertBuilder();
-                String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+                String errorMessage = "No has llenado todos los campos";
                 alertBuilder.errorAlert(errorMessage);
-            }catch (SQLException sqlException){
-                AlertBuilder alertBuilder = new AlertBuilder();
-                String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
-                alertBuilder.exceptionAlert(exceptionMessage);
-            }catch (IOException ioException){
-                AlertBuilder alertBuilder = new AlertBuilder();
-                String exceptionMessage = "No se cargo correctamente el componente del sistema";
-                alertBuilder.exceptionAlert(exceptionMessage);
+            }else{
+                boolean noExceededLimitSize = checkTextLimit();
+                if (!noExceededLimitSize){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String errorMessage = "Limite de texto excedido en algun campo";
+                    alertBuilder.errorAlert(errorMessage);
+                }else{
+                    boolean validDurationField = validateDurationField();
+                    if (!validDurationField){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String errorMessage = "Debes ingresar solo numeros en el capo de texto de duracion";
+                        alertBuilder.errorAlert(errorMessage);
+                    }else{
+                        boolean validStringTextFields = validateStringTextFields();
+                        if (!validStringTextFields){
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String errorMessage = "Solo debes ingresar letras en los campos que no sean duracion y fecha de inicio";
+                            alertBuilder.errorAlert(errorMessage);
+                        }else{
+                            BluePrint bluePrint = new BluePrint();
+                            BluePrintDAO bluePrintDAO = new BluePrintDAO();
+                            bluePrint.setBluePrintTitle(bluePrintTitleField.getText());
+                            bluePrint.setDescription(descriptionField.getText());
+                            bluePrint.setCoDirector(coDirectorFIeld.getText());
+                            bluePrint.setDuration(Integer.parseInt(durationField.getText()));
+                            bluePrint.setModality(modalityField.getText());
+                            bluePrint.setStudent(studentField.getText());
+                            bluePrint.setAssociatedLgac(lgacField.getText());
+                            bluePrint.setState(stateField.getText());
+                            bluePrint.setRequirements(requirementsTextField.getText());
+                            bluePrint.setReceptionWorkName(receptionWorkName.getText());
+                            bluePrint.setDirector(directorTextField.getText());
+                            try {
+                                String stringStartDate = startDateField.getText();
+                                Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
+                                bluePrint.setStartDate(startDate);
+                                int action = bluePrintDAO.saveBluePrint(bluePrint);
+                                if (action == 1){
+                                    showConfirmationAlert();
+                                    Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                                    stagePrincipal.close();
+                                }else{
+                                    showFailedRegisterAlert();
+                                }
+                            }catch (ParseException parseException){
+                                AlertBuilder alertBuilder = new AlertBuilder();
+                                String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+                                alertBuilder.errorAlert(errorMessage);
+                            }catch (SQLException sqlException){
+                                AlertBuilder alertBuilder = new AlertBuilder();
+                                String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+                                alertBuilder.exceptionAlert(exceptionMessage);
+                            }catch (IOException ioException){
+                                AlertBuilder alertBuilder = new AlertBuilder();
+                                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                                alertBuilder.exceptionAlert(exceptionMessage);
+                            }
+                        }
+                    }
+                }
             }
 
         }
@@ -154,8 +185,58 @@ public class AddBluePrintController extends Application{
         stage.showAndWait();
     }
 
-        public static void main(String[] args) {
-            launch(args);
+    public boolean checkEmptyTextFields() {
+        List<TextField> textFields = Arrays.asList(bluePrintTitleField, startDateField,
+                lgacField, stateField, directorTextField, coDirectorFIeld, durationField,
+                modalityField, receptionWorkName, requirementsTextField, studentField);
+        for (TextField field : textFields) {
+            if (field.getText().isEmpty()) {
+                return false;
+            }
         }
+        if (descriptionField.getText().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkTextLimit(){
+        int [] limitTextSizes = {255, 255, 50, 50, 30,50, 60, 120, 120};
+        TextField [] textFields = {bluePrintTitleField, lgacField,
+                stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
+                receptionWorkName, requirementsTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().length() < limitTextSizes[i]){
+                return false;
+            }
+        }
+        if (descriptionField.getText().length() < 255){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateDurationField(){
+        return durationField.getText().matches("[0-9]*");
+    }
+
+    public boolean validateStringTextFields (){
+        TextField [] textFields = {bluePrintTitleField, lgacField,
+                stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
+                receptionWorkName, requirementsTextField};
+        for(int i=0; i< textFields.length; i++){
+            if (!textFields[i].getText().matches("[a-zA-Z]*")){
+                return false;
+            }
+        }
+        if (!descriptionField.getText().matches("[a-zA-Z]*")){
+            return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
 
