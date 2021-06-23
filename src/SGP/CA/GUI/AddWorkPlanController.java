@@ -44,10 +44,8 @@ public class AddWorkPlanController extends Application {
         primaryStage.show();
     }
 
-    public void cancelButtonEvent(){
-        Platform.exit();
-        System.exit(0);
-        //TODO
+    public void cancelButtonEvent() throws IOException {
+        showExitRegisterWorkPlanAlert();
     }
 
     public void saveButtonEvent() throws ParseException, SQLException, IOException{
@@ -72,6 +70,15 @@ public class AddWorkPlanController extends Application {
     public void showFailedOperationAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(saveButton.getScene().getWindow());
+        stage.showAndWait();
+    }
+
+    public void showExitRegisterWorkPlanAlert() throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitAddBluePrintAlertFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
