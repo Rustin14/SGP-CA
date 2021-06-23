@@ -68,27 +68,47 @@ public class ModifyWorkPlanController extends Application{
     private ModifyWorkPlanController modifyWorkPlanController;
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml"));
-        primaryStage.setTitle("Plan de trabajo");
-        primaryStage.setScene(new Scene(root, 900, 600));
+    public void start(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml"));
+            primaryStage.setTitle("Plan de trabajo");
+            primaryStage.setScene(new Scene(root, 900, 600));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
-    public void getWorkPlanKey(ConsultWorkPlanController consultWorkPlanController,String workPlanKey) throws SQLException{
+    public void getWorkPlanKey(ConsultWorkPlanController consultWorkPlanController,String workPlanKey) {
         modifyWorkPlanController = this;
         workPlanKeyTextField.setText(workPlanKey);
         this.consultWorkPlanController = consultWorkPlanController;
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
-        WorkPlan workPlan = workPlanDAO.searchWorkPlanByWorkPlanKey(workPlanKey);
+        WorkPlan workPlan = new WorkPlan();
+        try {
+            workPlan = workPlanDAO.searchWorkPlanByWorkPlanKey(workPlanKey);
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String starDate = setDate.format(workPlan.getStartDate().getTime());
         startDateTextField.setText(starDate);
         String endDate = setDate.format(workPlan.getEndingDate().getTime());
         endDateTextField.setText(endDate);
         workPlanToModify = workPlan;
-        searchObjectives();
-        searchObjectivesOfCurrentWorkPlan();
+        try {
+            searchObjectives();
+            searchObjectivesOfCurrentWorkPlan();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
+
     }
 
     public void searchObjectives() throws SQLException{
@@ -103,9 +123,16 @@ public class ModifyWorkPlanController extends Application{
         objectivesComboBox.setItems(objectiveTitlesRegistered);
     }
 
-    public void searchObjectivesOfCurrentWorkPlan() throws SQLException{
+    public void searchObjectivesOfCurrentWorkPlan() {
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
-        ArrayList<WorkPlan> workPlans = workPlanDAO.getAllWorkPlans();
+        ArrayList<WorkPlan> workPlans = new ArrayList<>();
+        try {
+            workPlans = workPlanDAO.getAllWorkPlans();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         for (int i=0; i<workPlans.size(); i++){
             if (workPlans.get(i).getWorkPlanKey().equals(workPlanToModify.getWorkPlanKey())){
                 if (!workPlans.get(i).getObjective().equals("")){
@@ -117,33 +144,62 @@ public class ModifyWorkPlanController extends Application{
         objectivesAddedComboBox.setItems(objectiveTitles);
     }
 
-    public void exitButtonEvent() throws IOException {
-        showExitModifyWorkPlanAlert();
+    public void exitButtonEvent() {
+        try {
+            showExitModifyWorkPlanAlert();
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo corectamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
     }
 
-    public void saveButtonEvent() throws IOException, ParseException, SQLException{
+    public void saveButtonEvent () {
         WorkPlan workPlan = new WorkPlan();
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         workPlan.setWorkPlanKey(workPlanKeyTextField.getText());
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String startDateString = startDateTextField.getText();
-        Date startDate = setDate.parse(startDateString);
-        workPlan.setStartDate(startDate);
-        String endDateString = endDateTextField.getText();
-        Date endDate = setDate.parse(endDateString);
-        workPlan.setEndingDate(endDate);
-        workPlanDAO.deleteWorkPlan(workPlanToModify.getWorkPlanKey());
+        try {
+            Date startDate = setDate.parse(startDateString);
+            workPlan.setStartDate(startDate);
+            String endDateString = endDateTextField.getText();
+            Date endDate = setDate.parse(endDateString);
+            workPlan.setEndingDate(endDate);
+        }catch (ParseException parseException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+            alertBuilder.errorAlert(errorMessage);
+        }
+        try {
+            workPlanDAO.deleteWorkPlan(workPlanToModify.getWorkPlanKey());
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         int resultWorkPlanDAO = 0;
-        for (int i=0; i<objectiveTitles.size(); i++){
-            workPlan.setObjective(objectiveTitles.get(i));
-            resultWorkPlanDAO += workPlanDAO.saveWorkPlan(workPlan);
+        try {
+            for (int i=0; i<objectiveTitles.size(); i++){
+                workPlan.setObjective(objectiveTitles.get(i));
+                resultWorkPlanDAO += workPlanDAO.saveWorkPlan(workPlan);
+            }
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }
-        if (resultWorkPlanDAO == objectivesAddedToPlan.size()){
-            showSuccessfulUpdateAlert();
-        }else{
-            showFailedRegisterAlert();
+        try {
+            if (resultWorkPlanDAO == objectivesAddedToPlan.size()){
+                showSuccessfulUpdateAlert();
+            }else{
+                showFailedRegisterAlert();
+            }
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo corectamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }
-
     }
 
     public void addToPlanEvent(){
@@ -155,29 +211,50 @@ public class ModifyWorkPlanController extends Application{
         }
     }
 
-    public void modifyObjectiveEvent() throws IOException, SQLException{
+    public void modifyObjectiveEvent () {
         String objectiveSelected = objectivesComboBox.getSelectionModel().getSelectedItem();
         Stage stage2 = new Stage();
         FXMLLoader loader = new FXMLLoader();
-        AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ModifyObjectiveFXML.fxml").openStream());
+        AnchorPane root = new AnchorPane();
+        try {
+            root = loader.load(getClass().getResource("FXML/ModifyObjectiveFXML.fxml").openStream());
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo corectamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         ModifyObjectiveController modifyObjectiveController = (ModifyObjectiveController) loader.getController();
+
         modifyObjectiveController.getObjective(modifyWorkPlanController, objectiveSelected);
         Scene scene = new Scene(root);
         stage2.setScene(scene);
         stage2.alwaysOnTopProperty();
         stage2.initModality(Modality.APPLICATION_MODAL);
         stage2.showAndWait();
-        searchObjectives();
+        try {
+            searchObjectives();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
     }
 
-    public void addObjectiveEvent() throws  IOException, SQLException{
+    public void addObjectiveEvent() throws  IOException{
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/AddObjectiveFXML.fxml"));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(addObjectiveButton.getScene().getWindow());
         stage.showAndWait();
-        searchObjectives();
+        try {
+            searchObjectives();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
+
     }
 
     public void showSuccessfulUpdateAlert() throws IOException {

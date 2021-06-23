@@ -54,7 +54,7 @@
       <TextArea fx:id="goalTextArea" editable="false" layoutX="232.0" layoutY="209.0" prefHeight="69.0" prefWidth="165.0" />
       <TextArea fx:id="actionTextArea" editable="false" layoutX="397.0" layoutY="209.0" prefHeight="69.0" prefWidth="107.0" />
       <TextArea fx:id="resultTextArea" editable="false" layoutX="504.0" layoutY="209.0" prefHeight="69.0" prefWidth="140.0" />
-      <Button fx:id="closeButton" layoutX="537.0" layoutY="332.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="107.0" text="Cerrar">
+      <Button fx:id="closeButton" layoutX="537.0" layoutY="332.0" mnemonicParsing="false" onAction="#closeButtonEvent" prefHeight="39.0" prefWidth="107.0" text="Cerrar">
          <font>
             <Font size="20.0" />
          </font>

@@ -17,7 +17,6 @@ import SGP.CA.Domain.Objective;
 import SGP.CA.Domain.Strategy;
 import SGP.CA.DataAccess.ObjectiveDAO;
 import SGP.CA.DataAccess.StrategyDAO;
-import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -73,10 +72,16 @@ public class AddObjectiveController extends Application{
     private ObservableList<String> allStrategiesTitles = FXCollections.observableArrayList();
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/AddObjectiveFXML.fxml"));
-        primaryStage.setTitle("añadir objetivo ");
-        primaryStage.setScene(new Scene(root, 900, 600));
+    public void start (Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/AddObjectiveFXML.fxml"));
+            primaryStage.setTitle("añadir objetivo ");
+            primaryStage.setScene(new Scene(root, 900, 600));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
@@ -96,22 +101,40 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void cancelButtonEvent() throws IOException{
+    public void cancelButtonEvent() {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/exitAddObjectiveAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/exitAddObjectiveAlertFXML.fxml"));
+            stage.setScene(new Scene(root));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(cancelButton.getScene().getWindow());
         stage.showAndWait();
     }
 
     @FXML
-    public void deleteButtonEvent() throws IOException{
+    public void deleteButtonEvent () {
         if (strategyComboBox.getSelectionModel().isEmpty()){
-            showNoStrategiesAlert();
+            try {
+                showNoStrategiesAlert();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }else{
             if (allStrategiesTitles.size() == 1){
-                showNoStrategiesAlert();
+                try {
+                    showNoStrategiesAlert();
+                }catch (IOException ioException){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                    alertBuilder.exceptionAlert(exceptionMessage);
+                }
             }else{
                 int indexSelected = strategyComboBox.getSelectionModel().getSelectedIndex();
                 if (indexSelected == 0){
@@ -139,12 +162,24 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void saveButtonEvent() throws SQLException, IOException {
+    public void saveButtonEvent () {
         if (objectiveTitleTextField.getText().equals("") || descriptionTextArea.getText().equals("")){
-            showMissingInformationAlert();
+            try {
+                showMissingInformationAlert();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }else{
             if (allStrategies.size() == 0){
-                showMissingStrategiesAlert();
+                try {
+                    showMissingStrategiesAlert();
+                }catch (IOException ioException){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                    alertBuilder.exceptionAlert(exceptionMessage);
+                }
             }else{
                 ObjectiveDAO objectiveDAO = new ObjectiveDAO();
                 StrategyDAO strategyDAO = new StrategyDAO();
@@ -153,15 +188,25 @@ public class AddObjectiveController extends Application{
                 objective.setDescription(descriptionTextArea.getText());
                 int result1 = 0;
                 int result2 = 0;
-                for (int i = 0; i < allStrategies.size(); i++){
-                    objective.setStrategy(allStrategies.get(i).getStrategy());
-                    result1 += objectiveDAO.saveObjective(objective);
-                    result2 += strategyDAO.saveStrategy(allStrategies.get(i));
-                }
-                if (result1 == allStrategies.size() && result2 == allStrategies.size()){
-                    showAddedObjectiveAlert();
-                }else{
-                    showFailedRegisterAlert();
+                try {
+                    for (int i = 0; i < allStrategies.size(); i++){
+                        objective.setStrategy(allStrategies.get(i).getStrategy());
+                        result1 += objectiveDAO.saveObjective(objective);
+                        result2 += strategyDAO.saveStrategy(allStrategies.get(i));
+                    }
+                    if (result1 == allStrategies.size() && result2 == allStrategies.size()){
+                        showAddedObjectiveAlert();
+                    }else{
+                        showFailedRegisterAlert();
+                    }
+                }catch (SQLException sqlException){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+                    alertBuilder.exceptionAlert(exceptionMessage);
+                }catch (IOException ioException){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                    alertBuilder.exceptionAlert(exceptionMessage);
                 }
             }
         }

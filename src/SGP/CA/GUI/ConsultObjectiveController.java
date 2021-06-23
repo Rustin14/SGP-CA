@@ -16,6 +16,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -51,24 +53,44 @@ public class ConsultObjectiveController extends Application{
     private ComboBox<String> strategiesComboBox;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml"));
-        primaryStage.setTitle("Objetivo");
-        primaryStage.setScene(new Scene(root, 700, 400));
+    public void start(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml"));
+            primaryStage.setTitle("Objetivo");
+            primaryStage.setScene(new Scene(root, 700, 400));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
-    public void getObjectiveTitle(ConsultWorkPlanController consultWorkPlanController,String objectiveTitle) throws SQLException{
+    public void getObjectiveTitle(ConsultWorkPlanController consultWorkPlanController,String objectiveTitle) {
         objectiveTextField.setText(objectiveTitle);
         this.consultWorkPlanController =consultWorkPlanController;
         searchObjective();
     }
 
-    public void searchObjective() throws SQLException{
+    public void searchObjective () {
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
-        Objective objective = objectiveDAO.searchObjectiveByTitle(objectiveTextField.getText());
+        Objective objective = new Objective();
+        try {
+            objective = objectiveDAO.searchObjectiveByTitle(objectiveTextField.getText());
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         descriptionTextArea.setText(objective.getDescription());
-        ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
+        ArrayList<Objective> objectives = new ArrayList<>();
+        try {
+            objectives = objectiveDAO.getAllObjectives();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         ObservableList<String> strategies = FXCollections.observableArrayList();
         for (int i=0; i< objectives.size(); i++){
             if (objectives.get(i).getObjectiveTitle().equals(objectiveTextField.getText())){
@@ -78,15 +100,27 @@ public class ConsultObjectiveController extends Application{
         strategiesComboBox.setItems(strategies);
     }
 
-    public void strategiesComboBoxEvent() throws  SQLException{
+    public void strategiesComboBoxEvent () {
         String strategySelected = strategiesComboBox.getSelectionModel().getSelectedItem();
         StrategyDAO strategyDAO = new StrategyDAO();
-        Strategy strategy = strategyDAO.searchStrategyByStrategy(strategySelected);
+        Strategy strategy = new Strategy();
+        try {
+            strategy = strategyDAO.searchStrategyByStrategy(strategySelected);
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         numberTextField.setText(String.valueOf(strategy.getNumber()));
         strategyTextArea.setText(strategy.getStrategy());
         goalTextArea.setText(strategy.getGoal());
         actionTextArea.setText(strategy.getAction());
         resultTextArea.setText(strategy.getResult());
+    }
+
+    public void closeButtonEvent(){
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 
     public static void main(String[] args) {

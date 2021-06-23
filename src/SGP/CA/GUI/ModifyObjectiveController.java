@@ -77,36 +77,61 @@ public class ModifyObjectiveController extends Application {
     private ObservableList<String> strategyTitles = FXCollections.observableArrayList();
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyObjectiveFXML.fxml"));
-        primaryStage.setTitle("Edicion");
-        primaryStage.setScene(new Scene(root, 900, 600));
+    public void start(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyObjectiveFXML.fxml"));
+            primaryStage.setTitle("Edicion");
+            primaryStage.setScene(new Scene(root, 900, 600));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
-    public void cancelButtonEvent() throws IOException {
+    public void cancelButtonEvent() {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyObjectiveAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyObjectiveAlertFXML.fxml"));
+            stage.setScene(new Scene(root));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(cancelButton.getScene().getWindow());
         stage.showAndWait();
     }
 
-    public void getObjective(ModifyWorkPlanController modifyWorkPlanController, String objectiveTitle) throws SQLException{
+    public void getObjective(ModifyWorkPlanController modifyWorkPlanController, String objectiveTitle) {
         this.modifyWorkPlanController = modifyWorkPlanController;
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
-        Objective objective = objectiveDAO.searchObjectiveByTitle(objectiveTitle);
+        Objective objective = new Objective();
+        try {
+            objective = objectiveDAO.searchObjectiveByTitle(objectiveTitle);
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         objectiveTitleTextField.setText(objective.getObjectiveTitle());
         descriptionTextArea.setText(objective.getDescription());
         objectiveToModify = objective;
         getAllStrategies();
     }
 
-    public void deleteButtonEvent() throws IOException{
+    public void deleteButtonEvent() {
         int indexSelected = strategyComboBox.getSelectionModel().getSelectedIndex();
         if (strategyTitles.size() == 1){
-            showInvalidDeleteStrategyAlert();
+            try {
+                showInvalidDeleteStrategyAlert();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }else{
             if (indexSelected == 0){
                 ObservableList<String> auxiliaryList = FXCollections.observableArrayList();
@@ -145,9 +170,15 @@ public class ModifyObjectiveController extends Application {
         }
     }
 
-    public void saveButtonEvent() throws IOException, SQLException{
+    public void saveButtonEvent() {
         if (objectiveTitleTextField.getText() == "" || descriptionTextArea.getText() == ""){
-            showMissingInformationAlert();
+            try {
+                showMissingInformationAlert();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }else{
             ObjectiveDAO objectiveDAO = new ObjectiveDAO();
             StrategyDAO strategyDAO = new StrategyDAO();
@@ -156,23 +187,60 @@ public class ModifyObjectiveController extends Application {
             objective.setDescription(descriptionTextArea.getText());
             int resultObjectiveDAO = 0;
             int resultStrategyDAO = 0;
-            for (int i=0; i< strategies.size(); i++){
-                strategyDAO.deleteStrategy(strategies.get(i).getStrategy());
-            }
-            int resultDeleteObjectiveDAO = objectiveDAO.deleteObjective(objectiveToModify.getObjectiveTitle());
-            if (resultDeleteObjectiveDAO >= 1){
+            try {
                 for (int i=0; i< strategies.size(); i++){
-                    objective.setStrategy(strategies.get(i).getStrategy());
-                    resultObjectiveDAO += objectiveDAO.saveObjective(objective);
-                    resultStrategyDAO += strategyDAO.saveStrategy(strategies.get(i));
+                    strategyDAO.deleteStrategy(strategies.get(i).getStrategy());
+                }
+            }catch (SQLException sqlException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
+            int resultDeleteObjectiveDAO = 0;
+            try {
+                resultDeleteObjectiveDAO = objectiveDAO.deleteObjective(objectiveToModify.getObjectiveTitle());
+            }catch (SQLException sqlException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
+            if (resultDeleteObjectiveDAO >= 1){
+                try {
+                    for (int i=0; i< strategies.size(); i++){
+                        objective.setStrategy(strategies.get(i).getStrategy());
+                        resultObjectiveDAO += objectiveDAO.saveObjective(objective);
+                        resultStrategyDAO += strategyDAO.saveStrategy(strategies.get(i));
+                    }
+                }catch (SQLException sqlException){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                    alertBuilder.exceptionAlert(exceptionMessage);
                 }
                 if (resultObjectiveDAO == strategies.size() && resultStrategyDAO == strategies.size()){
-                    showSuccessfulUpdateAlert();
+                    try {
+                        showSuccessfulUpdateAlert();
+                    }catch (IOException ioException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
                 }else{
-                    showFailedRegisterAlert();
+                    try {
+                        showFailedRegisterAlert();
+                    }catch (IOException ioException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
                 }
             }else{
-                showFailedRegisterAlert();
+                try {
+                    showFailedRegisterAlert();
+                }catch (IOException ioException){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                    alertBuilder.exceptionAlert(exceptionMessage);
+                }
             }
         }
     }
@@ -202,7 +270,7 @@ public class ModifyObjectiveController extends Application {
         }
     }
 
-    public void modifyButtonEvent() throws IOException{
+    public void modifyButtonEvent() {
         Strategy strategy = new Strategy();
         strategy.setNumber(Integer.parseInt(displayNumberTextField.getText()));
         strategy.setStrategy(displayStrategyTextField.getText());
@@ -220,23 +288,43 @@ public class ModifyObjectiveController extends Application {
             strategyTitles.set(indexSelected, strategy.getStrategy());
             strategyComboBox.setItems(strategyTitles);
         }else{
-            showNoStrategyModifiedAlert();
+            try {
+                showNoStrategyModifiedAlert();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
+
         }
     }
 
-    public void getAllStrategies() throws SQLException{
+    public void getAllStrategies() {
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
         StrategyDAO strategyDAO = new StrategyDAO();
-        ArrayList<Objective> objectives = objectiveDAO.getAllObjectives();
+        ArrayList<Objective> objectives = new ArrayList<>();
+        try {
+            objectives = objectiveDAO.getAllObjectives();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         for (int i=0; i<objectives.size(); i++) {
             if (objectives.get(i).getObjectiveTitle().equals(objectiveTitleTextField.getText())){
                 strategyTitles.add(objectives.get(i).getStrategy());
             }
         }
         strategyComboBox.setItems(strategyTitles);
-        for (int i=0; i< strategyTitles.size(); i++){
-            Strategy strategy = strategyDAO.searchStrategyByStrategy(strategyTitles.get(i));
-            strategies.add(strategy);
+        try {
+            for (int i=0; i< strategyTitles.size(); i++){
+                Strategy strategy = strategyDAO.searchStrategyByStrategy(strategyTitles.get(i));
+                strategies.add(strategy);
+            }
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }
     }
 

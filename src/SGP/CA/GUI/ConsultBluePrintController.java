@@ -67,46 +67,83 @@ public class ConsultBluePrintController extends Application{
     private TextArea descriptionTextArea;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultBluePrintFXML.fxml"));
-        primaryStage.setTitle("Registrar anteproyecto");
-        primaryStage.setScene(new Scene(root, 900, 600));
+    public void start (Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultBluePrintFXML.fxml"));
+            primaryStage.setTitle("Registrar anteproyecto");
+            primaryStage.setScene(new Scene(root, 900, 600));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
-    public void exitButtonEvent() throws IOException{
-        showExitConsultConfirmation();
-    }
-
-    public void deleteButtonEvent() throws SQLException, IOException{
-        BluePrintDAO bluePrintDAO = new BluePrintDAO();
-        int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
-        if (result == 1){
-            showSuccessfulDeleteAlert();
-        }else{
-            showFailedOperationAlert();
+    public void exitButtonEvent() {
+        try {
+            showExitConsultConfirmation();
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }
+
     }
 
-    public void modifyButtonEvent() throws IOException {
+    public void deleteButtonEvent() {
+        BluePrintDAO bluePrintDAO = new BluePrintDAO();
+        try {
+            int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
+            if (result == 1){
+                showSuccessfulDeleteAlert();
+            }else{
+                showFailedOperationAlert();
+            }
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
+
+    }
+
+    public void modifyButtonEvent () {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyBluePrintFXML.fxml"));
-        stage.setScene(new Scene(root));
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyBluePrintFXML.fxml"));
+            stage.setScene(new Scene(root));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(modifyButton.getScene().getWindow());
         stage.showAndWait();
     }
 
-    public void getBluePrintTitle(InvestigationProjectConsultController stage2Controller, String bluePrintTitle) throws SQLException{
+    public void getBluePrintTitle (InvestigationProjectConsultController stage2Controller, String bluePrintTitle) {
         bluePrintTitleTextField.setText(bluePrintTitle);
         investigationProjectConsultController = stage2Controller;
         searchProject();
     }
 
 
-    public void searchProject() throws SQLException{
+    public void searchProject () {
         BluePrintDAO bluePrintDAO = new BluePrintDAO();
-        BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle(bluePrintTitleTextField.getText());
+        BluePrint bluePrint = new BluePrint();
+        try {
+            bluePrint = bluePrintDAO.searchBluePrintByTitle(bluePrintTitleTextField.getText());
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String startDate = setDate.format(bluePrint.getStartDate());
         startDateField.setText(startDate);

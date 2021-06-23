@@ -46,41 +46,72 @@ public class RegisterInvestigationProjectController extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/RegisterInvestigationProjectFXML.fxml"));
-        primaryStage.setTitle("Registrar proyecto");
-        primaryStage.setScene(new Scene(root, 900, 600));
+    public void start(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/RegisterInvestigationProjectFXML.fxml"));
+            primaryStage.setTitle("Registrar proyecto");
+            primaryStage.setScene(new Scene(root, 900, 600));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
-    public void saveButtonEvent () throws ParseException, SQLException, IOException {
+    public void saveButtonEvent () {
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setProjectTitle(projectTitleField.getText());
-        String endDate = endDateField.getText();
-        Date estimateEndDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
-        investigationProject.setEstimatedEndDate(estimateEndDate);
-        String stringStartDate = startDateField.getText();
-        Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
-        investigationProject.setStartDate(startDate);
+        try {
+            String endDate = endDateField.getText();
+            Date estimateEndDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+            investigationProject.setEstimatedEndDate(estimateEndDate);
+            String stringStartDate = startDateField.getText();
+            Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
+            investigationProject.setStartDate(startDate);
+        }catch (ParseException parseException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+            alertBuilder.errorAlert(errorMessage);
+        }
         investigationProject.setAssociatedLgac(lgacField.getText());
         investigationProject.setParticipants(participantsField.getText());
         investigationProject.setProjectManager(projectManagerField.getText());
         investigationProject.setDescription(descriptionField.getText());
-        int rowsAffectedInvestigationProjectDAO = investigationProjectDAO.saveInvestigationProject(investigationProject);
-        if (rowsAffectedInvestigationProjectDAO == 1){
-            showConfirmationAlert();
-            Stage stage = (Stage) saveButton.getScene().getWindow();
-            stage.close();
-        }else {
-            showFailedOperationAlert();
+        int rowsAffectedInvestigationProjectDAO = 0;
+        try {
+            rowsAffectedInvestigationProjectDAO = investigationProjectDAO.saveInvestigationProject(investigationProject);
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
+        try {
+            if (rowsAffectedInvestigationProjectDAO == 1){
+                showConfirmationAlert();
+                Stage stage = (Stage) saveButton.getScene().getWindow();
+                stage.close();
+            }else {
+                showFailedOperationAlert();
+            }
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }
     }
 
-    public void exitButtonEvent() throws IOException{
+    public void exitButtonEvent() {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
+            stage.setScene(new Scene(root));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
@@ -90,8 +121,14 @@ public class RegisterInvestigationProjectController extends Application {
 
     public void showConfirmationAlert() throws IOException{
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationAlertFXML.fxml"));
+            stage.setScene(new Scene(root));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();

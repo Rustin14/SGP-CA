@@ -1,7 +1,6 @@
 package SGP.CA.GUI;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +15,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import SGP.CA.DataAccess.BluePrintDAO;
 import SGP.CA.Domain.BluePrint;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -79,17 +77,30 @@ public class ModifyBluePrintController extends Application {
     private ObservableList<String> titles = FXCollections.observableArrayList();
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyBluePrintFXML.fxml"));
-        primaryStage.setTitle("Modificar anteproyecto ");
-        primaryStage.setScene(new Scene(root, 900, 600));
+    public void start(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyBluePrintFXML.fxml"));
+            primaryStage.setTitle("Modificar anteproyecto ");
+            primaryStage.setScene(new Scene(root, 900, 600));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
-    public void bluePrintSelectedEvent() throws SQLException{
+    public void bluePrintSelectedEvent() {
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
-        BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle(titleSelected);
+        BluePrint bluePrint = new BluePrint();
+        try {
+            bluePrint = bluePrintDAO.searchBluePrintByTitle(titleSelected);
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
         associatedLgacTextField.setText(bluePrint.getAssociatedLgac());
         String startDate = setDate.format(bluePrint.getStartDate());
@@ -105,17 +116,31 @@ public class ModifyBluePrintController extends Application {
         descriptionTextArea.setText(bluePrint.getDescription());
     }
 
-    public void cancelButtonEvent() throws IOException {
-        showExitAlert();
+    public void cancelButtonEvent() {
+        try {
+            showExitAlert();
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
+
     }
 
-    public void saveButtonEvent() throws ParseException, SQLException, IOException{
+    public void saveButtonEvent() {
         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
         String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
         BluePrint bluePrint = new BluePrint();
         bluePrint.setBluePrintTitle(bluePrintTitleTextField.getText());
         String startDateString = starDateTextField.getText();
-        Date startDate = setDate.parse(startDateString);
+        Date startDate = new Date();
+        try {
+            startDate = setDate.parse(startDateString);
+        }catch (ParseException parseException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+            alertBuilder.errorAlert(errorMessage);
+        }
         bluePrint.setStartDate(startDate);
         bluePrint.setAssociatedLgac(associatedLgacTextField.getText());
         bluePrint.setState(stateTextField.getText());
@@ -127,17 +152,37 @@ public class ModifyBluePrintController extends Application {
         bluePrint.setRequirements(requirementsTextField.getText());
         bluePrint.setStudent(studentTextField.getText());
         bluePrint.setDescription(descriptionTextArea.getText());
-        int rowsAffectedBluePrintDAO = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
-        if (rowsAffectedBluePrintDAO == 1){
-            showSuccessfulModifyConfirmationAlert();
-        }else{
-            showFailedOperationAlert();
+        int rowsAffectedBluePrintDAO = 0;
+        try {
+            rowsAffectedBluePrintDAO = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }
+        try {
+            if (rowsAffectedBluePrintDAO == 1){
+                showSuccessfulModifyConfirmationAlert();
+            }else{
+                showFailedOperationAlert();
+            }
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
+
     }
 
     @FXML
-    public void initialize() throws SQLException{
-        bluePrints = bluePrintDAO.getAllBluePrints();
+    public void initialize() {
+        try {
+            bluePrints = bluePrintDAO.getAllBluePrints();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         for (BluePrint blueprint : bluePrints){
             titles.add(blueprint.getBluePrintTitle());
         }

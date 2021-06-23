@@ -63,33 +63,42 @@ public class AddBluePrintController extends Application{
     private TextField directorTextField;
 
         @Override
-        public void start(Stage primaryStage) throws Exception {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/AddBluePrintFXML.fxml"));
-            primaryStage.setTitle("Registrar anteproyecto");
-            primaryStage.setScene(new Scene(root, 900, 600));
-            primaryStage.show();
+        public void start(Stage primaryStage){
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("FXML/AddBluePrintFXML.fxml"));
+                primaryStage.setTitle("Registrar anteproyecto");
+                primaryStage.setScene(new Scene(root, 900, 600));
+                primaryStage.show();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }
 
-        public void exitButtonEvent () throws IOException{
-            Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(exitButton.getScene().getWindow());
-            stage.showAndWait();
+        public void exitButtonEvent () {
+            try {
+                Stage stage = new Stage();
+                Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(exitButton.getScene().getWindow());
+                stage.showAndWait();
 
-            Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
-            stagePrincipal.close();
+                Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                stagePrincipal.close();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }
 
-        public void saveButtonEvent()throws ParseException, SQLException, IOException {
+        public void saveButtonEvent () {
             BluePrint bluePrint = new BluePrint();
             BluePrintDAO bluePrintDAO = new BluePrintDAO();
             bluePrint.setBluePrintTitle(bluePrintTitleField.getText());
             bluePrint.setDescription(descriptionField.getText());
-            String stringStartDate = startDateField.getText();
-            Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
-            bluePrint.setStartDate(startDate);
             bluePrint.setCoDirector(coDirectorFIeld.getText());
             bluePrint.setDuration(Integer.parseInt(durationField.getText()));
             bluePrint.setModality(modalityField.getText());
@@ -99,14 +108,32 @@ public class AddBluePrintController extends Application{
             bluePrint.setRequirements(requirementsTextField.getText());
             bluePrint.setReceptionWorkName(receptionWorkName.getText());
             bluePrint.setDirector(directorTextField.getText());
-            int action = bluePrintDAO.saveBluePrint(bluePrint);
-            if (action == 1){
-                showConfirmationAlert();
-                Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
-                stagePrincipal.close();
-            }else{
-                showFailedRegisterAlert();
+            try {
+                String stringStartDate = startDateField.getText();
+                Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
+                bluePrint.setStartDate(startDate);
+                int action = bluePrintDAO.saveBluePrint(bluePrint);
+                if (action == 1){
+                    showConfirmationAlert();
+                    Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                    stagePrincipal.close();
+                }else{
+                    showFailedRegisterAlert();
+                }
+            }catch (ParseException parseException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+                alertBuilder.errorAlert(errorMessage);
+            }catch (SQLException sqlException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
             }
+
         }
 
     public void showConfirmationAlert() throws IOException {

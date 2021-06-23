@@ -53,22 +53,34 @@ public class ConsultWorkPlanController extends Application{
     Member member = Member.selectedMember;
 
     @Override
-    public void start(Stage primaryStage) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml"));
-        primaryStage.setTitle("Consultar plan de trabajo");
-        primaryStage.setScene(new Scene(root, 1000, 600));
+    public void start(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml"));
+            primaryStage.setTitle("Consultar plan de trabajo");
+            primaryStage.setScene(new Scene(root, 1000, 600));
+        }catch (IOException ioException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         primaryStage.show();
     }
 
     @FXML
-    public void initialize() throws SQLException{
+    public void initialize () {
         consultWorkPlanController = this;
         searchAllWorkPlans();
     }
 
-    public void searchAllWorkPlans() throws SQLException{
+    public void searchAllWorkPlans () {
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
-        workPlans = workPlanDAO.getAllWorkPlans();
+        try {
+            workPlans = workPlanDAO.getAllWorkPlans();
+        }catch (SQLException sqlException){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }
         ArrayList<WorkPlan>auxWorkPlans = new ArrayList<>();
         for(WorkPlan workPlan: workPlans){
             if (!auxWorkPlans.contains(workPlan)){
@@ -120,12 +132,12 @@ public class ConsultWorkPlanController extends Application{
             }
         }catch (IOException ioException){
             AlertBuilder alertBuilder = new AlertBuilder();
-            String messageException = "No se cargo corectamente el componente del sistema";
-            alertBuilder.exceptionAlert(messageException);
+            String exceptionMessage = "No se cargo corectamente el componente del sistema";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }catch(SQLException sqlException){
             AlertBuilder alertBuilder = new AlertBuilder();
-            String messageException = "Ocurrio un error inesperado en la base de datos";
-            alertBuilder.exceptionAlert(messageException);
+            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+            alertBuilder.exceptionAlert(exceptionMessage);
         }catch (NullPointerException nullPointerException){
             workPlanComboBox.getSelectionModel().clearSelection();
             workPlanComboBox.setPromptText("Selecciona un plan");
@@ -137,34 +149,59 @@ public class ConsultWorkPlanController extends Application{
         objectiveSelectedButton.setText(titleSelected);
     }
 
-    public void objectiveSelectedEvent() throws IOException, SQLException{
+    public void objectiveSelectedEvent() {
         if (objectiveSelectedButton.getText() == ""){
-            showMissingObjectiveAlert();
+            try {
+                showMissingObjectiveAlert();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }else{
             Stage stage2 = new Stage();
             FXMLLoader loader = new FXMLLoader();
-            AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml").openStream());
-            ConsultObjectiveController consultObjectiveController = (ConsultObjectiveController) loader.getController();
-            consultObjectiveController.getObjectiveTitle(consultWorkPlanController, objectiveSelectedButton.getText());
-            Scene scene = new Scene(root);
-            stage2.setScene(scene);
-            stage2.alwaysOnTopProperty();
-            stage2.initModality(Modality.APPLICATION_MODAL);
-            stage2.showAndWait();
+            try {
+                AnchorPane root = loader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml").openStream());
+                ConsultObjectiveController consultObjectiveController = (ConsultObjectiveController) loader.getController();
+                consultObjectiveController.getObjectiveTitle(consultWorkPlanController, objectiveSelectedButton.getText());
+                Scene scene = new Scene(root);
+                stage2.setScene(scene);
+                stage2.alwaysOnTopProperty();
+                stage2.initModality(Modality.APPLICATION_MODAL);
+                stage2.showAndWait();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }
     }
 
-    public void modifyButtonEvent() throws IOException, SQLException{
+    public void modifyButtonEvent () {
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = workPlanComboBox.getSelectionModel().getSelectedIndex();
         if (workPlanComboBox.getSelectionModel().getSelectedItem() == null || selectedOption.equals("+Añadir plan de trabajo")){
-            showMissingWorkPlanAlert();
+            try {
+                showMissingWorkPlanAlert();
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
         }else{
             WorkPlan workPlan = workPlans.get(indexSelected);
             Stage stage2 = new Stage();
             FXMLLoader loader = new FXMLLoader();
-            AnchorPane root = (AnchorPane) loader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml").openStream());
-            ModifyWorkPlanController modifyWorkPlanController = (ModifyWorkPlanController) loader.getController();
+            AnchorPane root = new AnchorPane();
+            try {
+                root = loader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml").openStream());
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }
+            ModifyWorkPlanController modifyWorkPlanController = loader.getController();
             modifyWorkPlanController.getWorkPlanKey(consultWorkPlanController, workPlan.getWorkPlanKey());
             Scene scene = new Scene(root);
             stage2.setScene(scene);
