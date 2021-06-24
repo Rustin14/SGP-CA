@@ -20,13 +20,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class AddBluePrintController extends Application{
+public class AddBluePrintController extends Application {
 
     @FXML
     private Button saveButton;
-
-    @FXML
-    private Button exitButton;
 
     @FXML
     private TextArea descriptionField;
@@ -79,20 +76,11 @@ public class AddBluePrintController extends Application{
         }
 
         public void exitButtonEvent () {
-            try {
-                Stage stage = new Stage();
-                Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
-                stage.setScene(new Scene(root));
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.initOwner(exitButton.getScene().getWindow());
-                stage.showAndWait();
-
+            AlertBuilder alertBuilder = new AlertBuilder();
+            boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir del proyecto?");
+            if (confirmationMessage){
                 Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
                 stagePrincipal.close();
-            }catch (IOException ioException){
-                AlertBuilder alertBuilder = new AlertBuilder();
-                String exceptionMessage = "No se cargo correctamente el componente del sistema";
-                alertBuilder.exceptionAlert(exceptionMessage);
             }
         }
 
