@@ -327,10 +327,10 @@ public class AddObjectiveController extends Application{
     }
 
     public boolean validateObjectiveTextFields () {
-        if (!objectiveTitleTextField.getText().matches("[a-zA-Z]*")) {
+        if (!objectiveTitleTextField.getText().matches("[a-zA-Z\\s]*$")) {
             return false;
         }
-        if (!descriptionTextArea.getText().matches("[a-zA-Z]*")) {
+        if (!descriptionTextArea.getText().matches("[a-zA-Z\\s]*$")) {
             return false;
         }
         return true;
@@ -340,7 +340,7 @@ public class AddObjectiveController extends Application{
         TextField [] textFields = {addStrategyTextField, addGoalTextField,
             addActionTextField, addResultTextField};
         for(int i=0; i< textFields.length; i++){
-            if (!textFields[i].getText().matches("[a-zA-Z]*")){
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
                 return false;
             }
         }

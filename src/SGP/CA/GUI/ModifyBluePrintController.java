@@ -286,11 +286,11 @@ public class ModifyBluePrintController extends Application {
                 stateTextField, coDirectorTextField, modalityTextField, studentTextField,
                 directorTextField, receptionWorkNameTextField, requirementsTextField};
         for(int i=0; i< textFields.length; i++){
-            if (!textFields[i].getText().matches("[a-zA-Z]*")){
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
                 return false;
             }
         }
-        if (!descriptionTextArea.getText().matches("[a-zA-Z]*")){
+        if (!descriptionTextArea.getText().matches("[a-zA-Z\\s]*$")){
             return false;
         }
         return true;

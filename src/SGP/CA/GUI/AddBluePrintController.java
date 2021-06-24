@@ -224,11 +224,11 @@ public class AddBluePrintController extends Application{
                 stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
                 receptionWorkName, requirementsTextField};
         for(int i=0; i< textFields.length; i++){
-            if (!textFields[i].getText().matches("[a-zA-Z]*")){
+            if (!textFields[i].getText().matches("^[a-zA-Z\\s]*$")){
                 return false;
             }
         }
-        if (!descriptionField.getText().matches("[a-zA-Z]*")){
+        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")){
             return false;
         }
         return true;
