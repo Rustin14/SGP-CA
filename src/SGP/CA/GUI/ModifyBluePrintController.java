@@ -21,7 +21,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class ModifyBluePrintController extends Application {
 
@@ -128,50 +130,77 @@ public class ModifyBluePrintController extends Application {
     }
 
     public void saveButtonEvent() {
-        DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
-        String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
-        BluePrint bluePrint = new BluePrint();
-        bluePrint.setBluePrintTitle(bluePrintTitleTextField.getText());
-        String startDateString = starDateTextField.getText();
-        Date startDate = new Date();
-        try {
-            startDate = setDate.parse(startDateString);
-        }catch (ParseException parseException){
+        boolean noEmptyTextField = checkEmptyTextFields();
+        if (!noEmptyTextField){
             AlertBuilder alertBuilder = new AlertBuilder();
-            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+            String errorMessage = "No has llenado todos los campos";
             alertBuilder.errorAlert(errorMessage);
-        }
-        bluePrint.setStartDate(startDate);
-        bluePrint.setAssociatedLgac(associatedLgacTextField.getText());
-        bluePrint.setState(stateTextField.getText());
-        bluePrint.setDirector(directorTextField.getText());
-        bluePrint.setCoDirector(coDirectorTextField.getText());
-        bluePrint.setDuration(Integer.parseInt(durationTextField.getText()));
-        bluePrint.setModality(modalityTextField.getText());
-        bluePrint.setReceptionWorkName(receptionWorkNameTextField.getText());
-        bluePrint.setRequirements(requirementsTextField.getText());
-        bluePrint.setStudent(studentTextField.getText());
-        bluePrint.setDescription(descriptionTextArea.getText());
-        int rowsAffectedBluePrintDAO = 0;
-        try {
-            rowsAffectedBluePrintDAO = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
-        }catch (SQLException sqlException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
-            alertBuilder.exceptionAlert(exceptionMessage);
-        }
-        try {
-            if (rowsAffectedBluePrintDAO == 1){
-                showSuccessfulModifyConfirmationAlert();
+        }else{
+            boolean noExceededLimitText = checkTextLimit();
+            if (!noExceededLimitText){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String errorMessage = "Limite de texto excedido en algun campo";
+                alertBuilder.errorAlert(errorMessage);
             }else{
-                showFailedOperationAlert();
+                boolean validDurationField = validateDurationField();
+                if (!validDurationField){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String errorMessage = "Debes ingresar solo numeros en el campo de texto de duracion";
+                    alertBuilder.errorAlert(errorMessage);
+                }else{
+                    boolean validStringFields = validateStringTextFields();
+                    if (!validStringFields){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String errorMessage = "Solo debes ingresar letras en los campos que no sean duracion y fecha de inicio";
+                        alertBuilder.errorAlert(errorMessage);
+                    }else{
+                        DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
+                        String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
+                        BluePrint bluePrint = new BluePrint();
+                        bluePrint.setBluePrintTitle(bluePrintTitleTextField.getText());
+                        String startDateString = starDateTextField.getText();
+                        Date startDate = new Date();
+                        try {
+                            startDate = setDate.parse(startDateString);
+                        }catch (ParseException parseException){
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+                            alertBuilder.errorAlert(errorMessage);
+                        }
+                        bluePrint.setStartDate(startDate);
+                        bluePrint.setAssociatedLgac(associatedLgacTextField.getText());
+                        bluePrint.setState(stateTextField.getText());
+                        bluePrint.setDirector(directorTextField.getText());
+                        bluePrint.setCoDirector(coDirectorTextField.getText());
+                        bluePrint.setDuration(Integer.parseInt(durationTextField.getText()));
+                        bluePrint.setModality(modalityTextField.getText());
+                        bluePrint.setReceptionWorkName(receptionWorkNameTextField.getText());
+                        bluePrint.setRequirements(requirementsTextField.getText());
+                        bluePrint.setStudent(studentTextField.getText());
+                        bluePrint.setDescription(descriptionTextArea.getText());
+                        int rowsAffectedBluePrintDAO = 0;
+                        try {
+                            rowsAffectedBluePrintDAO = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
+                        }catch (SQLException sqlException){
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                            alertBuilder.exceptionAlert(exceptionMessage);
+                        }
+                        try {
+                            if (rowsAffectedBluePrintDAO == 1){
+                                showSuccessfulModifyConfirmationAlert();
+                            }else{
+                                showFailedOperationAlert();
+                            }
+                        }catch (IOException ioException){
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                            alertBuilder.exceptionAlert(exceptionMessage);
+                        }
+                    }
+                }
             }
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
         }
-
     }
 
     @FXML
@@ -214,6 +243,57 @@ public class ModifyBluePrintController extends Application {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(cancelButton.getScene().getWindow());
         stage.showAndWait();
+    }
+
+    public boolean checkEmptyTextFields() {
+        List<TextField> textFields = Arrays.asList(bluePrintTitleTextField, starDateTextField,
+                associatedLgacTextField, stateTextField, directorTextField, coDirectorTextField,
+                durationTextField, modalityTextField, receptionWorkNameTextField,
+                requirementsTextField, studentTextField);
+        for (TextField field : textFields) {
+            if (field.getText().isEmpty()) {
+                return false;
+            }
+        }
+        if (descriptionTextArea.getText().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkTextLimit(){
+        int [] limitTextSizes = {255, 255, 50, 50, 30,50, 60, 120, 120};
+        TextField [] textFields = {bluePrintTitleTextField, associatedLgacTextField,
+                stateTextField, coDirectorTextField, modalityTextField, studentTextField,
+                directorTextField, receptionWorkNameTextField, requirementsTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().length() > limitTextSizes[i]){
+                return false;
+            }
+        }
+        if (descriptionTextArea.getText().length() > 255){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateDurationField(){
+        return durationTextField.getText().matches("[0-9]*");
+    }
+
+    public boolean validateStringTextFields (){
+        TextField [] textFields = {bluePrintTitleTextField, associatedLgacTextField,
+                stateTextField, coDirectorTextField, modalityTextField, studentTextField,
+                directorTextField, receptionWorkNameTextField, requirementsTextField};
+        for(int i=0; i< textFields.length; i++){
+            if (!textFields[i].getText().matches("[a-zA-Z]*")){
+                return false;
+            }
+        }
+        if (!descriptionTextArea.getText().matches("[a-zA-Z]*")){
+            return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) {

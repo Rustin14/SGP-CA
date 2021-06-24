@@ -112,7 +112,7 @@ public class AddBluePrintController extends Application{
                     boolean validDurationField = validateDurationField();
                     if (!validDurationField){
                         AlertBuilder alertBuilder = new AlertBuilder();
-                        String errorMessage = "Debes ingresar solo numeros en el capo de texto de duracion";
+                        String errorMessage = "Debes ingresar solo numeros en el campo de texto de duracion";
                         alertBuilder.errorAlert(errorMessage);
                     }else{
                         boolean validStringTextFields = validateStringTextFields();
