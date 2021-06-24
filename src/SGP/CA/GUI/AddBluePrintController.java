@@ -206,11 +206,11 @@ public class AddBluePrintController extends Application{
                 stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
                 receptionWorkName, requirementsTextField};
         for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().length() < limitTextSizes[i]){
+            if (textFields[i].getText().length() > limitTextSizes[i]){
                 return false;
             }
         }
-        if (descriptionField.getText().length() < 255){
+        if (descriptionField.getText().length() > 255){
             return false;
         }
         return true;
