@@ -114,6 +114,7 @@ public class InvestigationProjectConsultController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(modifyButton.getScene().getWindow());
         stage.showAndWait();
+        initialize();
     }
 
     public void addBluePrintButtonEvent () {
@@ -129,6 +130,7 @@ public class InvestigationProjectConsultController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(addBluePrintButton.getScene().getWindow());
         stage.showAndWait();
+        initialize();
     }
 
     public void addProjectButtonEvent () {
@@ -144,6 +146,7 @@ public class InvestigationProjectConsultController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(addProjectButton.getScene().getWindow());
         stage.showAndWait();
+        initialize();
     }
 
     public void comboBoxProjectsEvent() {
