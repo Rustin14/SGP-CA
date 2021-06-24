@@ -15,7 +15,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+
 import SGP.CA.DataAccess.InvestigationProjectDAO;
 
 public class RegisterInvestigationProjectController extends Application {
@@ -44,6 +47,9 @@ public class RegisterInvestigationProjectController extends Application {
     @FXML
     private Button saveButton;
 
+    @FXML
+    private Button exitButton;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -60,75 +66,84 @@ public class RegisterInvestigationProjectController extends Application {
     }
 
     public void saveButtonEvent () {
-        InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
-        InvestigationProject investigationProject = new InvestigationProject();
-        investigationProject.setProjectTitle(projectTitleField.getText());
-        try {
-            String endDate = endDateField.getText();
-            Date estimateEndDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
-            investigationProject.setEstimatedEndDate(estimateEndDate);
-            String stringStartDate = startDateField.getText();
-            Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
-            investigationProject.setStartDate(startDate);
-        }catch (ParseException parseException){
+        boolean noEmptyTextField = checkEmptyTextFields();
+        if (!noEmptyTextField){
             AlertBuilder alertBuilder = new AlertBuilder();
-            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+            String errorMessage = "No has llenado todos los campos";
             alertBuilder.errorAlert(errorMessage);
-        }
-        investigationProject.setAssociatedLgac(lgacField.getText());
-        investigationProject.setParticipants(participantsField.getText());
-        investigationProject.setProjectManager(projectManagerField.getText());
-        investigationProject.setDescription(descriptionField.getText());
-        int rowsAffectedInvestigationProjectDAO = 0;
-        try {
-            rowsAffectedInvestigationProjectDAO = investigationProjectDAO.saveInvestigationProject(investigationProject);
-        }catch (SQLException sqlException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
-            alertBuilder.exceptionAlert(exceptionMessage);
-        }
-        try {
-            if (rowsAffectedInvestigationProjectDAO == 1){
-                showConfirmationAlert();
-                Stage stage = (Stage) saveButton.getScene().getWindow();
-                stage.close();
+        }else{
+            boolean noExceededLimitText = checkTextLimit();
+            if (!noExceededLimitText){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String errorMessage = "Limite de texto excedido en algun campo";
+                alertBuilder.errorAlert(errorMessage);
             }else {
-                showFailedOperationAlert();
+                boolean validTextFields = validateStringTextFields();
+                if (!validTextFields){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String errorMessage = "Solo debes ingresar letras en los campos que no sean fecha de inicio y fecha de finalizacion";
+                    alertBuilder.errorAlert(errorMessage);
+                }else{
+                    InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
+                    InvestigationProject investigationProject = new InvestigationProject();
+                    investigationProject.setProjectTitle(projectTitleField.getText());
+                    try {
+                        String endDate = endDateField.getText();
+                        Date estimateEndDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+                        investigationProject.setEstimatedEndDate(estimateEndDate);
+                        String stringStartDate = startDateField.getText();
+                        Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
+                        investigationProject.setStartDate(startDate);
+                    }catch (ParseException parseException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+                        alertBuilder.errorAlert(errorMessage);
+                    }
+                    investigationProject.setAssociatedLgac(lgacField.getText());
+                    investigationProject.setParticipants(participantsField.getText());
+                    investigationProject.setProjectManager(projectManagerField.getText());
+                    investigationProject.setDescription(descriptionField.getText());
+                    int rowsAffectedInvestigationProjectDAO = 0;
+                    try {
+                        rowsAffectedInvestigationProjectDAO = investigationProjectDAO.saveInvestigationProject(investigationProject);
+                    }catch (SQLException sqlException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
+                    try {
+                        if (rowsAffectedInvestigationProjectDAO == 1){
+                            showConfirmationAlert();
+                            Stage stage = (Stage) saveButton.getScene().getWindow();
+                            stage.close();
+                        }else {
+                            showFailedOperationAlert();
+                        }
+                    }catch (IOException ioException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
+                }
             }
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
         }
     }
 
     public void exitButtonEvent() {
-        Stage stage = new Stage();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
-            stage.setScene(new Scene(root));
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
+            stagePrincipal.close();
         }
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(saveButton.getScene().getWindow());
-        stage.showAndWait();
-        Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+        Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
         stagePrincipal.close();
     }
 
     public void showConfirmationAlert() throws IOException{
         Stage stage = new Stage();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationAlertFXML.fxml"));
-            stage.setScene(new Scene(root));
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
-        }
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationAlertFXML.fxml"));
+        stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
@@ -141,6 +156,49 @@ public class RegisterInvestigationProjectController extends Application {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
+    }
+
+    public boolean checkEmptyTextFields() {
+        List<TextField> textFields = Arrays.asList(projectTitleField, startDateField,
+                lgacField, endDateField, participantsField, projectManagerField);
+        for (TextField field : textFields) {
+            if (field.getText().isEmpty()) {
+                return false;
+            }
+        }
+        if (descriptionField.getText().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkTextLimit(){
+        int [] limitTextSizes = {255, 255, 255, 60};
+        TextField [] textFields = {projectTitleField, lgacField,
+                participantsField, projectManagerField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().length() > limitTextSizes[i]){
+                return false;
+            }
+        }
+        if (descriptionField.getText().length() > 255){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateStringTextFields (){
+        TextField [] textFields = {projectTitleField, lgacField,
+                participantsField, projectManagerField};
+        for(int i=0; i< textFields.length; i++){
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
+                return false;
+            }
+        }
+        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")){
+            return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) {

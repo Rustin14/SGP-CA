@@ -120,13 +120,13 @@ public class ModifyInvestigationProjectController extends Application{
                     if (rowsAffectedInvestigationProjectDAO == 1){
                         try {
                             showConfirmationAlert();
+                            Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                            stagePrincipal.close();
                         }catch (IOException ioException){
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "No se cargo correctamente el componente del sistema";
                             alertBuilder.exceptionAlert(exceptionMessage);
                         }
-                        Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
-                        stagePrincipal.close();
                     }else {
                         try {
                             showFailedOperationAlert();
@@ -142,19 +142,12 @@ public class ModifyInvestigationProjectController extends Application{
     }
 
     public void exitButtonEvent() {
-        Stage stage = new Stage();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitSaveProjectAlertFXML.fxml"));
-            stage.setScene(new Scene(root));
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
+            stagePrincipal.close();
         }
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(exitButton.getScene().getWindow());
-        stage.showAndWait();
-
         Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
         stagePrincipal.close();
     }

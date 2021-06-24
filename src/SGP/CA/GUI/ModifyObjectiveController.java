@@ -91,18 +91,12 @@ public class ModifyObjectiveController extends Application {
     }
 
     public void cancelButtonEvent() {
-        Stage stage = new Stage();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyObjectiveAlertFXML.fxml"));
-            stage.setScene(new Scene(root));
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) cancelButton.getScene().getWindow();
+            stagePrincipal.close();
         }
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(cancelButton.getScene().getWindow());
-        stage.showAndWait();
     }
 
     public void getObjective(ModifyWorkPlanController modifyWorkPlanController, String objectiveTitle) {
@@ -157,21 +151,42 @@ public class ModifyObjectiveController extends Application {
     }
 
     public void addButtonEvent(){
-        Strategy strategy = new Strategy();
-        strategy.setNumber(Integer.parseInt(addNumberTextField.getText()));
-        strategy.setStrategy(addStrategyTextField.getText());
-        strategy.setGoal(addGoalTextField.getText());
-        strategy.setAction(addActionTextField.getText());
-        strategy.setResult(addResultTextField.getText());
-        if (!strategies.contains(strategy)){
-            strategies.add(strategy);
-            strategyTitles.add(strategy.getStrategy());
-            strategyComboBox.setItems(strategyTitles);
+        boolean noEmptyFields = checkEmptyStrategyTextFields();
+        if (!noEmptyFields){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No has llenado todos los campos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }else {
+            boolean noExceededTextLimit = checkStrategyTextLimit();
+            if (!noExceededTextLimit){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String errorMessage = "Alguno de los campos excede el limite de texto";
+                alertBuilder.errorAlert(errorMessage);
+            }else {
+                boolean validTextFields = valideStrategyTextFields();
+                if (!validTextFields){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String errorMessage = "Solo el campo de numero requiere numero los demas solo letras";
+                    alertBuilder.errorAlert(errorMessage);
+                }else {
+                    Strategy strategy = new Strategy();
+                    strategy.setNumber(Integer.parseInt(addNumberTextField.getText()));
+                    strategy.setStrategy(addStrategyTextField.getText());
+                    strategy.setGoal(addGoalTextField.getText());
+                    strategy.setAction(addActionTextField.getText());
+                    strategy.setResult(addResultTextField.getText());
+                    if (!strategies.contains(strategy)){
+                        strategies.add(strategy);
+                        strategyTitles.add(strategy.getStrategy());
+                        strategyComboBox.setItems(strategyTitles);
+                    }
+                }
+            }
         }
     }
 
     public void saveButtonEvent() {
-        if (objectiveTitleTextField.getText() == "" || descriptionTextArea.getText() == ""){
+        if (objectiveTitleTextField.getText().isEmpty() || descriptionTextArea.getText().isEmpty()){
             try {
                 showMissingInformationAlert();
             }catch (IOException ioException){
@@ -180,66 +195,82 @@ public class ModifyObjectiveController extends Application {
                 alertBuilder.exceptionAlert(exceptionMessage);
             }
         }else{
-            ObjectiveDAO objectiveDAO = new ObjectiveDAO();
-            StrategyDAO strategyDAO = new StrategyDAO();
-            Objective objective = new Objective();
-            objective.setObjectiveTitle(objectiveTitleTextField.getText());
-            objective.setDescription(descriptionTextArea.getText());
-            int resultObjectiveDAO = 0;
-            int resultStrategyDAO = 0;
-            try {
-                for (int i=0; i< strategies.size(); i++){
-                    strategyDAO.deleteStrategy(strategies.get(i).getStrategy());
-                }
-            }catch (SQLException sqlException){
+            boolean noExceededLimitText = checkObjectiveTextLimit();
+            if (!noExceededLimitText){
                 AlertBuilder alertBuilder = new AlertBuilder();
-                String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                String exceptionMessage = "El objetivo o la descripcion es demasiado largo";
                 alertBuilder.exceptionAlert(exceptionMessage);
-            }
-            int resultDeleteObjectiveDAO = 0;
-            try {
-                resultDeleteObjectiveDAO = objectiveDAO.deleteObjective(objectiveToModify.getObjectiveTitle());
-            }catch (SQLException sqlException){
-                AlertBuilder alertBuilder = new AlertBuilder();
-                String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
-                alertBuilder.exceptionAlert(exceptionMessage);
-            }
-            if (resultDeleteObjectiveDAO >= 1){
-                try {
-                    for (int i=0; i< strategies.size(); i++){
-                        objective.setStrategy(strategies.get(i).getStrategy());
-                        resultObjectiveDAO += objectiveDAO.saveObjective(objective);
-                        resultStrategyDAO += strategyDAO.saveStrategy(strategies.get(i));
-                    }
-                }catch (SQLException sqlException){
+            }else {
+                boolean validObjectiveTextFields = validateObjectiveTextFields();
+                if (!validObjectiveTextFields){
                     AlertBuilder alertBuilder = new AlertBuilder();
-                    String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                    String exceptionMessage = "Solo debes ingresar letras en el titulo y la descripcion";
                     alertBuilder.exceptionAlert(exceptionMessage);
-                }
-                if (resultObjectiveDAO == strategies.size() && resultStrategyDAO == strategies.size()){
-                    try {
-                        showSuccessfulUpdateAlert();
-                    }catch (IOException ioException){
-                        AlertBuilder alertBuilder = new AlertBuilder();
-                        String exceptionMessage = "No se cargo correctamente el componente del sistema";
-                        alertBuilder.exceptionAlert(exceptionMessage);
-                    }
                 }else{
+                    ObjectiveDAO objectiveDAO = new ObjectiveDAO();
+                    StrategyDAO strategyDAO = new StrategyDAO();
+                    Objective objective = new Objective();
+                    objective.setObjectiveTitle(objectiveTitleTextField.getText());
+                    objective.setDescription(descriptionTextArea.getText());
+                    int resultObjectiveDAO = 0;
+                    int resultStrategyDAO = 0;
                     try {
-                        showFailedRegisterAlert();
-                    }catch (IOException ioException){
+                        for (int i=0; i< strategies.size(); i++){
+                            strategyDAO.deleteStrategy(strategies.get(i).getStrategy());
+                        }
+                    }catch (SQLException sqlException){
                         AlertBuilder alertBuilder = new AlertBuilder();
-                        String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                        String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
                         alertBuilder.exceptionAlert(exceptionMessage);
                     }
-                }
-            }else{
-                try {
-                    showFailedRegisterAlert();
-                }catch (IOException ioException){
-                    AlertBuilder alertBuilder = new AlertBuilder();
-                    String exceptionMessage = "No se cargo correctamente el componente del sistema";
-                    alertBuilder.exceptionAlert(exceptionMessage);
+                    int resultDeleteObjectiveDAO = 0;
+                    try {
+                        resultDeleteObjectiveDAO = objectiveDAO.deleteObjective(objectiveToModify.getObjectiveTitle());
+                    }catch (SQLException sqlException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
+                    if (resultDeleteObjectiveDAO >= 1){
+                        try {
+                            for (int i=0; i< strategies.size(); i++){
+                                objective.setStrategy(strategies.get(i).getStrategy());
+                                resultObjectiveDAO += objectiveDAO.saveObjective(objective);
+                                resultStrategyDAO += strategyDAO.saveStrategy(strategies.get(i));
+                            }
+                        }catch (SQLException sqlException){
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+                            alertBuilder.exceptionAlert(exceptionMessage);
+                        }
+                        if (resultObjectiveDAO == strategies.size() && resultStrategyDAO == strategies.size()){
+                            try {
+                                showSuccessfulUpdateAlert();
+                                Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                                stagePrincipal.close();
+                            }catch (IOException ioException){
+                                AlertBuilder alertBuilder = new AlertBuilder();
+                                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                                alertBuilder.exceptionAlert(exceptionMessage);
+                            }
+                        }else{
+                            try {
+                                showFailedRegisterAlert();
+                            }catch (IOException ioException){
+                                AlertBuilder alertBuilder = new AlertBuilder();
+                                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                                alertBuilder.exceptionAlert(exceptionMessage);
+                            }
+                        }
+                    }else{
+                        try {
+                            showFailedRegisterAlert();
+                        }catch (IOException ioException){
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                            alertBuilder.exceptionAlert(exceptionMessage);
+                        }
+                    }
                 }
             }
         }
@@ -271,31 +302,51 @@ public class ModifyObjectiveController extends Application {
     }
 
     public void modifyButtonEvent() {
-        Strategy strategy = new Strategy();
-        strategy.setNumber(Integer.parseInt(displayNumberTextField.getText()));
-        strategy.setStrategy(displayStrategyTextField.getText());
-        strategy.setGoal(displayGoalTextField.getText());
-        strategy.setAction(displayActionTextField.getText());
-        strategy.setResult(displayResultTextField.getText());
-        if (!strategies.contains(strategy)) {
-            String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
-            int indexSelected = strategyTitles.indexOf(strategySelected);
-            strategies.get(indexSelected).setNumber(strategy.getNumber());
-            strategies.get(indexSelected).setStrategy(strategy.getStrategy());
-            strategies.get(indexSelected).setGoal(strategy.getGoal());
-            strategies.get(indexSelected).setAction(strategy.getAction());
-            strategies.get(indexSelected).setResult(strategy.getResult());
-            strategyTitles.set(indexSelected, strategy.getStrategy());
-            strategyComboBox.setItems(strategyTitles);
-        }else{
-            try {
-                showNoStrategyModifiedAlert();
-            }catch (IOException ioException){
+        boolean noEmptyFields = checkEmptyStrategyModifiedTextFields();
+        if (!noEmptyFields) {
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String exceptionMessage = "No has llenado todos los campos";
+            alertBuilder.exceptionAlert(exceptionMessage);
+        }else {
+            boolean noExceededLimitText = checkStrategyModifiedTextLimit();
+            if (!noExceededLimitText){
                 AlertBuilder alertBuilder = new AlertBuilder();
-                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                String exceptionMessage = "El objetivo o la descripcion es demasiado largo";
                 alertBuilder.exceptionAlert(exceptionMessage);
+            }else {
+                boolean validTextFields = valideStrategyModifiedTextFields();
+                if (!validTextFields){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String errorMessage = "Solo el campo de numero requiere numero los demas solo letras";
+                    alertBuilder.errorAlert(errorMessage);
+                }else {
+                    Strategy strategy = new Strategy();
+                    strategy.setNumber(Integer.parseInt(displayNumberTextField.getText()));
+                    strategy.setStrategy(displayStrategyTextField.getText());
+                    strategy.setGoal(displayGoalTextField.getText());
+                    strategy.setAction(displayActionTextField.getText());
+                    strategy.setResult(displayResultTextField.getText());
+                    if (!strategies.contains(strategy)) {
+                        String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
+                        int indexSelected = strategyTitles.indexOf(strategySelected);
+                        strategies.get(indexSelected).setNumber(strategy.getNumber());
+                        strategies.get(indexSelected).setStrategy(strategy.getStrategy());
+                        strategies.get(indexSelected).setGoal(strategy.getGoal());
+                        strategies.get(indexSelected).setAction(strategy.getAction());
+                        strategies.get(indexSelected).setResult(strategy.getResult());
+                        strategyTitles.set(indexSelected, strategy.getStrategy());
+                        strategyComboBox.setItems(strategyTitles);
+                    }else{
+                        try {
+                            showNoStrategyModifiedAlert();
+                        }catch (IOException ioException){
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                            alertBuilder.exceptionAlert(exceptionMessage);
+                        }
+                    }
+                }
             }
-
         }
     }
 
@@ -371,6 +422,98 @@ public class ModifyObjectiveController extends Application {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
+    }
+
+    public boolean checkObjectiveTextLimit(){
+        if (objectiveTitleTextField.getText().length() > 100){
+            return false;
+        }
+        if (descriptionTextArea.getText().length() > 255){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateObjectiveTextFields () {
+        if (!objectiveTitleTextField.getText().matches("[a-zA-Z\\s]*$")) {
+            return false;
+        }
+        if (!descriptionTextArea.getText().matches("[a-zA-Z\\s]*$")) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean valideStrategyTextFields(){
+        TextField [] textFields = {addStrategyTextField, addGoalTextField,
+                addActionTextField, addResultTextField};
+        for(int i=0; i< textFields.length; i++){
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
+                return false;
+            }
+        }
+        if (!addNumberTextField.getText().matches("[0-9]*")){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkStrategyTextLimit(){
+        int [] limitTextSizes = {255, 100, 255, 255};
+        TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField, addResultTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().length() > limitTextSizes[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkEmptyStrategyTextFields (){
+        TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField, addResultTextField,addNumberTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean valideStrategyModifiedTextFields(){
+        TextField [] textFields = {displayStrategyTextField, displayGoalTextField,
+                displayActionTextField, displayResultTextField};
+        for(int i=0; i< textFields.length; i++){
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
+                return false;
+            }
+        }
+        if (!displayNumberTextField.getText().matches("[0-9]*")){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkStrategyModifiedTextLimit(){
+        int [] limitTextSizes = {255, 100, 255, 255};
+        TextField [] textFields = {displayStrategyTextField, displayGoalTextField,
+                displayActionTextField, displayResultTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().length() > limitTextSizes[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkEmptyStrategyModifiedTextFields (){
+        TextField [] textFields = {displayStrategyTextField, displayGoalTextField,
+                displayActionTextField, displayResultTextField, displayNumberTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().isEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) {

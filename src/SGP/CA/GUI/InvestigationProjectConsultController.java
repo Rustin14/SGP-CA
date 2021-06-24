@@ -68,9 +68,6 @@ public class InvestigationProjectConsultController extends Application{
     @FXML
     private TextField stateTextField;
 
-    @FXML
-    private Button consultButton;
-
     private ObservableList<String> investigationProjectTitles = FXCollections.observableArrayList();
 
     private ArrayList<InvestigationProject> investigationProjects = new ArrayList<>();
@@ -87,17 +84,11 @@ public class InvestigationProjectConsultController extends Application{
     }
 
     public void exitButtonEvent() {
-        try {
-            Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitConsultProjectAlertFXML.fxml"));
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(exitButton.getScene().getWindow());
-            stage.showAndWait();
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
+            stagePrincipal.close();
         }
     }
 
@@ -204,6 +195,7 @@ public class InvestigationProjectConsultController extends Application{
         stage2.alwaysOnTopProperty();
         stage2.initModality(Modality.APPLICATION_MODAL);
         stage2.showAndWait();
+        initialize();
     }
 
     @FXML

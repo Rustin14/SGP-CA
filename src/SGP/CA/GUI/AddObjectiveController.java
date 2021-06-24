@@ -123,18 +123,12 @@ public class AddObjectiveController extends Application{
 
     @FXML
     public void cancelButtonEvent() {
-        Stage stage = new Stage();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXML/exitAddObjectiveAlertFXML.fxml"));
-            stage.setScene(new Scene(root));
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) cancelButton.getScene().getWindow();
+            stagePrincipal.close();
         }
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(cancelButton.getScene().getWindow());
-        stage.showAndWait();
     }
 
     @FXML
@@ -229,6 +223,8 @@ public class AddObjectiveController extends Application{
                             }
                             if (result1 == allStrategies.size() && result2 == allStrategies.size()){
                                 showAddedObjectiveAlert();
+                                Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                                stagePrincipal.close();
                             }else{
                                 showFailedRegisterAlert();
                             }

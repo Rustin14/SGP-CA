@@ -29,9 +29,6 @@ public class AddWorkPlanController extends Application {
     private TextField endDateTextField;
 
     @FXML
-    private Button cancelButton;
-
-    @FXML
     private Button saveButton;
 
     @Override
@@ -56,7 +53,6 @@ public class AddWorkPlanController extends Application {
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
-
     }
 
     public void saveButtonEvent () {
@@ -91,8 +87,12 @@ public class AddWorkPlanController extends Application {
                         int rowsAffectedWorkPlanDAO = workPlanDAO.saveWorkPlan(workPlan);
                         if (rowsAffectedWorkPlanDAO == 1){
                             showConfirmationRegisterAlert();
+                            Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                            stagePrincipal.close();
                         }else{
                             showFailedOperationAlert();
+                            Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                            stagePrincipal.close();
                         }
                     }catch (ParseException parseException){
                         AlertBuilder alertBuilder = new AlertBuilder();
@@ -122,12 +122,12 @@ public class AddWorkPlanController extends Application {
     }
 
     public void showExitRegisterWorkPlanAlert() throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitAddBluePrintAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(cancelButton.getScene().getWindow());
-        stage.showAndWait();
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+            stagePrincipal.close();
+        }
     }
 
     public void showConfirmationRegisterAlert() throws IOException{
@@ -140,7 +140,13 @@ public class AddWorkPlanController extends Application {
     }
 
     public boolean checkEmptyTextFields() {
-        return !workPlanKeyTextField.getText().isEmpty();
+        TextField [] textFields = {workPlanKeyTextField, startDateTextField, endDateTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().isEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean checkTextLimit(){

@@ -155,50 +155,73 @@ public class ModifyWorkPlanController extends Application{
     }
 
     public void saveButtonEvent () {
-        WorkPlan workPlan = new WorkPlan();
-        WorkPlanDAO workPlanDAO = new WorkPlanDAO();
-        workPlan.setWorkPlanKey(workPlanKeyTextField.getText());
-        DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
-        String startDateString = startDateTextField.getText();
-        try {
-            Date startDate = setDate.parse(startDateString);
-            workPlan.setStartDate(startDate);
-            String endDateString = endDateTextField.getText();
-            Date endDate = setDate.parse(endDateString);
-            workPlan.setEndingDate(endDate);
-        }catch (ParseException parseException){
+        boolean noEmptyTextField = checkEmptyTextFields();
+        if (!noEmptyTextField){
             AlertBuilder alertBuilder = new AlertBuilder();
-            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+            String errorMessage = "No has llenado todos los campos";
             alertBuilder.errorAlert(errorMessage);
-        }
-        try {
-            workPlanDAO.deleteWorkPlan(workPlanToModify.getWorkPlanKey());
-        }catch (SQLException sqlException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
-            alertBuilder.exceptionAlert(exceptionMessage);
-        }
-        int resultWorkPlanDAO = 0;
-        try {
-            for (int i=0; i<objectiveTitles.size(); i++){
-                workPlan.setObjective(objectiveTitles.get(i));
-                resultWorkPlanDAO += workPlanDAO.saveWorkPlan(workPlan);
-            }
-        }catch (SQLException sqlException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
-            alertBuilder.exceptionAlert(exceptionMessage);
-        }
-        try {
-            if (resultWorkPlanDAO == objectivesAddedToPlan.size()){
-                showSuccessfulUpdateAlert();
+        }else{
+            boolean noExceededLimitText = checkTextLimit();
+            if (!noExceededLimitText){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String errorMessage = "Clave de plan de trabajo muy extensa";
+                alertBuilder.errorAlert(errorMessage);
             }else{
-                showFailedRegisterAlert();
+                boolean validWorkPlanKey = validateWorkPlanKey();
+                if (!validWorkPlanKey){
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    String errorMessage = "La clave solo debe contener letras y/o numeros y/o guion medio o bajo";
+                    alertBuilder.errorAlert(errorMessage);
+                }else{
+                    WorkPlan workPlan = new WorkPlan();
+                    WorkPlanDAO workPlanDAO = new WorkPlanDAO();
+                    workPlan.setWorkPlanKey(workPlanKeyTextField.getText());
+                    DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
+                    String startDateString = startDateTextField.getText();
+                    try {
+                        Date startDate = setDate.parse(startDateString);
+                        workPlan.setStartDate(startDate);
+                        String endDateString = endDateTextField.getText();
+                        Date endDate = setDate.parse(endDateString);
+                        workPlan.setEndingDate(endDate);
+                    }catch (ParseException parseException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+                        alertBuilder.errorAlert(errorMessage);
+                    }
+                    try {
+                        workPlanDAO.deleteWorkPlan(workPlanToModify.getWorkPlanKey());
+                    }catch (SQLException sqlException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
+                    int resultWorkPlanDAO = 0;
+                    try {
+                        for (int i=0; i<objectiveTitles.size(); i++){
+                            workPlan.setObjective(objectiveTitles.get(i));
+                            resultWorkPlanDAO += workPlanDAO.saveWorkPlan(workPlan);
+                        }
+                    }catch (SQLException sqlException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
+                    try {
+                        if (resultWorkPlanDAO == objectivesAddedToPlan.size()){
+                            showSuccessfulUpdateAlert();
+                            Stage stage = (Stage) saveButton.getScene().getWindow();
+                            stage.close();
+                        }else{
+                            showFailedRegisterAlert();
+                        }
+                    }catch (IOException ioException){
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        String exceptionMessage = "No se cargo corectamente el componente del sistema";
+                        alertBuilder.exceptionAlert(exceptionMessage);
+                    }
+                }
             }
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo corectamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
         }
     }
 
@@ -267,12 +290,12 @@ public class ModifyWorkPlanController extends Application{
     }
 
     public void showExitModifyWorkPlanAlert() throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyWorkPlanAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(saveButton.getScene().getWindow());
-        stage.showAndWait();
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
+            stagePrincipal.close();
+        }
     }
 
     public void showFailedRegisterAlert() throws IOException{
@@ -282,6 +305,39 @@ public class ModifyWorkPlanController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(saveButton.getScene().getWindow());
         stage.showAndWait();
+    }
+
+    public boolean checkEmptyTextFields() {
+        TextField [] textFields = {workPlanKeyTextField, startDateTextField, endDateTextField};
+        for (int i=0; i<textFields.length; i++){
+            if (textFields[i].getText().isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkTextLimit(){
+        if (workPlanKeyTextField.getText().length() > 10) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateWorkPlanKey(){
+        String possibleKey = workPlanKeyTextField.getText();
+        boolean validKey = false;
+        for (int i=0; i<possibleKey.length(); i++){
+            if ((possibleKey.charAt(i) >= '0' && possibleKey.charAt(i) >= '9') ||
+                    (possibleKey.charAt(i) >= 'A' && possibleKey.charAt(i) <= 'Z') ||
+                    (possibleKey.charAt(i) >= 'a' && possibleKey.charAt(i) <= 'z') ||
+                    (possibleKey.charAt(i) >= '-' || possibleKey.charAt(i) <= '_')){
+                validKey = true;
+            }else{
+                return false;
+            }
+        }
+        return validKey;
     }
 
     public static void main(String[] args) {

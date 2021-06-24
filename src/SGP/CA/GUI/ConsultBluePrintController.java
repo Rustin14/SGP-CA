@@ -81,14 +81,7 @@ public class ConsultBluePrintController extends Application{
     }
 
     public void exitButtonEvent() {
-        try {
-            showExitConsultConfirmation();
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
-        }
-
+        showExitConsultConfirmation();
     }
 
     public void deleteButtonEvent() {
@@ -97,6 +90,8 @@ public class ConsultBluePrintController extends Application{
             int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
             if (result == 1){
                 showSuccessfulDeleteAlert();
+                Stage stagePrincipal = (Stage) deleteButton.getScene().getWindow();
+                stagePrincipal.close();
             }else{
                 showFailedOperationAlert();
             }
@@ -125,6 +120,8 @@ public class ConsultBluePrintController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(modifyButton.getScene().getWindow());
         stage.showAndWait();
+        Stage stagePrincipal = (Stage) modifyButton.getScene().getWindow();
+        stagePrincipal.close();
     }
 
     public void getBluePrintTitle (InvestigationProjectConsultController stage2Controller, String bluePrintTitle) {
@@ -177,13 +174,13 @@ public class ConsultBluePrintController extends Application{
         stage.showAndWait();
     }
 
-    public void showExitConsultConfirmation() throws IOException{
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitConsultBluePrintAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(deleteButton.getScene().getWindow());
-        stage.showAndWait();
+    public void showExitConsultConfirmation(){
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
+            stagePrincipal.close();
+        }
     }
 
     public static void main(String[] args) {

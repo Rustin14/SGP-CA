@@ -189,6 +189,8 @@ public class ModifyBluePrintController extends Application {
                         try {
                             if (rowsAffectedBluePrintDAO == 1){
                                 showSuccessfulModifyConfirmationAlert();
+                                Stage stage = (Stage) saveButton.getScene().getWindow();
+                                stage.close();
                             }else{
                                 showFailedOperationAlert();
                             }
@@ -237,12 +239,12 @@ public class ModifyBluePrintController extends Application {
     }
 
     public void showExitAlert() throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("FXML/ExitModifyBluePrintAlertFXML.fxml"));
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(cancelButton.getScene().getWindow());
-        stage.showAndWait();
+        AlertBuilder alertBuilder = new AlertBuilder();
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        if (confirmationMessage){
+            Stage stagePrincipal = (Stage) cancelButton.getScene().getWindow();
+            stagePrincipal.close();
+        }
     }
 
     public boolean checkEmptyTextFields() {
