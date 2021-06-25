@@ -110,7 +110,11 @@ public class RegisterEvidenceController implements Initializable {
             alertBuilder.successAlert("¡Registro realizado!");
             Stage stage = (Stage) evidenceTypeCombo.getScene().getWindow();
             stage.close();
-            ConsultEvidenceController.getInstance().populateTable();
+            if(ConsultEvidenceController.getInstance() == null) {
+                ConsultEvidenceResponsibleController.getInstance().populateTable();
+            } else {
+                ConsultEvidenceController.getInstance().populateTable();
+            }
         }
     }
 
