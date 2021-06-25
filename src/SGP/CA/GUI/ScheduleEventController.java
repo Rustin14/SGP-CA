@@ -190,7 +190,12 @@ public class ScheduleEventController implements Initializable {
             alertBuilder.successAlert("¡Registro exitoso!");
             Stage currentStage = (Stage) scheduleButton.getScene().getWindow();
             currentStage.close();
-            ConsultEventsController.getInstance().populateTable();
+            if (ConsultEventsController.getInstance() == null) {
+                ConsultEventsResponsibleController.getInstance().populateTable();
+            } else {
+                ConsultEventsController.getInstance().populateTable();
+            }
+
         }
     }
 

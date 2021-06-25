@@ -77,7 +77,11 @@ public class ModalConsultEvidenceController implements Initializable {
         if (databaseResponse == 1) {
             Stage stage = (Stage) deleteButton.getScene().getWindow();
             stage.close();
-            ConsultEvidenceController.getInstance().populateTable();
+            if (ConsultEvidenceController.getInstance() == null) {
+                ConsultEvidenceResponsibleController.getInstance().populateTable();
+            } else {
+                ConsultEvidenceController.getInstance().populateTable();
+            }
         }
     }
 

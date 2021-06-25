@@ -204,7 +204,11 @@ public class ModifyEventController implements Initializable {
             currentStage.close();
             Stage eventStage = (Stage) ModalConsultEventController.getInstance().deleteButton.getScene().getWindow();
             eventStage.close();
-            ConsultEventsController.getInstance().populateTable();
+            if (ConsultEventsController.getInstance() == null) {
+                ConsultEventsResponsibleController.getInstance().populateTable();
+            } else {
+                ConsultEventsController.getInstance().populateTable();
+            }
         }
     }
 
