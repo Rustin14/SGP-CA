@@ -38,14 +38,7 @@ public class BluePrintDAOTest {
     }
 
     @Test
-    public void searchBluePrintByTitle() throws SQLException {
-        BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle("Test Title");
-
-        Assert.assertEquals("Test Title", bluePrint.getBluePrintTitle());
-    }
-
-    @Test
-    public void modifyBluePrint() throws SQLException, ParseException {
+    public void modifyBluePrintTest() throws SQLException, ParseException {
         BluePrint bluePrint = new BluePrint();
         bluePrint.setAssociatedLgac("No");
         bluePrint.setBluePrintTitle("Test Title2");
@@ -67,7 +60,7 @@ public class BluePrintDAOTest {
     }
 
     @Test
-    public void deleteBluePrintTest() throws SQLException{
+    public void deleteBluePrintTest() throws SQLException {
         String bluePrintTitle = "Test Title2";
 
         int successfulDelete = bluePrintDAO.deleteBluePrint(bluePrintTitle);
@@ -75,45 +68,52 @@ public class BluePrintDAOTest {
     }
 
     @Test
+    public void searchBluePrintByTitleTest() throws SQLException {
+        BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle("Proyecto de prueba tercero");
+
+        Assert.assertEquals("Proyecto de prueba tercero", bluePrint.getBluePrintTitle());
+    }
+
+    @Test
     public void getAllBluePrintsTest() throws SQLException, ParseException {
         BluePrint bluePrint1 = new BluePrint();
-        bluePrint1.setAssociatedLgac("No");
-        bluePrint1.setBluePrintTitle("Test Title");
-        bluePrint1.setCoDirector("Test coDirector");
-        bluePrint1.setDuration(10);
-        bluePrint1.setDescription("Test description");
-        bluePrint1.setModality("Test");
-        bluePrint1.setState("Test");
-        bluePrint1.setStudent("Test");
-        String testDateString = "11/01/2001";
+        bluePrint1.setAssociatedLgac("Ninguna");
+        bluePrint1.setBluePrintTitle("Proyecto de prueba tercero");
+        bluePrint1.setCoDirector("Miriam Benitez");
+        bluePrint1.setDuration(13);
+        bluePrint1.setDescription("Alguien por favor ya detenga esto");
+        bluePrint1.setModality("Nocturno");
+        bluePrint1.setState("Casi terminado");
+        bluePrint1.setStudent("Hector David Madrid Rivera");
+        String testDateString = "25/06/2021";
         Date testDate = new SimpleDateFormat("dd/MM/yyyy").parse(testDateString);
         bluePrint1.setStartDate(testDate);
-        bluePrint1.setDirector("Test director");
-        bluePrint1.setReceptionWorkName("Test receptionWorkName");
-        bluePrint1.setRequirements("Test requirements");
+        bluePrint1.setDirector("Raul Hernandez");
+        bluePrint1.setReceptionWorkName("Titulo de trabajo");
+        bluePrint1.setRequirements("Ser feliz");
 
         BluePrint bluePrint2 = new BluePrint();
         bluePrint2.setAssociatedLgac("No");
-        bluePrint2.setBluePrintTitle("Test Title2");
-        bluePrint2.setCoDirector("Test coDirector2");
-        bluePrint2.setDuration(20);
-        bluePrint2.setDescription("Test description2");
-        bluePrint2.setModality("Test2");
-        bluePrint2.setState("Test2");
-        bluePrint2.setStudent("Test2");
-        String testDateString2 = "22/02/2002";
+        bluePrint2.setBluePrintTitle("Test Title");
+        bluePrint2.setCoDirector("Test coDirector");
+        bluePrint2.setDuration(10);
+        bluePrint2.setDescription("Test description");
+        bluePrint2.setModality("Test");
+        bluePrint2.setState("Test");
+        bluePrint2.setStudent("Test");
+        String testDateString2 = "11/01/2001";
         Date testDate2 = new SimpleDateFormat("dd/MM/yyyy").parse(testDateString2);
         bluePrint2.setStartDate(testDate2);
-        bluePrint2.setDirector("Test director2");
-        bluePrint2.setReceptionWorkName("Test receptionWorkName2");
-        bluePrint2.setRequirements("Test requirements2");
+        bluePrint2.setDirector("Test director");
+        bluePrint2.setReceptionWorkName("Test receptionWorkName");
+        bluePrint2.setRequirements("Test requirements");
 
         ArrayList<BluePrint> allBluePrints = bluePrintDAO.getAllBluePrints();
         int equalObjects = 0;
-        if (bluePrint1.equals(allBluePrints.get(1))){
+        if (bluePrint1.equals(allBluePrints.get(0))) {
             equalObjects+=1;
         }
-        if (bluePrint2.equals(allBluePrints.get(0))){
+        if (bluePrint2.equals(allBluePrints.get(1))) {
             equalObjects+=1;
         }
         Assert.assertEquals(2, equalObjects, 0);

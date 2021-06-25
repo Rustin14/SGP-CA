@@ -34,14 +34,14 @@ public class InvestigationProjectDAOTest {
     }
 
     @Test
-    public void searchInvestigationProjectByTitle()throws SQLException {
-        InvestigationProject investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle("Test Title");
+    public void searchInvestigationProjectByTitleTest()throws SQLException {
+        InvestigationProject investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle("Proyecto de principios de construccion de software");
 
-        Assert.assertEquals("Test Title", investigationProject.getProjectTitle());
+        Assert.assertEquals("Proyecto de principios de construccion de software", investigationProject.getProjectTitle());
     }
 
     @Test
-    public void modifyInvestigationProject () throws SQLException, ParseException {
+    public void modifyInvestigationProjectTest() throws SQLException, ParseException {
         InvestigationProject investigationProject = new InvestigationProject();
         investigationProject.setProjectTitle("Test Title2");
         investigationProject.setAssociatedLgac("No");
@@ -68,7 +68,7 @@ public class InvestigationProjectDAOTest {
     }
 
     @Test
-    public void getAllInvestigationProjectsTest () throws SQLException, ParseException{
+    public void getAllInvestigationProjectsTest () throws SQLException, ParseException {
         InvestigationProject investigationProject1 = new InvestigationProject();
         investigationProject1.setProjectTitle("Test Title2");
         investigationProject1.setAssociatedLgac("No");
@@ -83,24 +83,24 @@ public class InvestigationProjectDAOTest {
         investigationProject1.setDescription("Test description2");
 
         InvestigationProject investigationProject2 = new InvestigationProject();
-        investigationProject2.setProjectTitle("Test Title");
-        investigationProject2.setAssociatedLgac("No");
-        investigationProject2.setParticipants("Test participants");
-        String testStartDateString2 = "11/01/2001";
+        investigationProject2.setProjectTitle("Proyecto de principios de construccion de software");
+        investigationProject2.setAssociatedLgac("Ninguna");
+        investigationProject2.setParticipants("Hector David Juan Carlos Miriam Benitez");
+        String testStartDateString2 = "02/03/2021";
         Date testStartDate2 = new SimpleDateFormat("dd/MM/yyyy").parse(testStartDateString2);
         investigationProject2.setStartDate(testStartDate2);
-        String testEndingDateString2 = "11/01/2011";
+        String testEndingDateString2 = "03/07/2032";
         Date testEndingDate2 = new SimpleDateFormat("dd/MM/yyyy").parse(testEndingDateString2);
         investigationProject2.setEstimatedEndDate(testEndingDate2);
-        investigationProject2.setProjectManager("Test project manager");
-        investigationProject2.setDescription("Test description");
+        investigationProject2.setProjectManager("Hector David Madrid Rivera");
+        investigationProject2.setDescription("Estoy cansado de todo");
 
         ArrayList<InvestigationProject> allInvestigationProjects = investigationProjectDAO.getAllInvestigationProjects();
         int equalObjects = 0;
-        if (investigationProject2.equals(allInvestigationProjects.get(1))){
+        if (investigationProject2.equals(allInvestigationProjects.get(0))) {
             equalObjects+=1;
         }
-        if (investigationProject1.equals(allInvestigationProjects.get(0))){
+        if (investigationProject1.equals(allInvestigationProjects.get(1))) {
             equalObjects+=1;
         }
         Assert.assertEquals(2,equalObjects,0);
