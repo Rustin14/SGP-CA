@@ -1,6 +1,8 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.HashPasswords;
 import SGP.CA.Domain.BluePrint;
+import SGP.CA.Domain.Member;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,13 +11,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import SGP.CA.DataAccess.BluePrintDAO;
+import javafx.stage.StageStyle;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 public class ConsultBluePrintController extends Application{
 
@@ -87,26 +93,35 @@ public class ConsultBluePrintController extends Application{
     }
 
     public void deleteButtonEvent() {
-        BluePrintDAO bluePrintDAO = new BluePrintDAO();
-        try {
-            int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
-            if (result == 1){
-                showSuccessfulDeleteAlert();
-                Stage stagePrincipal = (Stage) deleteButton.getScene().getWindow();
-                stagePrincipal.close();
-            }else{
-                showFailedOperationAlert();
+        HashPasswords hashPasswords = new HashPasswords();
+        String possibleCorrectPassword = requestPassword();
+        Member memberLogged = Member.signedMember;
+        boolean validPassword  = hashPasswords.isValid(possibleCorrectPassword, memberLogged.getPassword());
+        if (validPassword){
+            BluePrintDAO bluePrintDAO = new BluePrintDAO();
+            try {
+                int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
+                if (result == 1){
+                    showSuccessfulDeleteAlert();
+                    Stage stagePrincipal = (Stage) deleteButton.getScene().getWindow();
+                    stagePrincipal.close();
+                }else{
+                    showFailedOperationAlert();
+                }
+            }catch (SQLException sqlException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+                alertBuilder.exceptionAlert(exceptionMessage);
+            }catch (IOException ioException){
+                AlertBuilder alertBuilder = new AlertBuilder();
+                String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                alertBuilder.exceptionAlert(exceptionMessage);
             }
-        }catch (SQLException sqlException){
+        }else{
             AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
-            alertBuilder.exceptionAlert(exceptionMessage);
-        }catch (IOException ioException){
-            AlertBuilder alertBuilder = new AlertBuilder();
-            String exceptionMessage = "No se cargo correctamente el componente del sistema";
-            alertBuilder.exceptionAlert(exceptionMessage);
+            String errorMessage = "La contraseña ingresada no es correcta";
+            alertBuilder.errorAlert(errorMessage);
         }
-
     }
 
     public void modifyButtonEvent () {
@@ -187,6 +202,20 @@ public class ConsultBluePrintController extends Application{
         if (confirmationMessage){
             Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
             stagePrincipal.close();
+        }
+    }
+
+    public String requestPassword(){
+        TextInputDialog passwordDialog = new TextInputDialog();
+        passwordDialog.setTitle("Solicitud de contraseña");
+        passwordDialog.setHeaderText("Ingresa tu contraseña para continuar");
+        passwordDialog.setContentText("Contraseña:");
+        passwordDialog.initStyle(StageStyle.UTILITY);
+        Optional<String> responseReceived = passwordDialog.showAndWait();
+        if (responseReceived.isPresent()){
+            return responseReceived.get();
+        }else{
+            return null;
         }
     }
 
