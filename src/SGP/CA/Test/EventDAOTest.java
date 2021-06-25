@@ -29,6 +29,7 @@ public class EventDAOTest {
         event.setEventDate(utilEventDate);
         event.setResponsableName("Carlos Gabriel Flores Lira");
         event.setEventHour("13:30");
+        event.setIdMember(1);
         int successfulSave = eventDAO.saveEvent(event);
 
         Assert.assertEquals(1, successfulSave, 0);
@@ -37,7 +38,7 @@ public class EventDAOTest {
     @Test
     public void modifyEventTest () throws SQLException {
         Event event = new Event();
-        event.setIdEvent(13);
+        event.setIdEvent(20);
         event.setEventName("Examen Recepcional");
         event.setEventPlace("Auditorio de la FEI");
         LocalDate registrationDate = LocalDate.of(2021, 6, 23);
@@ -59,7 +60,7 @@ public class EventDAOTest {
 
     @Test
     public void deleteEventTest () throws SQLException {
-        int successfulTest = eventDAO.deleteEvent(13);
+        int successfulTest = eventDAO.deleteEvent(20);
 
         Assert.assertEquals(1, successfulTest, 0);
     }

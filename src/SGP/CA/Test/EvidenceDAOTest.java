@@ -58,8 +58,8 @@ public class EvidenceDAOTest {
 
     @Test
     public void searchEvidenceByIDEvidenceTest() throws SQLException {
-        Evidence evidence = evidenceDAO.searchEvidenceByIDEvidence(7);
-        Assert.assertEquals(7, evidence.getIdEvidence(), 0);
+        Evidence evidence = evidenceDAO.searchEvidenceByIDEvidence(1);
+        Assert.assertEquals(1, evidence.getIdEvidence(), 0);
     }
 
     @Test

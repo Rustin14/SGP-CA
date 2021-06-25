@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,13 +21,16 @@ public class MemberDAOTest {
         member.setName("Alan");
         member.setFirstLastName("Montano");
         member.setSecondLastName("Rodríguez");
-        member.setDateOfBirth(new Date(2000, 6, 19));
+        LocalDate dateOfBirth = LocalDate.of(2000, 6, 23);
+        java.util.Date utilDateOfBirth = new Date();
+        utilDateOfBirth.from(dateOfBirth.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        member.setDateOfBirth(utilDateOfBirth);
         member.setIdLGAC(1);
         member.setPhoneNumber("2281982134");
-        member.setCURP("CORK980610MVZNMN08");
+        member.setCURP("CORK980610MVZNMN05");
         member.setMaximumStudyLevel("Licenciatura");
         member.setMaximumStudyLevelInstitution("UV");
-        member.setEmail("alanmontanor@uv.mx");
+        member.setEmail("alanmontanorodriguez@uv.mx");
         member.setPassword("123456");
         member.setIsResponsible(0);
         int successfulTest = memberDAO.saveMember(member);
@@ -41,7 +46,10 @@ public class MemberDAOTest {
         member.setName("Alan");
         member.setFirstLastName("Montano");
         member.setSecondLastName("Rodríguez");
-        member.setDateOfBirth(new Date(2000, 6, 19));
+        LocalDate dateOfBirth = LocalDate.of(2000, 6, 23);
+        java.util.Date utilDateOfBirth = new Date();
+        utilDateOfBirth.from(dateOfBirth.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        member.setDateOfBirth(utilDateOfBirth);
         member.setIdLGAC(1);
         member.setPhoneNumber("2281982134");
         member.setCURP("CORK980610MVZNMN08");
@@ -63,11 +71,14 @@ public class MemberDAOTest {
     @Test
     public void modifyMemberSuccessfulTest () throws SQLException{
         Member member = new Member();
-        member.setIdMember(4);
+        member.setIdMember(8);
         member.setName("Alan");
         member.setFirstLastName("Montano");
         member.setSecondLastName("Jiménez");
-        member.setDateOfBirth(new Date(2000, 6, 19));
+        LocalDate dateOfBirth = LocalDate.of(2000, 6, 23);
+        java.util.Date utilDateOfBirth = new Date();
+        utilDateOfBirth.from(dateOfBirth.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        member.setDateOfBirth(utilDateOfBirth);
         member.setIdLGAC(1);
         member.setPhoneNumber("2281982134");
         member.setCURP("CORK980610MVZNMN08");
@@ -83,21 +94,21 @@ public class MemberDAOTest {
 
     @Test
     public void deleteMemberTest() throws SQLException {
-        int successfulTest = memberDAO.deleteMember(4);
+        int successfulTest = memberDAO.deleteMember(8);
 
         Assert.assertEquals(1, successfulTest, 0);
     }
 
     @Test
     public void searchMemberByNameTest () throws SQLException {
-        Member member = memberDAO.searchMemberByName("Gabriel");
+        Member member = memberDAO.searchMemberByName("Michael ");
 
-        Assert.assertEquals("Gabriel", member.getName());
+        Assert.assertEquals("Michael ", member.getName());
     }
 
     @Test
     public void getAllMembersTest () throws SQLException {
         ArrayList<Member> allMembers = memberDAO.getAllMembers();
-        Assert.assertEquals("Carlos Gabriel", allMembers.get(0).getName());
+        Assert.assertEquals("Michael ", allMembers.get(0).getName());
     }
 }

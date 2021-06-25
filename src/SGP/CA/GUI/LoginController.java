@@ -10,10 +10,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -37,6 +41,7 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getActiveMembers();
+        setTextLimit();
     }
 
     public void getActiveMembers() {
@@ -58,6 +63,15 @@ public class LoginController implements Initializable {
             if (allMembers.get(i).getActive() == 1) {
                 allActiveMembers.add(allMembers.get(i));
             }
+        }
+    }
+
+    public void setTextLimit() {
+        final int MAX_CHARS = 252;
+        List<TextField> textFields = Arrays.asList(emailTextField, passwordTextField);
+        for (TextField field : textFields) {
+            field.setTextFormatter(new TextFormatter<String>(change ->
+                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
         }
     }
 
