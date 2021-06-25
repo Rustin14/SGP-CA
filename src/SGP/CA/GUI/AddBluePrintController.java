@@ -62,7 +62,7 @@ public class AddBluePrintController extends Application {
     private TextField directorTextField;
 
         @Override
-        public void start(Stage primaryStage){
+        public void start(Stage primaryStage) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("FXML/AddBluePrintFXML.fxml"));
                 primaryStage.setTitle("Registrar anteproyecto");
@@ -75,7 +75,7 @@ public class AddBluePrintController extends Application {
             }
         }
 
-        public void exitButtonEvent () {
+        public void exitButtonEvent() {
             AlertBuilder alertBuilder = new AlertBuilder();
             boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir del proyecto?");
             if (confirmationMessage){
@@ -84,31 +84,31 @@ public class AddBluePrintController extends Application {
             }
         }
 
-        public void saveButtonEvent () {
+        public void saveButtonEvent() {
             boolean noEmptyTextFields = checkEmptyTextFields();
-            if (!noEmptyTextFields){
+            if(!noEmptyTextFields) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String errorMessage = "No has llenado todos los campos";
                 alertBuilder.errorAlert(errorMessage);
-            }else{
+            }else {
                 boolean noExceededLimitSize = checkTextLimit();
-                if (!noExceededLimitSize){
+                if(!noExceededLimitSize) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     String errorMessage = "Limite de texto excedido en algun campo";
                     alertBuilder.errorAlert(errorMessage);
-                }else{
+                }else {
                     boolean validDurationField = validateDurationField();
-                    if (!validDurationField){
+                    if(!validDurationField) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String errorMessage = "Debes ingresar solo numeros en el campo de texto de duracion";
                         alertBuilder.errorAlert(errorMessage);
-                    }else{
+                    }else {
                         boolean validStringTextFields = validateStringTextFields();
-                        if (!validStringTextFields){
+                        if(!validStringTextFields) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String errorMessage = "Solo debes ingresar letras en los campos que no sean duracion y fecha de inicio";
                             alertBuilder.errorAlert(errorMessage);
-                        }else{
+                        }else {
                             BluePrint bluePrint = new BluePrint();
                             BluePrintDAO bluePrintDAO = new BluePrintDAO();
                             bluePrint.setBluePrintTitle(bluePrintTitleField.getText());
@@ -127,22 +127,22 @@ public class AddBluePrintController extends Application {
                                 Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
                                 bluePrint.setStartDate(startDate);
                                 int action = bluePrintDAO.saveBluePrint(bluePrint);
-                                if (action == 1){
+                                if (action == 1) {
                                     showConfirmationAlert();
                                     Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
                                     stagePrincipal.close();
-                                }else{
+                                }else {
                                     showFailedRegisterAlert();
                                 }
-                            }catch (ParseException parseException){
+                            }catch (ParseException exParseException) {
                                 AlertBuilder alertBuilder = new AlertBuilder();
                                 String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
                                 alertBuilder.errorAlert(errorMessage);
-                            }catch (SQLException sqlException){
+                            }catch (SQLException sqlException) {
                                 AlertBuilder alertBuilder = new AlertBuilder();
                                 String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
                                 alertBuilder.exceptionAlert(exceptionMessage);
-                            }catch (IOException ioException){
+                            }catch (IOException ioException) {
                                 AlertBuilder alertBuilder = new AlertBuilder();
                                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                                 alertBuilder.exceptionAlert(exceptionMessage);
@@ -163,7 +163,7 @@ public class AddBluePrintController extends Application {
         stage.showAndWait();
     }
 
-    public void showFailedRegisterAlert() throws IOException{
+    public void showFailedRegisterAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -187,17 +187,17 @@ public class AddBluePrintController extends Application {
         return true;
     }
 
-    public boolean checkTextLimit(){
+    public boolean checkTextLimit() {
         int [] limitTextSizes = {255, 255, 50, 50, 30,50, 60, 120, 120};
         TextField [] textFields = {bluePrintTitleField, lgacField,
                 stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
                 receptionWorkName, requirementsTextField};
-        for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().length() > limitTextSizes[i]){
+        for (int i=0; i<textFields.length; i++) {
+            if (textFields[i].getText().length() > limitTextSizes[i]) {
                 return false;
             }
         }
-        if (descriptionField.getText().length() > 255){
+        if (descriptionField.getText().length() > 255) {
             return false;
         }
         return true;
@@ -207,16 +207,16 @@ public class AddBluePrintController extends Application {
         return durationField.getText().matches("[0-9]*");
     }
 
-    public boolean validateStringTextFields (){
+    public boolean validateStringTextFields () {
         TextField [] textFields = {bluePrintTitleField, lgacField,
                 stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
                 receptionWorkName, requirementsTextField};
-        for(int i=0; i< textFields.length; i++){
-            if (!textFields[i].getText().matches("^[a-zA-Z\\s]*$")){
+        for(int i=0; i< textFields.length; i++) {
+            if (!textFields[i].getText().matches("^[a-zA-Z\\s]*$")) {
                 return false;
             }
         }
-        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")){
+        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")) {
             return false;
         }
         return true;

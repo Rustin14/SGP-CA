@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AddObjectiveController extends Application{
+public class AddObjectiveController extends Application {
 
     @FXML
     private TextField objectiveTitleTextField;
@@ -77,7 +77,7 @@ public class AddObjectiveController extends Application{
             Parent root = FXMLLoader.load(getClass().getResource("FXML/AddObjectiveFXML.fxml"));
             primaryStage.setTitle("añadir objetivo ");
             primaryStage.setScene(new Scene(root, 900, 600));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -88,19 +88,19 @@ public class AddObjectiveController extends Application{
     @FXML
     public void addButtonEvent() {
         boolean noEmptyTextFields = checkEmptyStrategyTextFields();
-        if (!noEmptyTextFields){
+        if (!noEmptyTextFields) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String errorMessage = "debes llenar los campos antes de añadir una estrategia";
             alertBuilder.errorAlert(errorMessage);
-        }else{
+        }else {
             boolean noExceededLimits = checkStrategyTextLimit();
-            if (!noExceededLimits){
+            if (!noExceededLimits) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String errorMessage = "Alguno de los campos excede el limite de texto";
                 alertBuilder.errorAlert(errorMessage);
-            }else{
+            }else {
                 boolean validStrategyTextFields = valideStrategyTextFields();
-                if (!validStrategyTextFields){
+                if (!validStrategyTextFields) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     String errorMessage = "Solo el campo de numero requiere numero los demas solo letras";
                     alertBuilder.errorAlert(errorMessage);
@@ -111,7 +111,7 @@ public class AddObjectiveController extends Application{
                     strategy.setGoal(addGoalTextField.getText());
                     strategy.setAction(addActionTextField.getText());
                     strategy.setResult(addResultTextField.getText());
-                    if (!allStrategies.contains(strategy)){
+                    if (!allStrategies.contains(strategy)) {
                         allStrategies.add(strategy);
                         allStrategiesTitles.add(strategy.getStrategy());
                         strategyComboBox.setItems(allStrategiesTitles);
@@ -125,43 +125,43 @@ public class AddObjectiveController extends Application{
     public void cancelButtonEvent() {
         AlertBuilder alertBuilder = new AlertBuilder();
         boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
-        if (confirmationMessage){
+        if (confirmationMessage) {
             Stage stagePrincipal = (Stage) cancelButton.getScene().getWindow();
             stagePrincipal.close();
         }
     }
 
     @FXML
-    public void deleteButtonEvent () {
+    public void deleteButtonEvent() {
         if (strategyComboBox.getSelectionModel().isEmpty()){
             try {
                 showNoStrategiesAlert();
-            }catch (IOException ioException){
+            }catch (IOException exIoException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                 alertBuilder.exceptionAlert(exceptionMessage);
             }
-        }else{
-            if (allStrategiesTitles.size() == 1){
+        }else {
+            if (allStrategiesTitles.size() == 1) {
                 try {
                     showNoStrategiesAlert();
-                }catch (IOException ioException){
+                }catch (IOException ioException) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     String exceptionMessage = "No se cargo correctamente el componente del sistema";
                     alertBuilder.exceptionAlert(exceptionMessage);
                 }
-            }else{
+            }else {
                 int indexSelected = strategyComboBox.getSelectionModel().getSelectedIndex();
-                if (indexSelected == 0){
+                if (indexSelected == 0) {
                     ObservableList<String> auxiliaryList = FXCollections.observableArrayList();
                     ArrayList<Strategy> auxiliaryStrategiesList = new ArrayList<>();
-                    for (int i=1; i<allStrategiesTitles.size(); i++){
+                    for (int i=1; i<allStrategiesTitles.size(); i++) {
                         auxiliaryList.add(allStrategiesTitles.get(i));
                         auxiliaryStrategiesList.add(allStrategies.get(i));
                     }
                     allStrategiesTitles = auxiliaryList;
                     allStrategies = auxiliaryStrategiesList;
-                }else{
+                }else {
                     allStrategies.remove(indexSelected);
                     allStrategiesTitles.remove(indexSelected);
                 }
@@ -177,37 +177,37 @@ public class AddObjectiveController extends Application{
     }
 
     @FXML
-    public void saveButtonEvent () {
-        if (objectiveTitleTextField.getText().isEmpty() || descriptionTextArea.getText().isEmpty()){
+    public void saveButtonEvent() {
+        if (objectiveTitleTextField.getText().isEmpty() || descriptionTextArea.getText().isEmpty()) {
             try {
                 showMissingInformationAlert();
-            }catch (IOException ioException){
+            }catch (IOException ioException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                 alertBuilder.exceptionAlert(exceptionMessage);
             }
-        }else{
+        }else {
             boolean noExceededLimitText = checkObjectiveTextLimit();
-            if (!noExceededLimitText){
+            if (!noExceededLimitText) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "El objetivo o la descripcion es demasiado largo";
                 alertBuilder.exceptionAlert(exceptionMessage);
-            }else{
+            }else {
                 boolean validObjectiveTextFields = validateObjectiveTextFields();
                 if (!validObjectiveTextFields) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     String exceptionMessage = "Solo debes ingresar letras en el titulo y la descripcion";
                     alertBuilder.exceptionAlert(exceptionMessage);
-                }else{
-                    if (allStrategies.size() == 0){
+                }else {
+                    if (allStrategies.size() == 0) {
                         try {
                             showMissingStrategiesAlert();
-                        }catch (IOException ioException){
+                        }catch (IOException ioException) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "No se cargo correctamente el componente del sistema";
                             alertBuilder.exceptionAlert(exceptionMessage);
                         }
-                    }else{
+                    }else {
                         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
                         StrategyDAO strategyDAO = new StrategyDAO();
                         Objective objective = new Objective();
@@ -216,7 +216,7 @@ public class AddObjectiveController extends Application{
                         int result1 = 0;
                         int result2 = 0;
                         try {
-                            for (int i = 0; i < allStrategies.size(); i++){
+                            for (int i = 0; i < allStrategies.size(); i++) {
                                 objective.setStrategy(allStrategies.get(i).getStrategy());
                                 result1 += objectiveDAO.saveObjective(objective);
                                 result2 += strategyDAO.saveStrategy(allStrategies.get(i));
@@ -225,14 +225,14 @@ public class AddObjectiveController extends Application{
                                 showAddedObjectiveAlert();
                                 Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
                                 stagePrincipal.close();
-                            }else{
+                            }else {
                                 showFailedRegisterAlert();
                             }
-                        }catch (SQLException sqlException){
+                        }catch (SQLException sqlException) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
                             alertBuilder.exceptionAlert(exceptionMessage);
-                        }catch (IOException ioException){
+                        }catch (IOException ioException) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "No se cargo correctamente el componente del sistema";
                             alertBuilder.exceptionAlert(exceptionMessage);
@@ -248,12 +248,12 @@ public class AddObjectiveController extends Application{
         String strategySelected = strategyComboBox.getSelectionModel().getSelectedItem();
         int indexSelected = allStrategiesTitles.indexOf(strategySelected);
         Strategy strategy;
-        if (indexSelected == 0){
+        if (indexSelected == 0) {
             strategy = allStrategies.get(0);
-        }else{
+        }else {
             int index = 0;
-            for (int i=0; i<allStrategies.size(); i++){
-                if (allStrategies.get(i).getStrategy().equals(strategySelected)){
+            for (int i=0; i<allStrategies.size(); i++) {
+                if (allStrategies.get(i).getStrategy().equals(strategySelected)) {
                     index = i;
                     break;
                 }
@@ -276,7 +276,7 @@ public class AddObjectiveController extends Application{
         stage.showAndWait();
     }
 
-    public void showMissingInformationAlert() throws IOException{
+    public void showMissingInformationAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveMissingInformationAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -285,7 +285,7 @@ public class AddObjectiveController extends Application{
         stage.showAndWait();
     }
 
-    public void showMissingStrategiesAlert() throws IOException{
+    public void showMissingStrategiesAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ObjectiveMissingStrategiesAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -294,7 +294,7 @@ public class AddObjectiveController extends Application{
         stage.showAndWait();
     }
 
-    public void showFailedRegisterAlert() throws IOException{
+    public void showFailedRegisterAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -303,7 +303,7 @@ public class AddObjectiveController extends Application{
         stage.showAndWait();
     }
 
-    public void showNoStrategiesAlert() throws IOException{
+    public void showNoStrategiesAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/NoStrategiesAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -312,17 +312,17 @@ public class AddObjectiveController extends Application{
         stage.showAndWait();
     }
 
-    public boolean checkObjectiveTextLimit(){
-        if (objectiveTitleTextField.getText().length() > 100){
+    public boolean checkObjectiveTextLimit() {
+        if (objectiveTitleTextField.getText().length() > 100) {
             return false;
         }
-        if (descriptionTextArea.getText().length() > 255){
+        if (descriptionTextArea.getText().length() > 255) {
             return false;
         }
         return true;
     }
 
-    public boolean validateObjectiveTextFields () {
+    public boolean validateObjectiveTextFields() {
         if (!objectiveTitleTextField.getText().matches("[a-zA-Z\\s]*$")) {
             return false;
         }
@@ -332,35 +332,35 @@ public class AddObjectiveController extends Application{
         return true;
     }
 
-    public boolean valideStrategyTextFields(){
+    public boolean valideStrategyTextFields() {
         TextField [] textFields = {addStrategyTextField, addGoalTextField,
             addActionTextField, addResultTextField};
-        for(int i=0; i< textFields.length; i++){
-            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
+        for(int i=0; i< textFields.length; i++) {
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")) {
                 return false;
             }
         }
-        if (!addNumberTextField.getText().matches("[0-9]*")){
+        if (!addNumberTextField.getText().matches("[0-9]*")) {
             return false;
         }
         return true;
     }
 
-    public boolean checkStrategyTextLimit(){
+    public boolean checkStrategyTextLimit() {
         int [] limitTextSizes = {255, 100, 255, 255};
         TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField, addResultTextField};
-        for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().length() > limitTextSizes[i]){
+        for (int i=0; i<textFields.length; i++) {
+            if (textFields[i].getText().length() > limitTextSizes[i]) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean checkEmptyStrategyTextFields (){
+    public boolean checkEmptyStrategyTextFields() {
         TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField, addResultTextField};
         for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().isEmpty()){
+            if (textFields[i].getText().isEmpty()) {
                 return false;
             }
         }

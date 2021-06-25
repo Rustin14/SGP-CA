@@ -23,7 +23,7 @@ public class ConfirmationDeleteBluePrintAlertController extends Application {
         primaryStage.show();
     }
 
-    public void okButtonEvent(){
+    public void okButtonEvent() {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }

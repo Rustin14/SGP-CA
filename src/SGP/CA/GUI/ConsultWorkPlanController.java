@@ -22,7 +22,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class ConsultWorkPlanController extends Application{
+public class ConsultWorkPlanController extends Application {
 
     @FXML
     private ComboBox<String> objectivesComboBox;
@@ -58,7 +58,7 @@ public class ConsultWorkPlanController extends Application{
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml"));
             primaryStage.setTitle("Consultar plan de trabajo");
             primaryStage.setScene(new Scene(root, 1000, 600));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -67,15 +67,15 @@ public class ConsultWorkPlanController extends Application{
     }
 
     @FXML
-    public void initialize () {
+    public void initialize() {
         consultWorkPlanController = this;
         String memberName = member.getName()+ " " + member.getFirstLastName()+ " " + member.getSecondLastName();
         nameTextField.setText(memberName);
         int responsible = member.getIsResponsible();
         String charge;
-        if (responsible == 1 || responsible == 2){
+        if (responsible == 1 || responsible == 2) {
             charge = "Responsable";
-        }else{
+        }else {
             charge = "Miembro";
         }
         chargeTextField.setText(charge);
@@ -83,18 +83,18 @@ public class ConsultWorkPlanController extends Application{
         searchAllWorkPlans();
     }
 
-    public void searchAllWorkPlans () {
+    public void searchAllWorkPlans() {
         WorkPlanDAO workPlanDAO = new WorkPlanDAO();
         try {
             workPlans = workPlanDAO.getAllWorkPlans();
-        }catch (SQLException sqlException){
+        }catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
         ArrayList<WorkPlan>auxWorkPlans = new ArrayList<>();
-        for(WorkPlan workPlan: workPlans){
-            if (!auxWorkPlans.contains(workPlan)){
+        for(WorkPlan workPlan: workPlans) {
+            if (!auxWorkPlans.contains(workPlan)) {
                 DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
                 String starDate = setDate.format(workPlan.getStartDate().getTime());
                 String endingDate = setDate.format(workPlan.getEndingDate().getTime());
@@ -108,8 +108,8 @@ public class ConsultWorkPlanController extends Application{
             }
         }
         ObservableList<String> noRepeatedPlansList = FXCollections.observableArrayList();
-        for (int i=0; i< workPlanPeriods.size(); i++){
-            if (!noRepeatedPlansList.contains(workPlanPeriods.get(i))){
+        for (int i=0; i< workPlanPeriods.size(); i++) {
+            if (!noRepeatedPlansList.contains(workPlanPeriods.get(i))) {
                 noRepeatedPlansList.add(workPlanPeriods.get(i));
             }
         }
@@ -118,7 +118,7 @@ public class ConsultWorkPlanController extends Application{
         workPlanComboBox.setItems(workPlanPeriods);
     }
 
-    public void workPlanComboBoxEvent(){
+    public void workPlanComboBoxEvent() {
         String selectedOption = workPlanComboBox.getSelectionModel().getSelectedItem();
         try {
             if (selectedOption.equals("+Añadir plan de trabajo")) {
@@ -141,21 +141,21 @@ public class ConsultWorkPlanController extends Application{
                 }
                 objectivesComboBox.setItems(objectiveTitles);
             }
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo corectamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
-        }catch(SQLException sqlException){
+        }catch(SQLException sqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
-        }catch (NullPointerException nullPointerException){
+        }catch (NullPointerException nullPointerException) {
             workPlanComboBox.getSelectionModel().clearSelection();
             workPlanComboBox.setPromptText("Selecciona un plan");
         }
     }
 
-    public void objectivesComboBoxEvent(){
+    public void objectivesComboBoxEvent() {
         String titleSelected = objectivesComboBox.getSelectionModel().getSelectedItem();
         objectiveSelectedButton.setText(titleSelected);
     }
@@ -164,12 +164,12 @@ public class ConsultWorkPlanController extends Application{
         if (objectiveSelectedButton.getText() == ""){
             try {
                 showMissingObjectiveAlert();
-            }catch (IOException ioException){
+            }catch (IOException exIoException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                 alertBuilder.exceptionAlert(exceptionMessage);
             }
-        }else{
+        }else {
             Stage stage2 = new Stage();
             FXMLLoader loader = new FXMLLoader();
             try {
@@ -181,7 +181,7 @@ public class ConsultWorkPlanController extends Application{
                 stage2.alwaysOnTopProperty();
                 stage2.initModality(Modality.APPLICATION_MODAL);
                 stage2.showAndWait();
-            }catch (IOException ioException){
+            }catch (IOException exIoException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                 alertBuilder.exceptionAlert(exceptionMessage);
@@ -195,19 +195,19 @@ public class ConsultWorkPlanController extends Application{
         if (workPlanComboBox.getSelectionModel().getSelectedItem() == null || selectedOption.equals("+Añadir plan de trabajo")){
             try {
                 showMissingWorkPlanAlert();
-            }catch (IOException ioException){
+            }catch (IOException ioException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                 alertBuilder.exceptionAlert(exceptionMessage);
             }
-        }else{
+        }else {
             WorkPlan workPlan = workPlans.get(indexSelected);
             Stage stage2 = new Stage();
             FXMLLoader loader = new FXMLLoader();
             AnchorPane root = new AnchorPane();
             try {
                 root = loader.load(getClass().getResource("FXML/ModifyWorkPlanFXML.fxml").openStream());
-            }catch (IOException ioException){
+            }catch (IOException exIoException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                 alertBuilder.exceptionAlert(exceptionMessage);
@@ -224,7 +224,7 @@ public class ConsultWorkPlanController extends Application{
         }
     }
 
-    public void showMissingObjectiveAlert() throws IOException{
+    public void showMissingObjectiveAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/MissingObjectiveConsultWorkPlanAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -233,7 +233,7 @@ public class ConsultWorkPlanController extends Application{
         stage.showAndWait();
     }
 
-    public void showMissingWorkPlanAlert() throws IOException{
+    public void showMissingWorkPlanAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/MissingWorkPlanConsultWorkPlanAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -247,7 +247,7 @@ public class ConsultWorkPlanController extends Application{
         if(!ScreenController.instance.isScreenOnMap("consultMember")) {
             try {
                 ScreenController.instance.addScreen("consultMember", FXMLLoader.load(getClass().getResource("FXML/ConsultMemberFXML.fxml")));
-            } catch (IOException ioException) {
+            } catch (IOException exIoException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
         }
@@ -259,7 +259,7 @@ public class ConsultWorkPlanController extends Application{
         if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
             try {
                 ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceResponsibleFXML.fxml")));
-            } catch (IOException ioException) {
+            } catch (IOException exIoException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
         }
@@ -271,7 +271,7 @@ public class ConsultWorkPlanController extends Application{
         if(!ScreenController.instance.isScreenOnMap("consultEvents")) {
             try {
                 ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsResponsibleFXML.fxml")));
-            } catch (IOException ioException) {
+            } catch (IOException exIoException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
         }

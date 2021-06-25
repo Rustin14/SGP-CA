@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class NoStrategyModifiedAlertController extends Application{
+public class NoStrategyModifiedAlertController extends Application {
 
     @FXML
     private Button okButton;
@@ -23,7 +23,7 @@ public class NoStrategyModifiedAlertController extends Application{
         primaryStage.show();
     }
 
-    public void okButtonEvent(){
+    public void okButtonEvent() {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }

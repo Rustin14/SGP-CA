@@ -84,7 +84,7 @@ public class ModifyBluePrintController extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyBluePrintFXML.fxml"));
             primaryStage.setTitle("Modificar anteproyecto ");
             primaryStage.setScene(new Scene(root, 900, 600));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -98,7 +98,7 @@ public class ModifyBluePrintController extends Application {
         BluePrint bluePrint = new BluePrint();
         try {
             bluePrint = bluePrintDAO.searchBluePrintByTitle(titleSelected);
-        }catch (SQLException sqlException){
+        }catch (SQLException sqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -121,7 +121,7 @@ public class ModifyBluePrintController extends Application {
     public void cancelButtonEvent() {
         try {
             showExitAlert();
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -131,29 +131,29 @@ public class ModifyBluePrintController extends Application {
 
     public void saveButtonEvent() {
         boolean noEmptyTextField = checkEmptyTextFields();
-        if (!noEmptyTextField){
+        if (!noEmptyTextField) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String errorMessage = "No has llenado todos los campos";
             alertBuilder.errorAlert(errorMessage);
-        }else{
+        }else {
             boolean noExceededLimitText = checkTextLimit();
-            if (!noExceededLimitText){
+            if (!noExceededLimitText) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String errorMessage = "Limite de texto excedido en algun campo";
                 alertBuilder.errorAlert(errorMessage);
-            }else{
+            }else {
                 boolean validDurationField = validateDurationField();
-                if (!validDurationField){
+                if (!validDurationField) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     String errorMessage = "Debes ingresar solo numeros en el campo de texto de duracion";
                     alertBuilder.errorAlert(errorMessage);
-                }else{
+                }else {
                     boolean validStringFields = validateStringTextFields();
-                    if (!validStringFields){
+                    if (!validStringFields) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String errorMessage = "Solo debes ingresar letras en los campos que no sean duracion y fecha de inicio";
                         alertBuilder.errorAlert(errorMessage);
-                    }else{
+                    }else {
                         DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
                         String titleSelected = bluePrintsComboBox.getSelectionModel().getSelectedItem();
                         BluePrint bluePrint = new BluePrint();
@@ -162,7 +162,7 @@ public class ModifyBluePrintController extends Application {
                         Date startDate = new Date();
                         try {
                             startDate = setDate.parse(startDateString);
-                        }catch (ParseException parseException){
+                        }catch (ParseException exParseException){
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
                             alertBuilder.errorAlert(errorMessage);
@@ -181,20 +181,20 @@ public class ModifyBluePrintController extends Application {
                         int rowsAffectedBluePrintDAO = 0;
                         try {
                             rowsAffectedBluePrintDAO = bluePrintDAO.modifyBluePrint(bluePrint, titleSelected);
-                        }catch (SQLException sqlException){
+                        }catch (SQLException exSqlException) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
                             alertBuilder.exceptionAlert(exceptionMessage);
                         }
                         try {
-                            if (rowsAffectedBluePrintDAO == 1){
+                            if (rowsAffectedBluePrintDAO == 1) {
                                 showSuccessfulModifyConfirmationAlert();
                                 Stage stage = (Stage) saveButton.getScene().getWindow();
                                 stage.close();
-                            }else{
+                            }else {
                                 showFailedOperationAlert();
                             }
-                        }catch (IOException ioException){
+                        }catch (IOException exIoException){
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "No se cargo correctamente el componente del sistema";
                             alertBuilder.exceptionAlert(exceptionMessage);
@@ -209,12 +209,12 @@ public class ModifyBluePrintController extends Application {
     public void initialize() {
         try {
             bluePrints = bluePrintDAO.getAllBluePrints();
-        }catch (SQLException sqlException){
+        }catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
-        for (BluePrint blueprint : bluePrints){
+        for (BluePrint blueprint : bluePrints) {
             titles.add(blueprint.getBluePrintTitle());
         }
         bluePrintsComboBox.setItems(titles);
@@ -229,7 +229,7 @@ public class ModifyBluePrintController extends Application {
         stage.showAndWait();
     }
 
-    public void showSuccessfulModifyConfirmationAlert() throws IOException{
+    public void showSuccessfulModifyConfirmationAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationModifyBluePrintAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -241,7 +241,7 @@ public class ModifyBluePrintController extends Application {
     public void showExitAlert() throws IOException {
         AlertBuilder alertBuilder = new AlertBuilder();
         boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
-        if (confirmationMessage){
+        if (confirmationMessage) {
             Stage stagePrincipal = (Stage) cancelButton.getScene().getWindow();
             stagePrincipal.close();
         }
@@ -263,17 +263,17 @@ public class ModifyBluePrintController extends Application {
         return true;
     }
 
-    public boolean checkTextLimit(){
+    public boolean checkTextLimit() {
         int [] limitTextSizes = {255, 255, 50, 50, 30,50, 60, 120, 120};
         TextField [] textFields = {bluePrintTitleTextField, associatedLgacTextField,
                 stateTextField, coDirectorTextField, modalityTextField, studentTextField,
                 directorTextField, receptionWorkNameTextField, requirementsTextField};
-        for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().length() > limitTextSizes[i]){
+        for (int i=0; i<textFields.length; i++) {
+            if (textFields[i].getText().length() > limitTextSizes[i]) {
                 return false;
             }
         }
-        if (descriptionTextArea.getText().length() > 255){
+        if (descriptionTextArea.getText().length() > 255) {
             return false;
         }
         return true;
@@ -283,16 +283,16 @@ public class ModifyBluePrintController extends Application {
         return durationTextField.getText().matches("[0-9]*");
     }
 
-    public boolean validateStringTextFields (){
+    public boolean validateStringTextFields () {
         TextField [] textFields = {bluePrintTitleTextField, associatedLgacTextField,
                 stateTextField, coDirectorTextField, modalityTextField, studentTextField,
                 directorTextField, receptionWorkNameTextField, requirementsTextField};
-        for(int i=0; i< textFields.length; i++){
-            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
+        for(int i=0; i< textFields.length; i++) {
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")) {
                 return false;
             }
         }
-        if (!descriptionTextArea.getText().matches("[a-zA-Z\\s]*$")){
+        if (!descriptionTextArea.getText().matches("[a-zA-Z\\s]*$")) {
             return false;
         }
         return true;

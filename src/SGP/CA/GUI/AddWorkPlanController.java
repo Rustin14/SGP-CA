@@ -32,12 +32,12 @@ public class AddWorkPlanController extends Application {
     private Button saveButton;
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("FXML/AddWorkPlanFXML.fxml"));
             primaryStage.setTitle("Registrar plan de trabajo");
             primaryStage.setScene(new Scene(root, 600, 200));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -45,7 +45,7 @@ public class AddWorkPlanController extends Application {
         primaryStage.show();
     }
 
-    public void cancelButtonEvent () {
+    public void cancelButtonEvent() {
         try {
             showExitRegisterWorkPlanAlert();
         }catch (IOException ioException){
@@ -55,21 +55,21 @@ public class AddWorkPlanController extends Application {
         }
     }
 
-    public void saveButtonEvent () {
+    public void saveButtonEvent() {
         boolean noEmptyTextField = checkEmptyTextFields();
-        if (!noEmptyTextField){
+        if (!noEmptyTextField) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String errorMessage = "No has llenado todos los campos";
             alertBuilder.errorAlert(errorMessage);
-        }else{
+        }else {
             boolean noExceededTextLimit = checkTextLimit();
-            if (!noExceededTextLimit){
+            if (!noExceededTextLimit) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String errorMessage = "Clave de plan de trabajo muy extensa";
                 alertBuilder.errorAlert(errorMessage);
-            }else{
+            }else {
                 boolean validWorkPlanKey = validateWorkPlanKey();
-                if (!validWorkPlanKey){
+                if (!validWorkPlanKey) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     String errorMessage = "La clave solo debe contener letras y/o numeros y/o guion medio o bajo";
                     alertBuilder.errorAlert(errorMessage);
@@ -85,24 +85,24 @@ public class AddWorkPlanController extends Application {
                         Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringEndDate);
                         workPlan.setEndingDate(endDate);
                         int rowsAffectedWorkPlanDAO = workPlanDAO.saveWorkPlan(workPlan);
-                        if (rowsAffectedWorkPlanDAO == 1){
+                        if (rowsAffectedWorkPlanDAO == 1) {
                             showConfirmationRegisterAlert();
                             Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
                             stagePrincipal.close();
-                        }else{
+                        }else {
                             showFailedOperationAlert();
                             Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
                             stagePrincipal.close();
                         }
-                    }catch (ParseException parseException){
+                    }catch (ParseException exParseException) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
                         alertBuilder.errorAlert(errorMessage);
-                    }catch (SQLException sqlException){
+                    }catch (SQLException exSqlException) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
                         alertBuilder.exceptionAlert(exceptionMessage);
-                    }catch (IOException ioException){
+                    }catch (IOException exIoException) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String exceptionMessage = "No se cargo correctamente el componente del sistema";
                         alertBuilder.exceptionAlert(exceptionMessage);
@@ -124,13 +124,13 @@ public class AddWorkPlanController extends Application {
     public void showExitRegisterWorkPlanAlert() throws IOException {
         AlertBuilder alertBuilder = new AlertBuilder();
         boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
-        if (confirmationMessage){
+        if (confirmationMessage) {
             Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
             stagePrincipal.close();
         }
     }
 
-    public void showConfirmationRegisterAlert() throws IOException{
+    public void showConfirmationRegisterAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationRegisterWorkPlanAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -141,31 +141,31 @@ public class AddWorkPlanController extends Application {
 
     public boolean checkEmptyTextFields() {
         TextField [] textFields = {workPlanKeyTextField, startDateTextField, endDateTextField};
-        for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().isEmpty()){
+        for (int i=0; i<textFields.length; i++) {
+            if (textFields[i].getText().isEmpty()) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean checkTextLimit(){
+    public boolean checkTextLimit() {
         if (workPlanKeyTextField.getText().length() > 10) {
             return false;
         }
         return true;
     }
 
-    public boolean validateWorkPlanKey(){
+    public boolean validateWorkPlanKey() {
         String possibleKey = workPlanKeyTextField.getText();
         boolean validKey = false;
-        for (int i=0; i<possibleKey.length(); i++){
+        for (int i=0; i<possibleKey.length(); i++) {
             if ((possibleKey.charAt(i) >= '0' && possibleKey.charAt(i) >= '9') ||
                 (possibleKey.charAt(i) >= 'A' && possibleKey.charAt(i) <= 'Z') ||
                 (possibleKey.charAt(i) >= 'a' && possibleKey.charAt(i) <= 'z') ||
-                (possibleKey.charAt(i) >= '-' || possibleKey.charAt(i) <= '_')){
+                (possibleKey.charAt(i) >= '-' || possibleKey.charAt(i) <= '_')) {
                 validKey = true;
-            }else{
+            }else {
                 return false;
             }
         }

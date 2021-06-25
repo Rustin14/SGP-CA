@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ObjectiveModifiedController extends Application{
+public class ObjectiveModifiedController extends Application {
 
     @FXML
     private Button okButton;
@@ -23,7 +23,7 @@ public class ObjectiveModifiedController extends Application{
         primaryStage.show();
     }
 
-    public void okButtonEvent(){
+    public void okButtonEvent() {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }

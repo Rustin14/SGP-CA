@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class SuccessfulUpdateModifyObjectiveAlertController extends Application{
+public class SuccessfulUpdateModifyObjectiveAlertController extends Application {
 
     @FXML
     private Button okButton;
@@ -22,7 +22,7 @@ public class SuccessfulUpdateModifyObjectiveAlertController extends Application{
         primaryStage.show();
     }
 
-    public void okButtonEvent(){
+    public void okButtonEvent() {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }

@@ -25,7 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class InvestigationProjectConsultController extends Application{
+public class InvestigationProjectConsultController extends Application {
 
     @FXML
     private Button addBluePrintButton;
@@ -77,7 +77,7 @@ public class InvestigationProjectConsultController extends Application{
 
 
     @Override
-    public void start(Stage primaryStage) throws IOException{
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXML/InvestigationProjectConsultFXML.fxml"));
         primaryStage.setTitle("Consultar proyecto");
         primaryStage.setScene(new Scene(root, 900, 600));
@@ -87,18 +87,18 @@ public class InvestigationProjectConsultController extends Application{
     public void exitButtonEvent() {
         AlertBuilder alertBuilder = new AlertBuilder();
         boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
-        if (confirmationMessage){
+        if (confirmationMessage) {
             Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
             stagePrincipal.close();
         }
     }
 
-    public void modifyButtonEvent () {
+    public void modifyButtonEvent() {
         Stage stage = new Stage();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyInvestigationProjectFXML.fxml"));
             stage.setScene(new Scene(root));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -111,12 +111,12 @@ public class InvestigationProjectConsultController extends Application{
         initialize();
     }
 
-    public void addBluePrintButtonEvent () {
+    public void addBluePrintButtonEvent() {
         Stage stage = new Stage();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("FXML/AddBluePrintFXML.fxml"));
             stage.setScene(new Scene(root));
-        }catch (IOException ioException){
+        }catch(IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -129,12 +129,12 @@ public class InvestigationProjectConsultController extends Application{
         initialize();
     }
 
-    public void addProjectButtonEvent () {
+    public void addProjectButtonEvent() {
         Stage stage = new Stage();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("FXML/RegisterInvestigationProjectFXML.fxml"));
             stage.setScene(new Scene(root));
-        }catch (IOException ioException){
+        }catch(IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -153,7 +153,7 @@ public class InvestigationProjectConsultController extends Application{
         InvestigationProject investigationProject = new InvestigationProject();
         try {
             investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle(selectedTitle);
-        }catch (SQLException sqlException) {
+        }catch(SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -168,7 +168,7 @@ public class InvestigationProjectConsultController extends Application{
             lgacTextField.setText(investigationProject.getAssociatedLgac());
             participantsTextField.setText(investigationProject.getParticipants());
             descriptionTextField.setText(investigationProject.getDescription());
-        }catch (NullPointerException nullPointerException){
+        }catch(NullPointerException exNullPointerException) {
             titleTextField.clear();
             startDateTextField.clear();
             endDateTextField.clear();
@@ -185,7 +185,7 @@ public class InvestigationProjectConsultController extends Application{
         BluePrint bluePrint = new BluePrint();
         try {
             bluePrint = bluePrintDAO.searchBluePrintByTitle(titleSelected);
-        }catch (SQLException sqlException){
+        }catch(SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -193,7 +193,7 @@ public class InvestigationProjectConsultController extends Application{
         try {
             stateTextField.setText(bluePrint.getState());
             bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
-        }catch (NullPointerException nullPointerException){
+        }catch(NullPointerException exNullPointerException) {
             stateTextField.clear();
             bluePrintTitleTextField.clear();
             bluePrintsComboBox.getSelectionModel().clearSelection();
@@ -206,7 +206,7 @@ public class InvestigationProjectConsultController extends Application{
         AnchorPane root = new AnchorPane();
         try {
             root = loader.load(getClass().getResource("FXML/ConsultBluePrintFXML.fxml").openStream());
-        }catch (IOException ioException){
+        }catch(IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo corectamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -224,18 +224,18 @@ public class InvestigationProjectConsultController extends Application{
     }
 
     @FXML
-    public void initialize () {
+    public void initialize() {
         investigationProjectConsultController = this;
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         try {
             investigationProjects = investigationProjectDAO.getAllInvestigationProjects();
-        }catch (SQLException sqlException) {
+        }catch(SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
 
-        for(InvestigationProject investigationProject : investigationProjects){
+        for(InvestigationProject investigationProject : investigationProjects) {
             investigationProjectTitles.add(investigationProject.getProjectTitle());
         }
         comboBoxProjects.setItems(investigationProjectTitles);
@@ -243,13 +243,13 @@ public class InvestigationProjectConsultController extends Application{
         ArrayList<BluePrint> bluePrints = new ArrayList<>();
         try {
             bluePrints = bluePrintDAO.getAllBluePrints();
-        }catch (SQLException sqlException){
+        }catch(SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
         ObservableList<String> bluePrintTitles = FXCollections.observableArrayList();
-        for (BluePrint bluePrint: bluePrints){
+        for (BluePrint bluePrint: bluePrints) {
             bluePrintTitles.add(bluePrint.getBluePrintTitle());
         }
         bluePrintsComboBox.setItems(bluePrintTitles);
@@ -260,7 +260,7 @@ public class InvestigationProjectConsultController extends Application{
         if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
             try {
                 ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceFXML.fxml")));
-            } catch (IOException ioException) {
+            } catch (IOException exIoException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
         }
@@ -272,7 +272,7 @@ public class InvestigationProjectConsultController extends Application{
         if(!ScreenController.instance.isScreenOnMap("consultEvents")) {
             try {
                 ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsFXML.fxml")));
-            } catch (IOException ioException) {
+            }catch(IOException exIoException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
         }

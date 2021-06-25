@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class MissingWorkPlanConsultWorkPlanAlertController extends Application{
+public class MissingWorkPlanConsultWorkPlanAlertController extends Application {
 
     @FXML
     private Button okButton;

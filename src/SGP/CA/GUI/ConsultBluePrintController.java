@@ -23,7 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
-public class ConsultBluePrintController extends Application{
+public class ConsultBluePrintController extends Application {
 
     InvestigationProjectConsultController investigationProjectConsultController;
 
@@ -80,7 +80,7 @@ public class ConsultBluePrintController extends Application{
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultBluePrintFXML.fxml"));
             primaryStage.setTitle("Registrar anteproyecto");
             primaryStage.setScene(new Scene(root, 900, 600));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -97,39 +97,39 @@ public class ConsultBluePrintController extends Application{
         String possibleCorrectPassword = requestPassword();
         Member memberLogged = Member.signedMember;
         boolean validPassword  = hashPasswords.isValid(possibleCorrectPassword, memberLogged.getPassword());
-        if (validPassword){
+        if (validPassword) {
             BluePrintDAO bluePrintDAO = new BluePrintDAO();
             try {
                 int result = bluePrintDAO.deleteBluePrint(bluePrintTitleTextField.getText());
-                if (result == 1){
+                if (result == 1) {
                     showSuccessfulDeleteAlert();
                     Stage stagePrincipal = (Stage) deleteButton.getScene().getWindow();
                     stagePrincipal.close();
-                }else{
+                }else {
                     showFailedOperationAlert();
                 }
-            }catch (SQLException sqlException){
+            }catch (SQLException exSqlException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
                 alertBuilder.exceptionAlert(exceptionMessage);
-            }catch (IOException ioException){
+            }catch (IOException exIoException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String exceptionMessage = "No se cargo correctamente el componente del sistema";
                 alertBuilder.exceptionAlert(exceptionMessage);
             }
-        }else{
+        }else {
             AlertBuilder alertBuilder = new AlertBuilder();
             String errorMessage = "La contraseña ingresada no es correcta";
             alertBuilder.errorAlert(errorMessage);
         }
     }
 
-    public void modifyButtonEvent () {
+    public void modifyButtonEvent() {
         Stage stage = new Stage();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyBluePrintFXML.fxml"));
             stage.setScene(new Scene(root));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -141,24 +141,24 @@ public class ConsultBluePrintController extends Application{
         stagePrincipal.close();
     }
 
-    public void getBluePrintTitle (InvestigationProjectConsultController stage2Controller, String bluePrintTitle) {
+    public void getBluePrintTitle(InvestigationProjectConsultController stage2Controller, String bluePrintTitle) {
         bluePrintTitleTextField.setText(bluePrintTitle);
         investigationProjectConsultController = stage2Controller;
         searchProject();
     }
 
-    public void getBluePrintTitle (InvestigationProjectConsultResponsibleController stage2Controller, String bluePrintTitle) {
+    public void getBluePrintTitle(InvestigationProjectConsultResponsibleController stage2Controller, String bluePrintTitle) {
         bluePrintTitleTextField.setText(bluePrintTitle);
         investigationProjectConsultResponsibleController = stage2Controller;
         searchProject();
     }
 
-    public void searchProject () {
+    public void searchProject() {
         BluePrintDAO bluePrintDAO = new BluePrintDAO();
         BluePrint bluePrint = new BluePrint();
         try {
             bluePrint = bluePrintDAO.searchBluePrintByTitle(bluePrintTitleTextField.getText());
-        }catch (SQLException sqlException){
+        }catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -178,7 +178,7 @@ public class ConsultBluePrintController extends Application{
         descriptionTextArea.setText(bluePrint.getDescription());
     }
 
-    public void showFailedOperationAlert() throws IOException{
+    public void showFailedOperationAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -187,7 +187,7 @@ public class ConsultBluePrintController extends Application{
         stage.showAndWait();
     }
 
-    public void showSuccessfulDeleteAlert() throws IOException{
+    public void showSuccessfulDeleteAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/ConfirmationDeleteBluePrintAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -196,25 +196,25 @@ public class ConsultBluePrintController extends Application{
         stage.showAndWait();
     }
 
-    public void showExitConsultConfirmation(){
+    public void showExitConsultConfirmation() {
         AlertBuilder alertBuilder = new AlertBuilder();
         boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
-        if (confirmationMessage){
+        if (confirmationMessage) {
             Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
             stagePrincipal.close();
         }
     }
 
-    public String requestPassword(){
+    public String requestPassword() {
         TextInputDialog passwordDialog = new TextInputDialog();
         passwordDialog.setTitle("Solicitud de contraseña");
         passwordDialog.setHeaderText("Ingresa tu contraseña para continuar");
         passwordDialog.setContentText("Contraseña:");
         passwordDialog.initStyle(StageStyle.UTILITY);
         Optional<String> responseReceived = passwordDialog.showAndWait();
-        if (responseReceived.isPresent()){
+        if (responseReceived.isPresent()) {
             return responseReceived.get();
-        }else{
+        }else {
             return null;
         }
     }

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ConsultObjectiveController extends Application{
+public class ConsultObjectiveController extends Application {
 
     ConsultWorkPlanController consultWorkPlanController;
 
@@ -58,7 +58,7 @@ public class ConsultObjectiveController extends Application{
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ConsultObjectiveFXML.fxml"));
             primaryStage.setTitle("Objetivo");
             primaryStage.setScene(new Scene(root, 700, 400));
-        }catch (IOException ioException){
+        }catch (IOException ioException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -72,12 +72,12 @@ public class ConsultObjectiveController extends Application{
         searchObjective();
     }
 
-    public void searchObjective () {
+    public void searchObjective() {
         ObjectiveDAO objectiveDAO = new ObjectiveDAO();
         Objective objective = new Objective();
         try {
             objective = objectiveDAO.searchObjectiveByTitle(objectiveTextField.getText());
-        }catch (SQLException sqlException){
+        }catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -86,13 +86,13 @@ public class ConsultObjectiveController extends Application{
         ArrayList<Objective> objectives = new ArrayList<>();
         try {
             objectives = objectiveDAO.getAllObjectives();
-        }catch (SQLException sqlException){
+        }catch (SQLException sqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
         ObservableList<String> strategies = FXCollections.observableArrayList();
-        for (int i=0; i< objectives.size(); i++){
+        for (int i=0; i< objectives.size(); i++) {
             if (objectives.get(i).getObjectiveTitle().equals(objectiveTextField.getText())){
                 strategies.add(objectives.get(i).getStrategy());
             }
@@ -106,7 +106,7 @@ public class ConsultObjectiveController extends Application{
         Strategy strategy = new Strategy();
         try {
             strategy = strategyDAO.searchStrategyByStrategy(strategySelected);
-        }catch (SQLException sqlException){
+        }catch (SQLException sqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -118,7 +118,7 @@ public class ConsultObjectiveController extends Application{
         resultTextArea.setText(strategy.getResult());
     }
 
-    public void closeButtonEvent(){
+    public void closeButtonEvent() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }

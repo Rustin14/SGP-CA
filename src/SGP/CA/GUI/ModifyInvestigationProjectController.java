@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class ModifyInvestigationProjectController extends Application{
+public class ModifyInvestigationProjectController extends Application {
 
     @FXML
     private Button exitButton;
@@ -62,7 +62,7 @@ public class ModifyInvestigationProjectController extends Application{
             Parent root = FXMLLoader.load(getClass().getResource("FXML/ModifyInvestigationProjectFXML.fxml"));
             primaryStage.setTitle("Modificar proyecto");
             primaryStage.setScene(new Scene(root, 900, 600));
-        }catch (IOException ioException){
+        }catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No se cargo correctamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -70,21 +70,21 @@ public class ModifyInvestigationProjectController extends Application{
         primaryStage.show();
     }
 
-    public void saveButtonEvent () {
+    public void saveButtonEvent() {
         boolean noEmptyTextField = checkEmptyTextFields();
-        if (!noEmptyTextField){
+        if (!noEmptyTextField) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String errorMessage = "No has llenado todos los campos";
             alertBuilder.errorAlert(errorMessage);
-        }else{
+        }else {
             boolean noExceededTextLimit = checkTextLimit();
-            if (!noExceededTextLimit){
+            if (!noExceededTextLimit) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String errorMessage = "Limite de texto excedido en algun campo";
                 alertBuilder.errorAlert(errorMessage);
             }else {
                 boolean validStringFields = validateStringTextFields();
-                if (!validStringFields){
+                if (!validStringFields) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     String errorMessage = "Solo debes ingresar letras en los campos que no sean fecha de inicio y fecha de finalizacion";
                     alertBuilder.errorAlert(errorMessage);
@@ -100,7 +100,7 @@ public class ModifyInvestigationProjectController extends Application{
                         String startDateString = startDateField.getText();
                         Date starDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDateString);
                         investigationProject.setStartDate(starDate);
-                    }catch (ParseException parseException){
+                    }catch (ParseException exParseException) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
                         alertBuilder.errorAlert(errorMessage);
@@ -112,17 +112,17 @@ public class ModifyInvestigationProjectController extends Application{
                     int rowsAffectedInvestigationProjectDAO = 0;
                     try {
                         rowsAffectedInvestigationProjectDAO = investigationProjectDAO.modifyInvestigationProject(investigationProject, oldTitle);
-                    }catch (SQLException sqlException){
+                    }catch (SQLException exSqlException) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
                         alertBuilder.exceptionAlert(exceptionMessage);
                     }
-                    if (rowsAffectedInvestigationProjectDAO == 1){
+                    if (rowsAffectedInvestigationProjectDAO == 1) {
                         try {
                             showConfirmationAlert();
                             Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
                             stagePrincipal.close();
-                        }catch (IOException ioException){
+                        }catch (IOException exIoException) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "No se cargo correctamente el componente del sistema";
                             alertBuilder.exceptionAlert(exceptionMessage);
@@ -130,7 +130,7 @@ public class ModifyInvestigationProjectController extends Application{
                     }else {
                         try {
                             showFailedOperationAlert();
-                        }catch (IOException ioException){
+                        }catch (IOException exIoException) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             String exceptionMessage = "No se cargo correctamente el componente del sistema";
                             alertBuilder.exceptionAlert(exceptionMessage);
@@ -144,7 +144,7 @@ public class ModifyInvestigationProjectController extends Application{
     public void exitButtonEvent() {
         AlertBuilder alertBuilder = new AlertBuilder();
         boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
-        if (confirmationMessage){
+        if (confirmationMessage) {
             Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
             stagePrincipal.close();
         }
@@ -158,7 +158,7 @@ public class ModifyInvestigationProjectController extends Application{
         InvestigationProject investigationProject = new InvestigationProject();
         try {
             investigationProject = investigationProjectDAO.searchInvestigationProjectByTitle(title);
-        }catch (SQLException sqlException){
+        }catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
             alertBuilder.exceptionAlert(exceptionMessage);
@@ -181,13 +181,13 @@ public class ModifyInvestigationProjectController extends Application{
         ArrayList<InvestigationProject> allProjects = new ArrayList<>();
         try {
             allProjects = investigationProjectDAO.getAllInvestigationProjects();
-        }catch (SQLException sqlException){
+        }catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
         ObservableList<String> allProjectsTile = FXCollections.observableArrayList();
-        for (int i=0; i< allProjects.size(); i++){
+        for (int i=0; i< allProjects.size(); i++) {
             allProjectsTile.add(allProjects.get(i).getProjectTitle());
         }
         projectsTitleComboBox.setItems(allProjectsTile);
@@ -202,7 +202,7 @@ public class ModifyInvestigationProjectController extends Application{
         stage.showAndWait();
     }
 
-    public void showFailedOperationAlert() throws IOException{
+    public void showFailedOperationAlert() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("FXML/FailedRegisterAlertFXML.fxml"));
         stage.setScene(new Scene(root));
@@ -225,16 +225,16 @@ public class ModifyInvestigationProjectController extends Application{
         return true;
     }
 
-    public boolean checkTextLimit(){
+    public boolean checkTextLimit() {
         int [] limitTextSizes = {255, 255, 255, 60};
         TextField [] textFields = {projectTitleField, lgacField,
                 participantsField, projectManagerField};
-        for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().length() > limitTextSizes[i]){
+        for (int i=0; i<textFields.length; i++) {
+            if (textFields[i].getText().length() > limitTextSizes[i]) {
                 return false;
             }
         }
-        if (descriptionField.getText().length() > 255){
+        if (descriptionField.getText().length() > 255) {
             return false;
         }
         return true;
@@ -243,12 +243,12 @@ public class ModifyInvestigationProjectController extends Application{
     public boolean validateStringTextFields (){
         TextField [] textFields = {projectTitleField, lgacField,
                 participantsField, projectManagerField};
-        for(int i=0; i< textFields.length; i++){
-            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")){
+        for(int i=0; i< textFields.length; i++) {
+            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")) {
                 return false;
             }
         }
-        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")){
+        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")) {
             return false;
         }
         return true;
