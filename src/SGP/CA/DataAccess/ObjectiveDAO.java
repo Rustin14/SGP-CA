@@ -8,10 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ObjectiveDAO implements IObjectiveDAO{
+public class ObjectiveDAO implements IObjectiveDAO {
 
     @Override
-    public int saveObjective(Objective objective) throws SQLException{
+    public int saveObjective(Objective objective) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO objective (description, strategy, title) VALUES (?,?,?)";
@@ -25,7 +25,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public Objective searchObjectiveByTitle(String objectiveTitle) throws SQLException{
+    public Objective searchObjectiveByTitle(String objectiveTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM objective WHERE title = ?";
@@ -44,7 +44,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public int modifyObjective (Objective newObjective, String oldObjectiveTitle) throws SQLException{
+    public int modifyObjective (Objective newObjective, String oldObjectiveTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE objective set description = ?, strategy = ?, title = ? where title = ?";
@@ -59,7 +59,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public int deleteObjective (String objectiveTitle) throws SQLException{
+    public int deleteObjective (String objectiveTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM objective WHERE title = ?";
@@ -71,7 +71,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
     }
 
     @Override
-    public ArrayList<Objective> getAllObjectives () throws SQLException{
+    public ArrayList<Objective> getAllObjectives () throws SQLException {
         Objective objective = null;
         ArrayList<Objective> allObjectives = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();
@@ -79,7 +79,7 @@ public class ObjectiveDAO implements IObjectiveDAO{
         String query = "SELECT * FROM objective";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet results = preparedStatement.executeQuery();
-        while (results.next()){
+        while (results.next()) {
             objective = new Objective();
             objective.setObjectiveTitle(results.getString("title"));
             objective.setDescription(results.getString("description"));

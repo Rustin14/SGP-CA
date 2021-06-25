@@ -8,7 +8,7 @@ public class Strategy {
     private String action;
     private String result;
 
-    public Strategy(){
+    public Strategy() {
         this.number = 0;
         this.strategy = "";
         this.goal = "";
@@ -16,7 +16,7 @@ public class Strategy {
         this.result = "";
     }
 
-    public Strategy(int number, String strategy, String goal, String action, String result){
+    public Strategy(int number, String strategy, String goal, String action, String result) {
         this.number = number;
         this.strategy = strategy;
         this.goal = goal;
@@ -74,15 +74,15 @@ public class Strategy {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         boolean iguales = false;
-        if (this.getClass() == o.getClass()){
+        if (this.getClass() == o.getClass()) {
             Strategy strategy = (Strategy) o;
             if (this.getStrategy().equals(strategy.getStrategy()) &&
                 this.getNumber() == strategy.getNumber() &&
                 this.getGoal().equals(strategy.getGoal()) &&
                 this.getAction().equals(strategy.getAction()) &&
-                this.getResult().equals(strategy.getResult())){
+                this.getResult().equals(strategy.getResult())) {
                 iguales = true;
             }
         }

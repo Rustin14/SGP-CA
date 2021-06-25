@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class WorkPlanDAO implements IWorkPlanDAO {
 
     @Override
-    public int saveWorkPlan(WorkPlan workPlan) throws SQLException{
+    public int saveWorkPlan(WorkPlan workPlan) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO workplan (endingDate, objective, startDate, workPlanKey) VALUES (?,?,?,?)";
@@ -29,7 +29,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public WorkPlan searchWorkPlanByWorkPlanKey (String workPlanKey) throws SQLException{
+    public WorkPlan searchWorkPlanByWorkPlanKey (String workPlanKey) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM workplan WHERE workPlanKey = ?";
@@ -51,7 +51,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public int modifyWorkPlan(WorkPlan newWorkPlan, String oldWorkPlanKey) throws SQLException{
+    public int modifyWorkPlan(WorkPlan newWorkPlan, String oldWorkPlanKey) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE workplan set endingDate = ?, objective = ?, startDate = ?, workPlanKey = ? where workPlanKey = ?";
@@ -69,7 +69,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public int deleteWorkPlan(String workPlanKey) throws SQLException{
+    public int deleteWorkPlan(String workPlanKey) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM workplan WHERE workPlanKey = ?";
@@ -81,7 +81,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
     }
 
     @Override
-    public ArrayList<WorkPlan> getAllWorkPlans () throws SQLException{
+    public ArrayList<WorkPlan> getAllWorkPlans () throws SQLException {
         WorkPlan workPlan = null;
         ArrayList<WorkPlan> allWorkPlans = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();
@@ -89,7 +89,7 @@ public class WorkPlanDAO implements IWorkPlanDAO {
         String query = "SELECT * FROM workplan";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet results = preparedStatement.executeQuery();
-        while (results.next()){
+        while (results.next()) {
             workPlan = new WorkPlan();
             workPlan.setWorkPlanKey(results.getString("workPlanKey"));
             java.util.Date dateStart = new java.util.Date(results.getDate("startDate").getTime());

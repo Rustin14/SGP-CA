@@ -99,9 +99,9 @@ public class InvestigationProject {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         boolean iguales = false;
-        if (this.getClass() == o.getClass()){
+        if (this.getClass() == o.getClass()) {
             InvestigationProject investigationProjectToCompare = (InvestigationProject) o;
             if (this.getProjectTitle().equals(investigationProjectToCompare.getProjectTitle()) &&
                 this.getEstimatedEndDate().equals(investigationProjectToCompare.getEstimatedEndDate()) &&
@@ -109,7 +109,7 @@ public class InvestigationProject {
                 this.getAssociatedLgac().equals(investigationProjectToCompare.getAssociatedLgac()) &&
                 this.getParticipants().equals(investigationProjectToCompare.getParticipants()) &&
                 this.getProjectManager().equals(investigationProjectToCompare.getProjectManager()) &&
-                this.getDescription().equals(investigationProjectToCompare.getDescription())){
+                this.getDescription().equals(investigationProjectToCompare.getDescription())) {
                 iguales= true;
             }
         }

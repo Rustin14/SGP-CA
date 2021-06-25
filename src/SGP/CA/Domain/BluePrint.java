@@ -17,7 +17,7 @@ public class BluePrint {
     private String student;
     private String description;
 
-    public BluePrint(){
+    public BluePrint() {
         this.bluePrintTitle = "";
         this.startDate = new Date();
         this.associatedLgac = "";
@@ -160,7 +160,7 @@ public class BluePrint {
     @Override
     public boolean equals(Object o) {
         boolean iguales = false;
-        if (this.getClass() == o.getClass()){
+        if (this.getClass() == o.getClass()) {
             BluePrint bluePrint = (BluePrint) o;
             if (this.getBluePrintTitle().equals(bluePrint.getBluePrintTitle()) &&
                 this.getStartDate().equals(bluePrint.getStartDate()) &&
@@ -173,7 +173,7 @@ public class BluePrint {
                 this.getDescription().equals(bluePrint.getDescription()) &&
                 this.getDirector().equals(bluePrint.getDirector()) &&
                 this.getReceptionWorkName().equals(bluePrint.getReceptionWorkName()) &&
-                this.getRequirements().equals(bluePrint.getRequirements())){
+                this.getRequirements().equals(bluePrint.getRequirements())) {
                 iguales = true;
             }
         }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class StrategyDAO implements IStrategyDAO {
 
     @Override
-    public int saveStrategy(Strategy strategy) throws SQLException{
+    public int saveStrategy(Strategy strategy) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO strategy (action, goal, number, result, strategy) VALUES (?,?,?,?,?)";
@@ -27,7 +27,7 @@ public class StrategyDAO implements IStrategyDAO {
     }
 
     @Override
-    public Strategy searchStrategyByStrategy(String strategyTitle) throws SQLException{
+    public Strategy searchStrategyByStrategy(String strategyTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM strategy WHERE strategy = ?";
@@ -48,7 +48,7 @@ public class StrategyDAO implements IStrategyDAO {
     }
 
     @Override
-    public int modifyStrategy(Strategy newStrategy, String oldStrategy) throws SQLException{
+    public int modifyStrategy(Strategy newStrategy, String oldStrategy) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE strategy set action = ?, goal = ?, number = ?, result = ?, strategy = ? where strategy = ?";
@@ -65,7 +65,7 @@ public class StrategyDAO implements IStrategyDAO {
     }
 
     @Override
-    public int deleteStrategy(String strategyTitle) throws SQLException{
+    public int deleteStrategy(String strategyTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM strategy WHERE strategy = ?";
@@ -77,7 +77,7 @@ public class StrategyDAO implements IStrategyDAO {
     }
 
     @Override
-    public ArrayList<Strategy> getAllStrategy () throws SQLException{
+    public ArrayList<Strategy> getAllStrategy () throws SQLException {
         Strategy strategy = null;
         ArrayList<Strategy> allStrategies = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();
@@ -85,7 +85,7 @@ public class StrategyDAO implements IStrategyDAO {
         String query = "SELECT * FROM strategy";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet results = preparedStatement.executeQuery();
-        while (results.next()){
+        while (results.next()) {
             strategy = new Strategy();
             strategy.setStrategy(results.getString("strategy"));
             strategy.setNumber(results.getInt("number"));

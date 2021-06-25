@@ -9,14 +9,14 @@ public class WorkPlan {
     private Date endingDate;
     private String objective;
 
-    public WorkPlan(){
+    public WorkPlan() {
         this.workPlanKey = "";
         this.startDate = new Date();
         this.endingDate = new Date();
         this.objective = "";
     }
 
-    public WorkPlan(String workPlanKey, Date startDate, Date endingDate, String objective){
+    public WorkPlan(String workPlanKey, Date startDate, Date endingDate, String objective) {
         this.workPlanKey = workPlanKey;
         this.startDate = startDate;
         this.endingDate = endingDate;
@@ -64,14 +64,14 @@ public class WorkPlan {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         boolean iguales = false;
-        if (this.getClass() == o.getClass()){
+        if (this.getClass() == o.getClass()) {
             WorkPlan workPlan = (WorkPlan) o;
             if (this.getWorkPlanKey().equals(workPlan.getWorkPlanKey()) &&
                 this.getStartDate().equals(workPlan.getStartDate()) &&
                 this.getEndingDate().equals(workPlan.getEndingDate()) &&
-                this.getObjective().equals(workPlan.getObjective())){
+                this.getObjective().equals(workPlan.getObjective())) {
                 iguales = true;
             }
         }

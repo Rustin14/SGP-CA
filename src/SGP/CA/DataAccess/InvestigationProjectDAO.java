@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class InvestigationProjectDAO implements IInvestigationProjectDAO{
+public class InvestigationProjectDAO implements IInvestigationProjectDAO {
 
     @Override
-    public int saveInvestigationProject(InvestigationProject investigationProject) throws SQLException{
+    public int saveInvestigationProject(InvestigationProject investigationProject) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "INSERT INTO investigationProject (associatedLgac, estimatedEndDate, participants, projectTitle, " +
@@ -33,7 +33,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public InvestigationProject searchInvestigationProjectByTitle(String investigationProjectTitle) throws SQLException{
+    public InvestigationProject searchInvestigationProjectByTitle(String investigationProjectTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "SELECT * FROM investigationProject WHERE projectTitle = ?";
@@ -58,7 +58,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public int modifyInvestigationProject (InvestigationProject newInvestigationProject, String oldInvestigationProjectTitle) throws SQLException{
+    public int modifyInvestigationProject (InvestigationProject newInvestigationProject, String oldInvestigationProjectTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "UPDATE investigationProject set associatedLgac = ?, estimatedEndDate = ?, participants = ?, projectTitle = ?, "+
@@ -80,7 +80,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public int deleteInvestigationProject(String investigationProjectTitle) throws SQLException{
+    public int deleteInvestigationProject(String investigationProjectTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
         Connection connection = dataBaseConnection.getConnection();
         String query = "DELETE FROM investigationProject WHERE projectTitle = ?";
@@ -92,7 +92,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
     }
 
     @Override
-    public ArrayList<InvestigationProject> getAllInvestigationProjects () throws SQLException{
+    public ArrayList<InvestigationProject> getAllInvestigationProjects () throws SQLException {
         InvestigationProject investigationProject = null;
         ArrayList<InvestigationProject> allInvestigationProjects = new ArrayList<>();
         ConnectDB databaseConnection = new ConnectDB();
@@ -100,7 +100,7 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO{
         String query = "SELECT * FROM investigationProject";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet results = preparedStatement.executeQuery();
-        while (results.next()){
+        while (results.next()) {
             investigationProject = new InvestigationProject();
             investigationProject.setProjectTitle(results.getString("projectTitle"));
             investigationProject.setParticipants(results.getString("participants"));

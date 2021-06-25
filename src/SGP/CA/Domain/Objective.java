@@ -6,13 +6,13 @@ public class Objective {
     private String description;
     private String strategy;
 
-    public Objective(){
+    public Objective() {
         this.objectiveTitle = "";
         this.description = "";
         this.strategy = "";
     }
 
-    public Objective(String objectiveTitle, String description, String strategy){
+    public Objective(String objectiveTitle, String description, String strategy) {
         this.objectiveTitle = objectiveTitle;
         this.description = description;
         this.strategy = strategy;
@@ -50,13 +50,13 @@ public class Objective {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         boolean iguales = false;
-        if (this.getClass() == o.getClass()){
+        if (this.getClass() == o.getClass()) {
             Objective objective = (Objective) o;
             if (this.getObjectiveTitle().equals(objective.getObjectiveTitle()) &&
                 this.getDescription().equals(objective.getDescription()) &&
-                this.getStrategy().equals(objective.getStrategy())){
+                this.getStrategy().equals(objective.getStrategy())) {
                 iguales = true;
             }
         }
