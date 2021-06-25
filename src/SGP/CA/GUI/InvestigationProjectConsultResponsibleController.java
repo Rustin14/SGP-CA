@@ -73,7 +73,7 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
 
     private ArrayList<InvestigationProject> investigationProjects = new ArrayList<>();
 
-    InvestigationProjectConsultResponsibleController investigationProjectConsultController;
+    InvestigationProjectConsultResponsibleController InvestigationProjectConsultResponsibleController;
 
 
     @Override
@@ -86,7 +86,7 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
 
     public void exitButtonEvent() {
         AlertBuilder alertBuilder = new AlertBuilder();
-        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir?");
+        boolean confirmationMessage = alertBuilder.confirmationAlert("¿Estas seguro que desea salir del programa?");
         if (confirmationMessage){
             Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
             stagePrincipal.close();
@@ -106,6 +106,8 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(modifyButton.getScene().getWindow());
         stage.showAndWait();
+        investigationProjectTitles.clear();
+        investigationProjects.clear();
         initialize();
     }
 
@@ -122,6 +124,8 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(addBluePrintButton.getScene().getWindow());
         stage.showAndWait();
+        investigationProjectTitles.clear();
+        investigationProjects.clear();
         initialize();
     }
 
@@ -138,6 +142,8 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(addProjectButton.getScene().getWindow());
         stage.showAndWait();
+        investigationProjectTitles.clear();
+        investigationProjects.clear();
         initialize();
     }
 
@@ -152,15 +158,25 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
-        titleTextField.setText(investigationProject.getProjectTitle());
-        DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
-        String startDate = setDate.format(investigationProject.getStartDate().getTime());
-        startDateTextField.setText(startDate);
-        String endingDate = setDate.format(investigationProject.getEstimatedEndDate().getTime());
-        endDateTextField.setText(endingDate);
-        lgacTextField.setText(investigationProject.getAssociatedLgac());
-        participantsTextField.setText(investigationProject.getParticipants());
-        descriptionTextField.setText(investigationProject.getDescription());
+        try {
+            titleTextField.setText(investigationProject.getProjectTitle());
+            DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
+            String startDate = setDate.format(investigationProject.getStartDate().getTime());
+            startDateTextField.setText(startDate);
+            String endingDate = setDate.format(investigationProject.getEstimatedEndDate().getTime());
+            endDateTextField.setText(endingDate);
+            lgacTextField.setText(investigationProject.getAssociatedLgac());
+            participantsTextField.setText(investigationProject.getParticipants());
+            descriptionTextField.setText(investigationProject.getDescription());
+        }catch (NullPointerException nullPointerException) {
+            titleTextField.clear();
+            startDateTextField.clear();
+            endDateTextField.clear();
+            lgacTextField.clear();
+            participantsTextField.clear();
+            descriptionTextField.clear();
+            comboBoxProjects.getSelectionModel().clearSelection();
+        }
     }
 
     public void bluePrintsComboBoxEvent() {
@@ -174,8 +190,14 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
-        stateTextField.setText(bluePrint.getState());
-        bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
+        try {
+            stateTextField.setText(bluePrint.getState());
+            bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
+        }catch (NullPointerException nullPointerException){
+            stateTextField.clear();
+            bluePrintTitleTextField.clear();
+            bluePrintsComboBox.getSelectionModel().clearSelection();
+        }
     }
 
     public void consultButtonEvent() {
@@ -190,18 +212,26 @@ public class InvestigationProjectConsultResponsibleController extends Applicatio
             alertBuilder.exceptionAlert(exceptionMessage);
         }
         ConsultBluePrintController consultBluePrintController = loader.getController();
-        //consultBluePrintController.getBluePrintTitle(investigationProjectConsultController.bluePrintTitleTextField.getText());
-        Scene scene = new Scene(root);
-        stage2.setScene(scene);
-        stage2.alwaysOnTopProperty();
-        stage2.initModality(Modality.APPLICATION_MODAL);
-        stage2.showAndWait();
-        initialize();
+        if (bluePrintTitleTextField.getText().isEmpty()){
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String errorMessage = "No has selecionado ningun anteproyecto para consultar";
+            alertBuilder.errorAlert(errorMessage);
+        }else{
+            consultBluePrintController.getBluePrintTitle(InvestigationProjectConsultResponsibleController,bluePrintTitleTextField.getText());
+            Scene scene = new Scene(root);
+            stage2.setScene(scene);
+            stage2.alwaysOnTopProperty();
+            stage2.initModality(Modality.APPLICATION_MODAL);
+            stage2.showAndWait();
+            investigationProjectTitles.clear();
+            investigationProjects.clear();
+            initialize();
+        }
     }
 
     @FXML
     public void initialize () {
-        investigationProjectConsultController = this;
+        InvestigationProjectConsultResponsibleController = this;
         InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
         try {
             investigationProjects = investigationProjectDAO.getAllInvestigationProjects();

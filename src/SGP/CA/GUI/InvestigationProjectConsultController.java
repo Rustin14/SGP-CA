@@ -106,6 +106,8 @@ public class InvestigationProjectConsultController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(modifyButton.getScene().getWindow());
         stage.showAndWait();
+        investigationProjectTitles.clear();
+        investigationProjects.clear();
         initialize();
     }
 
@@ -122,6 +124,8 @@ public class InvestigationProjectConsultController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(addBluePrintButton.getScene().getWindow());
         stage.showAndWait();
+        investigationProjectTitles.clear();
+        investigationProjects.clear();
         initialize();
     }
 
@@ -138,6 +142,8 @@ public class InvestigationProjectConsultController extends Application{
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(addProjectButton.getScene().getWindow());
         stage.showAndWait();
+        investigationProjectTitles.clear();
+        investigationProjects.clear();
         initialize();
     }
 
@@ -152,15 +158,25 @@ public class InvestigationProjectConsultController extends Application{
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
-        titleTextField.setText(investigationProject.getProjectTitle());
-        DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
-        String startDate = setDate.format(investigationProject.getStartDate().getTime());
-        startDateTextField.setText(startDate);
-        String endingDate = setDate.format(investigationProject.getEstimatedEndDate().getTime());
-        endDateTextField.setText(endingDate);
-        lgacTextField.setText(investigationProject.getAssociatedLgac());
-        participantsTextField.setText(investigationProject.getParticipants());
-        descriptionTextField.setText(investigationProject.getDescription());
+        try {
+            titleTextField.setText(investigationProject.getProjectTitle());
+            DateFormat setDate = new SimpleDateFormat("dd/MM/yyyy");
+            String startDate = setDate.format(investigationProject.getStartDate().getTime());
+            startDateTextField.setText(startDate);
+            String endingDate = setDate.format(investigationProject.getEstimatedEndDate().getTime());
+            endDateTextField.setText(endingDate);
+            lgacTextField.setText(investigationProject.getAssociatedLgac());
+            participantsTextField.setText(investigationProject.getParticipants());
+            descriptionTextField.setText(investigationProject.getDescription());
+        }catch (NullPointerException nullPointerException){
+            titleTextField.clear();
+            startDateTextField.clear();
+            endDateTextField.clear();
+            lgacTextField.clear();
+            participantsTextField.clear();
+            descriptionTextField.clear();
+            comboBoxProjects.getSelectionModel().clearSelection();
+        }
     }
 
     public void bluePrintsComboBoxEvent() {
@@ -174,8 +190,14 @@ public class InvestigationProjectConsultController extends Application{
             String exceptionMessage = "Ocurrio un error inesperado en la base de datos";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
-        stateTextField.setText(bluePrint.getState());
-        bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
+        try {
+            stateTextField.setText(bluePrint.getState());
+            bluePrintTitleTextField.setText(bluePrint.getBluePrintTitle());
+        }catch (NullPointerException nullPointerException){
+            stateTextField.clear();
+            bluePrintTitleTextField.clear();
+            bluePrintsComboBox.getSelectionModel().clearSelection();
+        }
     }
 
     public void consultButtonEvent() {
@@ -196,6 +218,8 @@ public class InvestigationProjectConsultController extends Application{
         stage2.alwaysOnTopProperty();
         stage2.initModality(Modality.APPLICATION_MODAL);
         stage2.showAndWait();
+        investigationProjectTitles.clear();
+        investigationProjects.clear();
         initialize();
     }
 

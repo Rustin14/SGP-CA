@@ -50,7 +50,7 @@ public class ConsultWorkPlanController extends Application{
 
     ConsultWorkPlanController consultWorkPlanController;
 
-    Member member = Member.selectedMember;
+    Member member = Member.signedMember;
 
     @Override
     public void start(Stage primaryStage) {
@@ -69,6 +69,17 @@ public class ConsultWorkPlanController extends Application{
     @FXML
     public void initialize () {
         consultWorkPlanController = this;
+        String memberName = member.getName()+ " " + member.getFirstLastName()+ " " + member.getSecondLastName();
+        nameTextField.setText(memberName);
+        int responsible = member.getIsResponsible();
+        String charge;
+        if (responsible == 1 || responsible == 2){
+            charge = "Responsable";
+        }else{
+            charge = "Miembro";
+        }
+        chargeTextField.setText(charge);
+        academicBodyTextField.setText("Ingenieria y Tecnología de Software");
         searchAllWorkPlans();
     }
 
