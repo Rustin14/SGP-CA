@@ -15,9 +15,9 @@ public class ObjectiveDAOTest {
     @Test
     public void saveObjectiveTest() throws SQLException{
         Objective objective = new Objective();
-        objective.setObjectiveTitle("Test objective2");
-        objective.setDescription("Test description2");
-        objective.setStrategy("Test strategy2");
+        objective.setObjectiveTitle("Test objective4");
+        objective.setDescription("Test description4");
+        objective.setStrategy("Test strategy4");
 
         int successfulSave = objectiveDAO.saveObjective(objective);
         Assert.assertEquals(1, successfulSave, 0);
@@ -25,25 +25,25 @@ public class ObjectiveDAOTest {
 
     @Test
     public void searchObjectiveByTitleTest() throws SQLException{
-        Objective objective = objectiveDAO.searchObjectiveByTitle("Test objective");
+        Objective objective = objectiveDAO.searchObjectiveByTitle("Test objective4");
 
-        Assert.assertEquals("Test objective",objective.getObjectiveTitle());
+        Assert.assertEquals("Test objective4",objective.getObjectiveTitle());
     }
 
     @Test
     public void modifyObjective () throws SQLException{
         Objective objective = new Objective();
-        objective.setObjectiveTitle("Test objective3");
-        objective.setDescription("Test description3");
-        objective.setStrategy("Test strategy3");
+        objective.setObjectiveTitle("Test objective5");
+        objective.setDescription("Test description5");
+        objective.setStrategy("Test strategy5");
 
-        int successfulSave = objectiveDAO.modifyObjective(objective, "Test objective2");
+        int successfulSave = objectiveDAO.modifyObjective(objective, "Test objective4");
         Assert.assertEquals(1, successfulSave, 0);
     }
 
     @Test
     public void deleteObjectiveTest() throws SQLException{
-        String objectiveTitle = "Test objective3";
+        String objectiveTitle = "Test objective5";
 
         int successfulDelete = objectiveDAO.deleteObjective(objectiveTitle);
         Assert.assertEquals(1,successfulDelete, 0);

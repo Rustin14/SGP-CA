@@ -38,7 +38,7 @@ public class BluePrintDAOTest {
     }
 
     @Test
-    public void searchBluePrintByTitle() throws SQLException{
+    public void searchBluePrintByTitle() throws SQLException {
         BluePrint bluePrint = bluePrintDAO.searchBluePrintByTitle("Test Title");
 
         Assert.assertEquals("Test Title", bluePrint.getBluePrintTitle());
@@ -62,13 +62,13 @@ public class BluePrintDAOTest {
         bluePrint.setReceptionWorkName("Test receptionWorkName2");
         bluePrint.setRequirements("Test requirements2");
 
-        int successfulUpdate = bluePrintDAO.modifyBluePrint(bluePrint, "Test Title2");
+        int successfulUpdate = bluePrintDAO.modifyBluePrint(bluePrint, "Test Title");
         Assert.assertEquals(1, successfulUpdate, 0);
     }
 
     @Test
     public void deleteBluePrintTest() throws SQLException{
-        String bluePrintTitle = "Test Title3";
+        String bluePrintTitle = "Test Title2";
 
         int successfulDelete = bluePrintDAO.deleteBluePrint(bluePrintTitle);
         Assert.assertEquals(1,successfulDelete, 0);

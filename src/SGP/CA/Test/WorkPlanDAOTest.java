@@ -18,8 +18,8 @@ public class WorkPlanDAOTest {
     @Test
     public void saveWorkPlanTest() throws SQLException, ParseException {
         WorkPlan workPlan = new WorkPlan();
-        workPlan.setWorkPlanKey("Test key2");
-        workPlan.setObjective("Test objective2");
+        workPlan.setWorkPlanKey("Test key4");
+        workPlan.setObjective("Test objective4");
         String testStartDateString = "22/02/2002";
         Date testStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(testStartDateString);
         workPlan.setStartDate(testStartDate);
@@ -33,16 +33,16 @@ public class WorkPlanDAOTest {
 
     @Test
     public void searchWorkPlanByWorkPlanKeyTest () throws SQLException {
-        WorkPlan workPlan = workPlanDAO.searchWorkPlanByWorkPlanKey("Test key");
+        WorkPlan workPlan = workPlanDAO.searchWorkPlanByWorkPlanKey("Test key4");
 
-        Assert.assertEquals("Test key",workPlan.getWorkPlanKey());
+        Assert.assertEquals("Test key4",workPlan.getWorkPlanKey());
     }
 
     @Test
     public void modifyWorkPlan() throws SQLException, ParseException {
         WorkPlan workPlan = new WorkPlan();
-        workPlan.setWorkPlanKey("Test key3");
-        workPlan.setObjective("Test objective3");
+        workPlan.setWorkPlanKey("Test key5");
+        workPlan.setObjective("Test objective5");
         String testStartDateString = "31/03/2003";
         Date testStartDate = new SimpleDateFormat("dd/MM/yyyy").parse(testStartDateString);
         workPlan.setStartDate(testStartDate);
@@ -50,13 +50,13 @@ public class WorkPlanDAOTest {
         Date testEndingDate = new SimpleDateFormat("dd/MM/yyyy").parse(testEndingDateString);
         workPlan.setEndingDate(testEndingDate);
 
-        int successfulSave = workPlanDAO.modifyWorkPlan(workPlan, "Test key2");
+        int successfulSave = workPlanDAO.modifyWorkPlan(workPlan, "Test key4");
         Assert.assertEquals(1 , successfulSave, 0);
     }
 
     @Test
     public void deleteWorkPlanTest() throws SQLException {
-        String workPlanKey = "Test key3";
+        String workPlanKey = "Test key5";
 
         int successfulDelete = workPlanDAO.deleteWorkPlan(workPlanKey);
         Assert.assertEquals(1,successfulDelete, 0);

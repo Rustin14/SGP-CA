@@ -15,11 +15,11 @@ public class StrategyDAOTest {
     @Test
     public void saveStrategyTest() throws SQLException{
         Strategy strategy = new Strategy();
-        strategy.setStrategy("Test Strategy2");
-        strategy.setGoal("Test goal2");
-        strategy.setAction("Test action2");
-        strategy.setNumber(2);
-        strategy.setResult("Test result2");
+        strategy.setStrategy("Test Strategy4");
+        strategy.setGoal("Test goal4");
+        strategy.setAction("Test action4");
+        strategy.setNumber(4);
+        strategy.setResult("Test result4");
 
         int successfulSave = strategyDAO.saveStrategy(strategy);
         Assert.assertEquals(1, successfulSave, 0);
@@ -27,27 +27,27 @@ public class StrategyDAOTest {
 
     @Test
     public void searchStrategyByStrategyTest () throws SQLException {
-        Strategy strategy = strategyDAO.searchStrategyByStrategy("Test Strategy");
+        Strategy strategy = strategyDAO.searchStrategyByStrategy("Test Strategy4");
 
-        Assert.assertEquals("Test Strategy", strategy.getStrategy());
+        Assert.assertEquals("Test Strategy4", strategy.getStrategy());
     }
 
     @Test
     public void modifyStrategy() throws SQLException {
         Strategy strategy = new Strategy();
-        strategy.setStrategy("Test Strategy3");
-        strategy.setGoal("Test goal3");
-        strategy.setAction("Test action3");
-        strategy.setNumber(3);
-        strategy.setResult("Test result3");
+        strategy.setStrategy("Test Strategy5");
+        strategy.setGoal("Test goal5");
+        strategy.setAction("Test action5");
+        strategy.setNumber(5);
+        strategy.setResult("Test result5");
 
-        int successfulSave = strategyDAO.modifyStrategy(strategy, "Test Strategy2");
+        int successfulSave = strategyDAO.modifyStrategy(strategy, "Test Strategy4");
         Assert.assertEquals(1, successfulSave, 0);
     }
 
     @Test
     public void deleteStrategyTest() throws SQLException {
-        String strategyTitle = "Test Strategy3";
+        String strategyTitle = "Test Strategy5";
 
         int successfulDelete = strategyDAO.deleteStrategy(strategyTitle);
         Assert.assertEquals(1,successfulDelete, 0);

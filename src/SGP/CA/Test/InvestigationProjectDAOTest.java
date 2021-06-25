@@ -61,7 +61,7 @@ public class InvestigationProjectDAOTest {
 
     @Test
     public void deleteInvestigationProjectTest() throws SQLException {
-        String investigationProjectTitle = "Test Title";
+        String investigationProjectTitle = "Test Title2";
 
         int successfulDelete = investigationProjectDAO.deleteInvestigationProject(investigationProjectTitle);
         Assert.assertEquals(1,successfulDelete, 0);
