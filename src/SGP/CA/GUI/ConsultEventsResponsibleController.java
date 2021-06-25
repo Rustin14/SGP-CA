@@ -170,6 +170,30 @@ public class ConsultEventsResponsibleController implements Initializable {
         ScreenController.instance.activate("responsibleProf");
     }
 
+    public void consultWorkPlan() {
+        AlertBuilder alertBuilder = new AlertBuilder();
+        if(!ScreenController.instance.isScreenOnMap("consultWorkPlan")) {
+            try {
+                ScreenController.instance.addScreen("consultWorkPlan", FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml")));
+            } catch (IOException exIoException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
+            }
+        }
+        ScreenController.instance.activate("consultWorkPlan");
+    }
+
+    public void consultProjects() {
+        AlertBuilder alertBuilder = new AlertBuilder();
+        if(!ScreenController.instance.isScreenOnMap("consultProjects")) {
+            try {
+                ScreenController.instance.addScreen("consultProjects", FXMLLoader.load(getClass().getResource("FXML/InvestigationProjectConsultResponsibleFXML.fxml")));
+            } catch (IOException exIoException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
+            }
+        }
+        ScreenController.instance.activate("consultProjects");
+    }
+
     public void consultMembers() {
         AlertBuilder alertBuilder = new AlertBuilder();
         if(!ScreenController.instance.isScreenOnMap("consultMember")) {

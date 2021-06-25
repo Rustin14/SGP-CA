@@ -43,25 +43,37 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-4.0" layoutY="85.0" stroke="BLACK" strokeType="INSIDE" width="182.0" />
-      <Label layoutX="25.0" layoutY="91.0" onMouseClicked="#goToProfile" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
+      <Label layoutX="10.0" layoutY="91.0" onMouseClicked="#goToProfile" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="176.0" stroke="BLACK" strokeType="INSIDE" width="178.0" />
-      <Label layoutX="24.0" layoutY="180.0" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
+      <Label layoutX="9.0" layoutY="180.0" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-4.0" layoutY="221.0" stroke="BLACK" strokeType="INSIDE" width="182.0" />
-      <Label layoutX="27.0" layoutY="225.0" onMouseClicked="#consultEvents" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
+      <Label layoutX="12.0" layoutY="225.0" onMouseClicked="#consultEvents" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="130.0" stroke="BLACK" strokeType="INSIDE" width="178.0" />
-      <Label layoutX="23.0" layoutY="134.0" onMouseClicked="#consultMembers" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+      <Label layoutX="8.0" layoutY="134.0" onMouseClicked="#consultMembers" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-10.0" layoutY="266.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="5.0" layoutY="270.0" onMouseClicked="#consultWorkPlan" prefHeight="27.0" prefWidth="166.0" text="PLAN DE TRABAJO" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-8.0" layoutY="313.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
+      <Label layoutX="7.0" layoutY="317.0" onMouseClicked="#consultProjects" prefHeight="27.0" prefWidth="119.0" text="PROYECTOS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

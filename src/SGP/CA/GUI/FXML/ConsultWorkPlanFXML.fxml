@@ -9,17 +9,17 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultWorkPlanController">
+<AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultWorkPlanController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="100.0" stroke="BLACK" strokeType="INSIDE" width="900.0" />
-      <Label layoutX="114.0" layoutY="7.0" text="SGP-CA" textFill="WHITE">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="191.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" width="884.0" />
+      <Label layoutX="202.0" layoutY="9.0" text="SGP-CA" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c3c3c3" height="562.0" layoutX="100.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="900.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="107.0" layoutX="184.0" layoutY="119.0" stroke="BLACK" strokeType="INSIDE" width="710.0" />
-      <ScrollPane layoutX="184.0" layoutY="239.0" prefHeight="360.0" prefWidth="710.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c3c3c3" height="580.0" layoutX="191.0" layoutY="39.0" stroke="BLACK" strokeType="INSIDE" width="884.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="107.0" layoutX="259.0" layoutY="120.0" stroke="BLACK" strokeType="INSIDE" width="710.0" />
+      <ScrollPane layoutX="259.0" layoutY="240.0" prefHeight="360.0" prefWidth="710.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="358.0" prefWidth="695.0">
                <children>
@@ -34,46 +34,88 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <Label layoutX="193.0" layoutY="126.0" text="Cuerpo academico (CA):">
+      <Label layoutX="268.0" layoutY="127.0" text="Cuerpo academico (CA):">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="193.0" layoutY="158.0" text="Nombre:">
+      <Label layoutX="268.0" layoutY="159.0" text="Nombre:">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="193.0" layoutY="193.0" text="Cargo en cuerpo academico:">
+      <Label layoutX="268.0" layoutY="194.0" text="Cargo en cuerpo academico:">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a8a8a8" height="77.0" layoutX="149.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="851.0" />
-      <Label layoutX="179.0" layoutY="52.0" text="INICIO">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a8a8a8" height="77.0" layoutX="224.0" layoutY="39.0" stroke="BLACK" strokeType="INSIDE" width="851.0" />
+      <Label layoutX="254.0" layoutY="53.0" text="INICIO">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
-      <Label layoutX="309.0" layoutY="77.0" text="SGP-CA">
+      <Label layoutX="384.0" layoutY="78.0" text="SGP-CA">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="562.0" layoutY="53.0" prefHeight="49.0" prefWidth="60.0" text="Plan elegido" wrapText="true">
+      <Label layoutX="637.0" layoutY="54.0" prefHeight="49.0" prefWidth="60.0" text="Plan elegido" wrapText="true">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <ComboBox fx:id="workPlanComboBox" layoutX="622.0" layoutY="66.0" onAction="#workPlanComboBoxEvent" prefHeight="24.0" prefWidth="223.0" promptText="selecciona un plan" />
-      <Button fx:id="modifyButton" layoutX="866.0" layoutY="57.0" mnemonicParsing="false" onAction="#modifyButtonEvent" text="Modificar">
+      <ComboBox fx:id="workPlanComboBox" layoutX="697.0" layoutY="67.0" onAction="#workPlanComboBoxEvent" prefHeight="24.0" prefWidth="223.0" promptText="selecciona un plan" />
+      <Button fx:id="modifyButton" layoutX="941.0" layoutY="58.0" mnemonicParsing="false" onAction="#modifyButtonEvent" text="Modificar">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <TextField fx:id="academicBodyTextField" editable="false" layoutX="424.0" layoutY="125.0" prefHeight="24.0" prefWidth="215.0" />
-      <TextField fx:id="nameTextField" editable="false" layoutX="290.0" layoutY="157.0" prefHeight="24.0" prefWidth="194.0" />
-      <TextField fx:id="chargeTextField" editable="false" layoutX="455.0" layoutY="192.0" prefHeight="24.0" prefWidth="183.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="600.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="101.0" />
+      <TextField fx:id="academicBodyTextField" editable="false" layoutX="499.0" layoutY="126.0" prefHeight="24.0" prefWidth="215.0" />
+      <TextField fx:id="nameTextField" editable="false" layoutX="365.0" layoutY="158.0" prefHeight="24.0" prefWidth="194.0" />
+      <TextField fx:id="chargeTextField" editable="false" layoutX="530.0" layoutY="193.0" prefHeight="24.0" prefWidth="183.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="600.0" layoutX="176.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="619.0" layoutX="-3.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="194.0" />
+      <Label layoutX="36.0" layoutY="24.0" text="SGP-CA">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="79.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="16.0" layoutY="85.0" onMouseClicked="#goToProfile" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="127.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="16.0" layoutY="131.0" onMouseClicked="#consultMembers" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="175.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="15.0" layoutY="179.0" onMouseClicked="#consultEvents" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="221.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="11.0" layoutY="225.0" onMouseClicked="#consultEvidences" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="267.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="16.0" layoutY="272.0" prefHeight="27.0" prefWidth="176.0" text="PLAN DE TRABAJO" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="315.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="15.0" layoutY="319.0" onMouseClicked="#consultProjects" prefHeight="27.0" prefWidth="119.0" text="PROYECTOS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

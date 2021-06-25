@@ -25,7 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class InvestigationProjectConsultController extends Application{
+public class InvestigationProjectConsultResponsibleController extends Application{
 
     @FXML
     private Button addBluePrintButton;
@@ -73,7 +73,7 @@ public class InvestigationProjectConsultController extends Application{
 
     private ArrayList<InvestigationProject> investigationProjects = new ArrayList<>();
 
-    InvestigationProjectConsultController investigationProjectConsultController;
+    InvestigationProjectConsultResponsibleController investigationProjectConsultController;
 
 
     @Override
@@ -190,7 +190,7 @@ public class InvestigationProjectConsultController extends Application{
             alertBuilder.exceptionAlert(exceptionMessage);
         }
         ConsultBluePrintController consultBluePrintController = loader.getController();
-        consultBluePrintController.getBluePrintTitle(investigationProjectConsultController,bluePrintTitleTextField.getText());
+        //consultBluePrintController.getBluePrintTitle(investigationProjectConsultController.bluePrintTitleTextField.getText());
         Scene scene = new Scene(root);
         stage2.setScene(scene);
         stage2.alwaysOnTopProperty();
@@ -231,11 +231,23 @@ public class InvestigationProjectConsultController extends Application{
         bluePrintsComboBox.setItems(bluePrintTitles);
     }
 
+    public void consultMembers() {
+        AlertBuilder alertBuilder = new AlertBuilder();
+        if(!ScreenController.instance.isScreenOnMap("consultMember")) {
+            try {
+                ScreenController.instance.addScreen("consultMember", FXMLLoader.load(getClass().getResource("FXML/ConsultMemberFXML.fxml")));
+            } catch (IOException ioException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
+            }
+        }
+        ScreenController.instance.activate("consultMember");
+    }
+
     public void consultEvidences() {
         AlertBuilder alertBuilder = new AlertBuilder();
         if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
             try {
-                ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceFXML.fxml")));
+                ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceResponsibleFXML.fxml")));
             } catch (IOException ioException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
@@ -247,7 +259,7 @@ public class InvestigationProjectConsultController extends Application{
         AlertBuilder alertBuilder = new AlertBuilder();
         if(!ScreenController.instance.isScreenOnMap("consultEvents")) {
             try {
-                ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsFXML.fxml")));
+                ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsResponsibleFXML.fxml")));
             } catch (IOException ioException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
@@ -255,16 +267,28 @@ public class InvestigationProjectConsultController extends Application{
         ScreenController.instance.activate("consultEvents");
     }
 
-    public void goToProfile() {
+    public void consultWorkPlan() {
         AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("memberProf")) {
+        if(!ScreenController.instance.isScreenOnMap("consultWorkPlan")) {
             try {
-                ScreenController.instance.addScreen("memberProf", FXMLLoader.load(getClass().getResource("FXML/MemberProfileFXML.fxml")));
+                ScreenController.instance.addScreen("consultWorkPlan", FXMLLoader.load(getClass().getResource("FXML/ConsultWorkPlanFXML.fxml")));
             } catch (IOException exIoException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
             }
         }
-        ScreenController.instance.activate("memberProf");
+        ScreenController.instance.activate("consultWorkPlan");
+    }
+
+    public void goToProfile() {
+        AlertBuilder alertBuilder = new AlertBuilder();
+        if(!ScreenController.instance.isScreenOnMap("responsibleProf")) {
+            try {
+                ScreenController.instance.addScreen("responsibleProf", FXMLLoader.load(getClass().getResource("FXML/ResponsibleProfileFXML.fxml")));
+            } catch (IOException exIoException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
+            }
+        }
+        ScreenController.instance.activate("responsibleProf");
     }
 
     public static void main(String[] args) {

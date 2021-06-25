@@ -70,5 +70,17 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="260.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="14.0" layoutY="265.0" onMouseClicked="#consultWorkPlan" prefHeight="27.0" prefWidth="166.0" text="PLAN DE TRABAJO" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="306.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
+      <Label layoutX="13.0" layoutY="310.0" onMouseClicked="#consultProjects" prefHeight="27.0" prefWidth="119.0" text="PROYECTOS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
