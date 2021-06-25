@@ -19,6 +19,7 @@ public class ResponsibleProfileController implements Initializable {
     Label maxStudiesLabel;
 
     Member member = Member.signedMember;
+    AlertBuilder alertBuilder = new AlertBuilder();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -37,10 +38,32 @@ public class ResponsibleProfileController implements Initializable {
             try {
                 ScreenController.instance.addScreen("consultMember", FXMLLoader.load(getClass().getResource("FXML/ConsultMemberFXML.fxml")));
             } catch (IOException ioException) {
-                ioException.printStackTrace();
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
             }
         }
         ScreenController.instance.activate("consultMember");
+    }
+
+    public void consultEvidences() {
+        if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
+            try {
+                ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceResponsibleFXML.fxml")));
+            } catch (IOException ioException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
+            }
+        }
+        ScreenController.instance.activate("consultEvidence");
+    }
+
+    public void consultEvents() {
+        if(!ScreenController.instance.isScreenOnMap("consultEvents")) {
+            try {
+                ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsResponsibleFXML.fxml")));
+            } catch (IOException ioException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
+            }
+        }
+        ScreenController.instance.activate("consultEvents");
     }
 
 

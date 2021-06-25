@@ -58,7 +58,7 @@
          </font>
       </Label>
       <Button fx:id="modifyButton" layoutX="552.0" layoutY="360.0" mnemonicParsing="false" onAction="#modifyMember" text="Modificar" />
-      <Button fx:id="cancelButton" layoutX="641.0" layoutY="360.0" mnemonicParsing="false" text="Cancelar" />
+      <Button fx:id="cancelButton" layoutX="641.0" layoutY="360.0" mnemonicParsing="false" onAction="#cancelButton" text="Cancelar" />
       <TextField fx:id="nameTextField" layoutX="47.0" layoutY="104.0" />
       <TextField fx:id="curpTextField" editable="false" layoutX="47.0" layoutY="166.0" />
       <TextField fx:id="emailTextField" layoutX="284.0" layoutY="169.0" />

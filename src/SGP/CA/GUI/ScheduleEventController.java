@@ -1,6 +1,7 @@
 package SGP.CA.GUI;
 
 import SGP.CA.BusinessLogic.TextValidations;
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EventDAO;
 import SGP.CA.DataAccess.MemberDAO;
 import SGP.CA.Domain.Event;
@@ -64,10 +65,16 @@ public class ScheduleEventController implements Initializable {
         ArrayList<Member> allMembers = new ArrayList<>();
         try {
             allMembers = memberDAO.getAllMembers();
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-            sqlException.printStackTrace();
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
         for (int i = 0; i < allMembers.size(); i++) {
             if (allMembers.get(i).getActive() == 1) {
@@ -167,10 +174,16 @@ public class ScheduleEventController implements Initializable {
         if (createEvent()) {
             try {
                 successfulSave = eventDAO.saveEvent(createdEvent);
-            } catch (SQLException sqlException) {
+            } catch (SQLException exSqlException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                sqlException.printStackTrace();
+            } finally {
+                try {
+                    ConnectDB.closeConnection();
+                } catch (SQLException exSqlException) {
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                }
             }
         } if (successfulSave == 1) {
             AlertBuilder alertBuilder = new AlertBuilder();
@@ -179,6 +192,11 @@ public class ScheduleEventController implements Initializable {
             currentStage.close();
             ConsultEventsController.getInstance().populateTable();
         }
+    }
+
+    public void cancelButton() {
+        Stage stage = (Stage) scheduleButton.getScene().getWindow();
+        stage.close();
     }
 
 

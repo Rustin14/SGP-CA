@@ -1,5 +1,7 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.HashPasswords;
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.MemberDAO;
 import SGP.CA.Domain.Member;
 import javafx.fxml.FXML;
@@ -44,6 +46,13 @@ public class LoginController implements Initializable {
         } catch (SQLException sqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
         for (int i = 0; i < allMembers.size(); i++) {
             if (allMembers.get(i).getActive() == 1) {
@@ -54,12 +63,13 @@ public class LoginController implements Initializable {
 
     public void signIn() {
         Member member = new Member();
+        HashPasswords hashPasswords = new HashPasswords();
         boolean goodEmail = false;
         boolean goodPassword = false;
         for (int i = 0; i < allActiveMembers.size(); i++) {
             if (allActiveMembers.get(i).getEmail().equals(emailTextField.getText())) {
                 goodEmail = true;
-                if (allActiveMembers.get(i).getPassword().equals(passwordTextField.getText())) {
+                if (hashPasswords.isValid(passwordTextField.getText(), allActiveMembers.get(i).getPassword())) {
                     member = allActiveMembers.get(i);
                     Member.signedMember = allActiveMembers.get(i);
                     goodPassword = true;
@@ -106,6 +116,8 @@ public class LoginController implements Initializable {
         }
         screenController.activate("memberProf");
     }
+
+    
 
 
 

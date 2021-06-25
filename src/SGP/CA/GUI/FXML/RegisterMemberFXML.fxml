@@ -140,7 +140,7 @@
                   </Label>
                   <PasswordField fx:id="passwordTF" layoutX="363.0" layoutY="400.0" />
                   <PasswordField fx:id="confirmPasswordTF" layoutX="631.0" layoutY="400.0" />
-                  <Button fx:id="cancelButton" layoutX="763.0" layoutY="476.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="83.0" text="CANCELAR">
+                  <Button fx:id="cancelButton" layoutX="763.0" layoutY="476.0" mnemonicParsing="false" onAction="#cancelButton" prefHeight="24.0" prefWidth="83.0" text="CANCELAR">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

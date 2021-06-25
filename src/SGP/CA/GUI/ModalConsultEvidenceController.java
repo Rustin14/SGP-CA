@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EvidenceDAO;
 import SGP.CA.Domain.Evidence;
 import javafx.fxml.FXML;
@@ -7,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -63,8 +63,15 @@ public class ModalConsultEvidenceController implements Initializable {
         if (userResponse) {
             try {
                 databaseResponse = evidenceDAO.deleteEvidence(evidence.getIdEvidence());
-            } catch (SQLException sqlException) {
+            } catch (SQLException exSqlException) {
                 alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            } finally {
+                try {
+                    ConnectDB.closeConnection();
+                } catch (SQLException exSqlException) {
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                }
             }
         }
         if (databaseResponse == 1) {
@@ -78,11 +85,15 @@ public class ModalConsultEvidenceController implements Initializable {
         SceneSwitcher sceneSwitcher = new SceneSwitcher();
         try {
             sceneSwitcher.createDialog((Stage) deleteButton.getScene().getWindow(), "FXML/ModifyEvidenceFXML.fxml");
-        } catch (IOException ioException) {
+        } catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible acceder a esta ventana. Intente más tarde.");
-            ioException.printStackTrace();
         }
+    }
+
+    public void cancelButton() {
+        Stage stage = (Stage) deleteButton.getScene().getWindow();
+        stage.close();
     }
 
 

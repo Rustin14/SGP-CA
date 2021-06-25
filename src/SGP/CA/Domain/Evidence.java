@@ -10,6 +10,7 @@ public class Evidence {
     private String description;
     private Date registrationDate;
     private Date modificationDate;
+    private int idMember;
     private int active;
 
     public static Evidence selectedEvidence;
@@ -87,5 +88,13 @@ public class Evidence {
 
     public static void setSelectedEvidence(Evidence selectedEvidence) {
         Evidence.selectedEvidence = selectedEvidence;
+    }
+
+    public int getIdMember() {
+        return idMember;
+    }
+
+    public void setIdMember(int idMember) {
+        this.idMember = idMember;
     }
 }

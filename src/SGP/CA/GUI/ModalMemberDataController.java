@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.LGACDAO;
 import SGP.CA.DataAccess.MemberDAO;
 import SGP.CA.Domain.Member;
@@ -7,13 +8,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ModalMemberDataController implements Initializable {
@@ -75,6 +73,13 @@ public class ModalMemberDataController implements Initializable {
         } catch (SQLException sqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
         lgacLabel.setText(lgacName);
         phoneLabel.setText(member.getPhoneNumber());
@@ -104,9 +109,13 @@ public class ModalMemberDataController implements Initializable {
         try {
             sceneSwitcher.createDialog((Stage) completeNameLabel.getScene().getWindow(), "FXML/ModifyMemberFXML.fxml");
         } catch (IOException ioException) {
-            //alertBuilder.exceptionAlert("Error accediendo a la ventana. Intente de nuevo.");
-            ioException.printStackTrace();
+            alertBuilder.exceptionAlert("Error accediendo a la ventana. Intente de nuevo.");
         }
+    }
+
+    public void cancelButton() {
+        Stage stage = (Stage) completeNameLabel.getScene().getWindow();
+        stage.close();
     }
 
 }

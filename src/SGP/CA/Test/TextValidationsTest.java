@@ -41,4 +41,39 @@ public class TextValidationsTest {
 
         Assert.assertEquals(false, passwordValidated);
     }
+
+    @Test
+    public void phoneValidationPassTest () {
+        String phoneNumber = "2281987654";
+        boolean phoneValidated = textValidations.validatePhoneNumber(phoneNumber);
+
+        Assert.assertEquals(true, phoneValidated);
+    }
+
+    @Test
+    public void phoneValidationFailTest () {
+        String phoneNumber = "281987654";
+        boolean phoneValidated = textValidations.validatePhoneNumber(phoneNumber);
+
+        Assert.assertEquals(false, phoneValidated);
+    }
+
+    @Test
+    public void hourFormatValidationPassTest () {
+        String hour = "13:00";
+        boolean hourFormatValidated = textValidations.validateHourFormat(hour);
+
+        Assert.assertEquals(true, hourFormatValidated);
+    }
+
+    @Test
+    public void hourFormatValidationFailTest () {
+        String hour = "13::00";
+        boolean hourFormatValidated = textValidations.validateHourFormat(hour);
+
+        Assert.assertEquals(false, hourFormatValidated);
+    }
+
+
+
 }

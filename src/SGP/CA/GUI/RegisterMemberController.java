@@ -1,20 +1,24 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.HashPasswords;
 import SGP.CA.BusinessLogic.TextValidations;
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.LGACDAO;
 import SGP.CA.DataAccess.MemberDAO;
 import SGP.CA.DataAccess.ResponsibleDAO;
 import SGP.CA.Domain.LGAC;
 import SGP.CA.Domain.Member;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -138,10 +142,16 @@ public class RegisterMemberController implements Initializable {
         ArrayList<LGAC> allLines = new ArrayList<>();
         try {
             allLines = lgacdao.getAllLines();
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-            sqlException.printStackTrace();
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
 
         List<String> lineNamesList = new ArrayList<String>();
@@ -174,13 +184,22 @@ public class RegisterMemberController implements Initializable {
                         try {
                             LGACDAO lgacdao = new LGACDAO();
                             lgac = lgacdao.searchLGACbyLineName((String) LGACCombo.getSelectionModel().getSelectedItem());
-                        } catch (SQLException sqlException) {
+                        } catch (SQLException exSqlException) {
                             AlertBuilder alertBuilder = new AlertBuilder();
                             alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
+                        } finally {
+                            try {
+                                ConnectDB.closeConnection();
+                            } catch (SQLException exSqlException) {
+                                AlertBuilder alertBuilder = new AlertBuilder();
+                                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                            }
                         }
                         member.setIdLGAC(lgac.getIdLGAC());
                         member.setEmail(emailTF.getText());
-                        member.setPassword(passwordTF.getText());
+                        HashPasswords hashPasswords = new HashPasswords();
+                        String password = hashPasswords.generateHashedPass(passwordTF.getText());
+                        member.setPassword(password);
                         String memberType = (String) memberTypeCombo.getSelectionModel().getSelectedItem();
                         if (memberType.equals("Responsable")) {
                             member.setIsResponsible(1);
@@ -214,14 +233,25 @@ public class RegisterMemberController implements Initializable {
         Member responsible = new Member();
         try {
             responsible = memberDAO.searchMemberByName(member.getName());
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Inténtalo más tarde.");
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
         try {
             responsibleDAO.saveResponsible(responsible.getIdMember());
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             alertBuilder.exceptionAlert("No hay conexión a la base de datos. Intente más tarde.");
-            sqlException.printStackTrace();
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
     }
 
@@ -235,10 +265,22 @@ public class RegisterMemberController implements Initializable {
                     if (member.getIsResponsible() == 1) {
                         registerResponsible();
                     }
-                } catch (SQLIntegrityConstraintViolationException CURPDuplication) {
-                    alertBuilder.exceptionAlert("Ya hay un registro del CURP introducido en la base de datos.");
-                } catch (SQLException sqlException) {
+                } catch (SQLIntegrityConstraintViolationException dataDuplication) {
+                    String exceptionMessage = dataDuplication.getMessage();
+                    String [] messageParts = exceptionMessage.split("key ");
+                    if (messageParts[1].equals("'UQ_Name'")) {
+                        alertBuilder.exceptionAlert("Ya hay un registro del CURP introducido en la base de datos.");
+                    } else {
+                        alertBuilder.exceptionAlert("Ya hay un registro del email introducio en la base de datos.");
+                    }
+                } catch (SQLException exSqlException) {
                     alertBuilder.exceptionAlert("No hay conexión a la base de datos. Intente más tarde.");
+                } finally {
+                    try {
+                        ConnectDB.closeConnection();
+                    } catch (SQLException exSqlException) {
+                        alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                    }
                 }
             if (successfulSave == 1) {
                 alertBuilder.successAlert("¡Registro realizado!");
@@ -247,6 +289,11 @@ public class RegisterMemberController implements Initializable {
                 ConsultMemberController.getInstance().populateTable();
             }
         }
+    }
+
+    public void cancelButton() {
+        Stage stage = (Stage) memberTypeCombo.getScene().getWindow();
+        stage.close();
     }
 
 

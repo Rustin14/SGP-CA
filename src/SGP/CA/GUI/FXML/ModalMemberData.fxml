@@ -64,6 +64,6 @@
       <Label fx:id="birthDateLabel" layoutX="292.0" layoutY="266.0" text="Label" />
       <Button layoutX="467.0" layoutY="392.0" mnemonicParsing="false" onAction="#modifyMember" text="Modificar" />
       <Button fx:id="deleteButton" layoutX="563.0" layoutY="392.0" mnemonicParsing="false" onAction="#deleteMember" text="Eliminar" />
-      <Button layoutX="647.0" layoutY="392.0" mnemonicParsing="false" text="Cancelar" />
+      <Button layoutX="647.0" layoutY="392.0" mnemonicParsing="false" onAction="#cancelButton" text="Cancelar" />
    </children>
 </AnchorPane>

@@ -7,18 +7,6 @@ import java.util.ArrayList;
 
 public class LGACDAO implements ILGACDAO {
 
-
-    @Override
-    public int saveLGAC(LGAC lgac) throws SQLException {
-        ConnectDB databaseConnection = new ConnectDB();
-        Connection connection = databaseConnection.getConnection();
-        String query = "INSERT INTO lgac (lineName) VALUES (?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, lgac.getLineName());
-        int successfulUpdate = statement.executeUpdate();
-        return successfulUpdate;
-    }
-
     @Override
     public LGAC searchLGACbyLineName(String lineName) throws SQLException {
         LGAC lgac = null;

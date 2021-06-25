@@ -17,13 +17,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ConsultEventsController implements Initializable {
+public class ConsultEventsResponsibleController implements Initializable {
 
     @FXML
     TableView eventsTable;
@@ -34,13 +35,13 @@ public class ConsultEventsController implements Initializable {
     @FXML
     TextField searchBar;
 
-    private static ConsultEventsController instance;
+    private static ConsultEventsResponsibleController instance;
 
-    public static ConsultEventsController getInstance() {
+    public static ConsultEventsResponsibleController getInstance() {
         return instance;
     }
 
-    public ConsultEventsController () {
+    public ConsultEventsResponsibleController() {
         instance = this;
     }
 
@@ -159,14 +160,26 @@ public class ConsultEventsController implements Initializable {
 
     public void goToProfile() {
         AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("memberProf")) {
+        if(!ScreenController.instance.isScreenOnMap("responsibleProf")) {
             try {
-                ScreenController.instance.addScreen("memberProf", FXMLLoader.load(getClass().getResource("FXML/MemberProfileFXML.fxml")));
+                ScreenController.instance.addScreen("responsibleProf", FXMLLoader.load(getClass().getResource("FXML/ResponsibleProfileFXML.fxml")));
             } catch (IOException exIoException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
             }
         }
-        ScreenController.instance.activate("memberProf");
+        ScreenController.instance.activate("responsibleProf");
+    }
+
+    public void consultMembers() {
+        AlertBuilder alertBuilder = new AlertBuilder();
+        if(!ScreenController.instance.isScreenOnMap("consultMember")) {
+            try {
+                ScreenController.instance.addScreen("consultMember", FXMLLoader.load(getClass().getResource("FXML/ConsultMemberFXML.fxml")));
+            } catch (IOException ioException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
+            }
+        }
+        ScreenController.instance.activate("consultMember");
     }
 
 

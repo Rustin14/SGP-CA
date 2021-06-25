@@ -1,16 +1,24 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EvidenceDAO;
 import SGP.CA.Domain.Evidence;
+import SGP.CA.Domain.Member;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 public class RegisterEvidenceController implements Initializable {
 
@@ -27,6 +35,7 @@ public class RegisterEvidenceController implements Initializable {
 
     EvidenceDAO evidenceDAO = new EvidenceDAO();
     AlertBuilder alertBuilder = new AlertBuilder();
+    Member member = Member.signedMember;
     Evidence evidence;
 
     @Override
@@ -71,6 +80,7 @@ public class RegisterEvidenceController implements Initializable {
             evidence.setEvidenceType(evidenceTypeCombo.getValue().toString());
             evidence.setRegistrationDate(new Date());
             evidence.setDescription(descriptionArea.getText());
+            evidence.setIdMember(member.getIdMember());
             successfulCreation = true;
         }
         return successfulCreation;
@@ -82,10 +92,16 @@ public class RegisterEvidenceController implements Initializable {
         if (createEvidence()) {
             try {
                 successfulSave = evidenceDAO.saveEvidence(evidence);
-            } catch (SQLException sqlException) {
+            } catch (SQLException exSqlException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                sqlException.printStackTrace();
+            } finally {
+                try {
+                    ConnectDB.closeConnection();
+                } catch (SQLException exSqlException) {
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                }
             }
         } else {
             alertBuilder.errorAlert("No dejar campos vacíos.");
@@ -103,6 +119,11 @@ public class RegisterEvidenceController implements Initializable {
         DateFormat dateFormat = new SimpleDateFormat(patternDate);
         String registrationDate = dateFormat.format(Calendar.getInstance().getTime());
         registrationDatePicker.setText(registrationDate);
+    }
+
+    public void cancelButton() {
+        Stage stage = (Stage) evidenceTypeCombo.getScene().getWindow();
+        stage.close();
     }
 
 

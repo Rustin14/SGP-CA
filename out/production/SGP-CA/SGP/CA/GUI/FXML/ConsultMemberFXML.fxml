@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultMemberController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f5eded" height="40.0" layoutX="204.0" layoutY="31.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="848.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f5eded" height="40.0" layoutX="215.0" layoutY="29.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="848.0" />
       <Label layoutX="212.0" layoutY="35.0" text="MIEMBROS DE CA">
          <font>
             <Font name="System Bold" size="24.0" />
@@ -50,8 +50,20 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="128.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
-      <Label layoutX="20.0" layoutY="132.0" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="130.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
+      <Label layoutX="18.0" layoutY="134.0" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="178.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="19.0" layoutY="184.0" onMouseClicked="#consultEvidences" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="228.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
+      <Label layoutX="22.0" layoutY="234.0" onMouseClicked="#consultEvents" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

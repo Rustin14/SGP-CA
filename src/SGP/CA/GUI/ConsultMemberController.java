@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.MemberDAO;
 import SGP.CA.Domain.Member;
 import javafx.collections.FXCollections;
@@ -13,9 +14,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -58,6 +59,7 @@ public class ConsultMemberController implements Initializable {
         setListView();
         openMemberDataModal();
         searchMember();
+        setTextLimit();
     }
 
     public void populateTable(){
@@ -65,10 +67,16 @@ public class ConsultMemberController implements Initializable {
         ObservableList<Member> auxiliarMemberList = FXCollections.observableArrayList();
         try {
             allMembers = memberDAO.getAllMembers();
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
-            sqlException.printStackTrace();
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
         for (int i = 0; i < allMembers.size(); i++) {
             if (allMembers.get(i).getActive() == 1) {
@@ -78,6 +86,11 @@ public class ConsultMemberController implements Initializable {
         }
         memberList = auxiliarMemberList;
         searchMember();
+    }
+    public void setTextLimit () {
+        final int MAX_CHARS = 50;
+        searchBar.setTextFormatter(new TextFormatter<String>(change ->
+                change.getControlNewText().length() <= MAX_CHARS ? change : null));
     }
 
     public void setListView() {
@@ -97,10 +110,9 @@ public class ConsultMemberController implements Initializable {
                     SceneSwitcher sceneSwitcher = new SceneSwitcher();
                     try {
                         sceneSwitcher.createDialog((Stage) membersTable.getScene().getWindow(), "FXML/ModalMemberData.fxml");
-                    } catch (IOException ioException) {
+                    } catch (IOException exIoException) {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         alertBuilder.exceptionAlert("Error cargando la ventana. Intente de nuevo.");
-                        ioException.printStackTrace();
                     }
                 }
             });
@@ -112,7 +124,7 @@ public class ConsultMemberController implements Initializable {
         SceneSwitcher sceneSwitcher = new SceneSwitcher();
         try {
             sceneSwitcher.createDialog((Stage) membersTable.getScene().getWindow(), "FXML/RegisterMemberFXML.fxml");
-        } catch (IOException ioException) {
+        } catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
         }
@@ -139,7 +151,40 @@ public class ConsultMemberController implements Initializable {
     }
 
     public void goToResponsibleProfile() {
+        AlertBuilder alertBuilder = new AlertBuilder();
+        if(!ScreenController.instance.isScreenOnMap("responsibleProf")) {
+            try {
+                ScreenController.instance.addScreen("responsibleProf", FXMLLoader.load(getClass().getResource("FXML/ResponsibleProfileFXML.fxml")));
+            } catch (IOException exIoException) {
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
+            }
+        }
         ScreenController.instance.activate("responsibleProf");
+    }
+
+
+    public void consultEvidences() {
+        if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
+            try {
+                ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceResponsibleFXML.fxml")));
+            } catch (IOException exIoException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
+            }
+        }
+        ScreenController.instance.activate("consultEvidence");
+    }
+
+    public void consultEvents() {
+        if(!ScreenController.instance.isScreenOnMap("consultEvents")) {
+            try {
+                ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsResponsibleFXML.fxml")));
+            } catch (IOException exIoException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
+            }
+        }
+        ScreenController.instance.activate("consultEvents");
     }
 
 

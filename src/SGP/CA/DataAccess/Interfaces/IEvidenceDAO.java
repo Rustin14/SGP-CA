@@ -9,5 +9,6 @@ public interface IEvidenceDAO {
     public Evidence searchEvidenceByIDEvidence(int idEvidence) throws SQLException;
     public int deleteEvidence(int idEvidence) throws SQLException;
     public ArrayList<Evidence> getAllEvidence() throws SQLException;
+    public ArrayList<Evidence> getAllEvidenceFromMember(int idMember) throws SQLException;
     public int modifyEvidence(Evidence evidence, int idEvidence) throws SQLException;
 }

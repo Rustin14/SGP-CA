@@ -4,40 +4,77 @@ import SGP.CA.DataAccess.EventDAO;
 import SGP.CA.Domain.Event;
 import org.junit.Assert;
 import org.junit.Test;
-import java.sql.Date;
-
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EventDAOTest {
 
     EventDAO eventDAO = new EventDAO();
 
-    /*public void saveEventTest () throws SQLException, ClassNotFoundException, ParseException {
-        Event event = new Event();
-        event.setEventName("Test");
-        event.setEventPlace("Test");
-        String testDateString = "01/01/2000";
-        java.util.Date testDate = new SimpleDateFormat("dd/MM/yyyy").parse(testDateString);
-        event.setEventDate(testDate);
-        event.setResponsableName("Test");
-
-        int successfulSave = eventDAO.saveEvent(event);
-        Assert.assertEquals(1, successfulSave, 0);*/
-
     @Test
-    public void searchEventByEventID () throws SQLException, ClassNotFoundException {
-        Event event = eventDAO.searchEventByEventID(1);
+    public void saveEventTest () throws SQLException {
+        Event event = new Event();
+        event.setEventName("Examen Recepcional");
+        event.setEventPlace("Auditorio de la FEI");
+        LocalDate registrationDate = LocalDate.of(2021, 6, 23);
+        java.util.Date utilRegistrationDate = new Date();
+        utilRegistrationDate.from(registrationDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        event.setRegistrationDate(utilRegistrationDate);
+        LocalDate eventDate = LocalDate.of(2021, 6, 30);
+        java.util.Date utilEventDate = new Date();
+        utilEventDate.from(eventDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        event.setEventDate(utilEventDate);
+        event.setResponsableName("Carlos Gabriel Flores Lira");
+        event.setEventHour("13:30");
+        int successfulSave = eventDAO.saveEvent(event);
 
-        Assert.assertEquals(1,event.getIdEvent(),0);
+        Assert.assertEquals(1, successfulSave, 0);
     }
 
     @Test
-    public void getAllEventTest() throws SQLException, ClassNotFoundException {
+    public void modifyEventTest () throws SQLException {
+        Event event = new Event();
+        event.setIdEvent(13);
+        event.setEventName("Examen Recepcional");
+        event.setEventPlace("Auditorio de la FEI");
+        LocalDate registrationDate = LocalDate.of(2021, 6, 23);
+        java.util.Date utilRegistrationDate = new Date();
+        utilRegistrationDate.from(registrationDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        event.setRegistrationDate(utilRegistrationDate);
+
+        LocalDate eventDate = LocalDate.of(2021, 6, 30);
+        java.util.Date utilEventDate = new Date();
+        utilEventDate.from(eventDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        event.setEventDate(utilEventDate);
+
+        event.setResponsableName("Carlos Gabriel Flores Lira");
+        event.setEventHour("13:45");
+        int successfulSave = eventDAO.modifyEvent(event);
+
+        Assert.assertEquals(1, successfulSave, 0);
+    }
+
+    @Test
+    public void deleteEventTest () throws SQLException {
+        int successfulTest = eventDAO.deleteEvent(13);
+
+        Assert.assertEquals(1, successfulTest, 0);
+    }
+
+    @Test
+    public void searchEventByEventID () throws SQLException {
+        Event event = eventDAO.searchEventByEventID(1);
+
+        Assert.assertEquals(1, event.getIdEvent(),0);
+    }
+
+    @Test
+    public void getAllEventTest() throws SQLException {
         ArrayList<Event> allEvents = eventDAO.getAllEvent();
 
-        Assert.assertEquals("Examen Recepcional: Marco Rodríguez", allEvents.get(0).getEventName());
+        Assert.assertEquals("Examen Recepcional: Kenya Contreras", allEvents.get(0).getEventName());
     }
 }

@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-
 public class ConnectDBTest {
 
     ConnectDB connectDB = new ConnectDB();

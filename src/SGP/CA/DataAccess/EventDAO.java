@@ -25,6 +25,7 @@ public class EventDAO implements IEventDAO {
         statement.setString(6, event.getEventHour());
         statement.setInt(7, event.getIdMember());
         int successfulUpdate = statement.executeUpdate();
+        databaseConnection.closeConnection();
         return successfulUpdate;
     }
 
@@ -45,6 +46,7 @@ public class EventDAO implements IEventDAO {
         statement.setInt(7, event.getIdMember());
         statement.setInt(8, event.getIdEvent());
         int successfulUpdate = statement.executeUpdate();
+        databaseConnection.closeConnection();
         return successfulUpdate;
     }
 
@@ -56,6 +58,7 @@ public class EventDAO implements IEventDAO {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, idEvent);
         int successfulUpdate = statement.executeUpdate();
+        databaseConnection.closeConnection();
         return successfulUpdate;
     }
 
@@ -82,6 +85,7 @@ public class EventDAO implements IEventDAO {
             event.setIdMember(results.getInt("idMember"));
             event.setActive(results.getInt("active"));
         }
+        databaseConnection.closeConnection();
         return event;
     }
 
@@ -109,6 +113,7 @@ public class EventDAO implements IEventDAO {
             event.setActive(results.getInt("active"));
             getAllEvent.add(event);
         }
+        databaseConnection.closeConnection();
         return getAllEvent;
     }
 }

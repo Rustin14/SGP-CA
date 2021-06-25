@@ -1,6 +1,7 @@
 package SGP.CA.GUI;
 
 import SGP.CA.BusinessLogic.TextValidations;
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.LGACDAO;
 import SGP.CA.DataAccess.MemberDAO;
 import SGP.CA.Domain.LGAC;
@@ -9,7 +10,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.SQLException;
@@ -112,10 +118,16 @@ public class ModifyMemberController implements Initializable {
                 try {
                     LGACDAO lgacdao = new LGACDAO();
                     lgac = lgacdao.searchLGACbyLineName((String) lgacCombo.getSelectionModel().getSelectedItem());
-                } catch (SQLException sqlException) {
+                } catch (SQLException exSqlException) {
                     AlertBuilder alertBuilder = new AlertBuilder();
                     alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                    sqlException.printStackTrace();
+                } finally {
+                    try {
+                        ConnectDB.closeConnection();
+                    } catch (SQLException exSqlException) {
+                        AlertBuilder alertBuilder = new AlertBuilder();
+                        alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                    }
                 }
                 modifiedMember.setIdLGAC(lgac.getIdLGAC());
                 modifiedMember.setEmail(emailTextField.getText());
@@ -185,9 +197,14 @@ public class ModifyMemberController implements Initializable {
             int successfulUpdate = 0;
             try {
                 successfulUpdate = memberDAO.modifyMember(modifiedMember, member.getIdMember());
-            } catch (SQLException sqlException) {
+            } catch (SQLException exSqlException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                sqlException.printStackTrace();
+            } finally {
+                try {
+                    ConnectDB.closeConnection();
+                } catch (SQLException exSqlException) {
+                    alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                }
             }
             if (successfulUpdate == 1) {
                 alertBuilder.successAlert("¡Registro realizado!");
@@ -201,13 +218,9 @@ public class ModifyMemberController implements Initializable {
         }
     }
 
-
-
-
-
-
-
-
-
+    public void cancelButton() {
+        Stage stage = (Stage) lgacCombo.getScene().getWindow();
+        stage.close();
+    }
 
 }

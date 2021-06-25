@@ -27,7 +27,7 @@
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bfbfbf" height="304.0" layoutX="42.0" layoutY="106.0" stroke="WHITE" strokeType="INSIDE" width="632.0" />
       <Button fx:id="saveButton" layoutX="592.0" layoutY="368.0" mnemonicParsing="false" onAction="#saveEvidence" text="Guardar" />
-      <Button fx:id="exitButton" layoutX="46.0" layoutY="419.0" mnemonicParsing="false" text="Salir" />
+      <Button fx:id="exitButton" layoutX="46.0" layoutY="419.0" mnemonicParsing="false" onAction="#cancelButton" text="Salir" />
       <Label layoutX="58.0" layoutY="176.0" text="Título">
          <font>
             <Font name="System Bold" size="12.0" />

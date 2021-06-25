@@ -1,17 +1,26 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EvidenceDAO;
 import SGP.CA.Domain.Evidence;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class ModifyEvidenceController implements Initializable {
 
@@ -100,8 +109,14 @@ public class ModifyEvidenceController implements Initializable {
         int successfulUpdate = -2;
         try {
             successfulUpdate = evidenceDAO.modifyEvidence(evidence, evidence.getIdEvidence());
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
         if (successfulUpdate == 1) {
             alertBuilder.successAlert("¡Registro exitoso!");
@@ -113,4 +128,8 @@ public class ModifyEvidenceController implements Initializable {
         }
     }
 
+    public void cancelButton() {
+        Stage stage = (Stage) modifyButton.getScene().getWindow();
+        stage.close();
+    }
 }

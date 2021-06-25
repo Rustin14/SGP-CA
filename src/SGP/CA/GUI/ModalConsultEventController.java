@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EventDAO;
 import SGP.CA.Domain.Event;
 import javafx.fxml.FXML;
@@ -34,6 +35,16 @@ public class ModalConsultEventController implements Initializable {
     Event event = Event.selectedEvent;
     EventDAO eventDAO = new EventDAO();
 
+    private static ModalConsultEventController instance;
+
+    public static ModalConsultEventController getInstance() {
+        return instance;
+    }
+
+    public ModalConsultEventController(){
+        instance = this;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setEventData();
@@ -61,6 +72,12 @@ public class ModalConsultEventController implements Initializable {
                 successfulUpdate = eventDAO.deleteEvent(event.getIdEvent());
             } catch (SQLException sqlException) {
                 alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
+            } finally {
+                try {
+                    ConnectDB.closeConnection();
+                } catch (SQLException exSqlException) {
+                    alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                }
             }
         }
         if (successfulUpdate > 0) {
@@ -75,10 +92,15 @@ public class ModalConsultEventController implements Initializable {
         SceneSwitcher sceneSwitcher = new SceneSwitcher();
         try {
             sceneSwitcher.createDialog((Stage) deleteButton.getScene().getWindow(), "FXML/ModifyEventFXML.fxml");
-        } catch (IOException ioException) {
+        } catch (IOException exIoException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
         }
+    }
+
+    public void cancelButton() {
+        Stage stage = (Stage) deleteButton.getScene().getWindow();
+        stage.close();
     }
 
 

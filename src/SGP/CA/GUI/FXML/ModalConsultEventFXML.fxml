@@ -34,7 +34,7 @@
       <Line endX="465.0" layoutX="123.0" layoutY="103.0" startX="-95.5" />
       <Line endX="464.5" layoutX="122.0" layoutY="325.0" startX="-95.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#babebf" height="208.0" layoutX="34.0" layoutY="110.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="546.0" />
-      <Button fx:id="exitButton" layoutX="35.0" layoutY="342.0" mnemonicParsing="false" text="Salir" />
+      <Button fx:id="exitButton" layoutX="35.0" layoutY="342.0" mnemonicParsing="false" onAction="#cancelButton" text="Salir" />
       <Label layoutX="48.0" layoutY="123.0" text="Titulo del evento">
          <font>
             <Font name="System Bold" size="12.0" />

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ConsultEventsResponsibleController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f5eded" height="40.0" layoutX="202.0" layoutY="34.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="848.0" />
+      <Label layoutX="210.0" layoutY="37.0" text="EVENTOS">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="scheduleEventButton" layoutX="937.0" layoutY="44.0" mnemonicParsing="false" onAction="#scheduleEvent" text="AGENDAR EVENTO">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <TextField fx:id="searchBar" layoutX="903.0" layoutY="84.0" prefHeight="12.0" prefWidth="149.0" promptText="Buscar" />
+      <TableView fx:id="eventsTable" layoutX="202.0" layoutY="125.0" prefHeight="455.0" prefWidth="848.0">
+        <columns>
+          <TableColumn fx:id="eventNameColumn" prefWidth="592.0" text="Tema" />
+            <TableColumn fx:id="dateColumn" prefWidth="255.0" text="Fecha" />
+        </columns>
+      </TableView>
+      <ImageView fitHeight="25.0" fitWidth="27.0" layoutX="867.0" layoutY="84.0" onMouseClicked="#populateTable" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../imgs/update.png" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="620.0" layoutX="-2.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="188.0" />
+      <Label layoutX="40.0" layoutY="21.0" text="SGP-CA">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-3.0" layoutY="80.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
+      <Label layoutX="20.0" layoutY="86.0" onMouseClicked="#goToProfile" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-4.0" layoutY="176.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="21.0" layoutY="180.0" onMouseClicked="#consultEvidence" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="223.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
+      <Label layoutX="23.0" layoutY="227.0" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-5.0" layoutY="127.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="20.0" layoutY="131.0" onMouseClicked="#consultMembers" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

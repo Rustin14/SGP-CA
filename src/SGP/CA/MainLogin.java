@@ -11,7 +11,7 @@ public class MainLogin extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("GUI/FXML/Login.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Sistema de Gestión de la Producción del Cuerpo Académico");
         primaryStage.setScene(new Scene(root, 1075, 600));
         primaryStage.show();
     }
@@ -20,3 +20,4 @@ public class MainLogin extends Application {
         launch(args);
     }
 }
+

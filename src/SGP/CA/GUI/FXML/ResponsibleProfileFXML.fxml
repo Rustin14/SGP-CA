@@ -7,7 +7,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.ResponsibleProfileController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e4dfdf" height="611.0" layoutX="-2.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="187.0" />
@@ -59,5 +58,17 @@
             <Image url="@../imgs/unnamed.png" />
          </image>
       </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-3.0" layoutY="166.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
+      <Label layoutX="9.0" layoutY="170.0" onMouseClicked="#consultEvents" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-3.0" layoutY="214.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
+      <Label layoutX="9.0" layoutY="218.0" onMouseClicked="#consultEvidences" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

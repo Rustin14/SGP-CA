@@ -1,6 +1,7 @@
 package SGP.CA.GUI;
 
 import SGP.CA.BusinessLogic.TextValidations;
+import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EventDAO;
 import SGP.CA.DataAccess.MemberDAO;
 import SGP.CA.Domain.Event;
@@ -9,16 +10,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+
 
 public class ModifyEventController implements Initializable {
 
@@ -73,10 +83,16 @@ public class ModifyEventController implements Initializable {
         ArrayList<Member> allMembers = new ArrayList<>();
         try {
             allMembers = memberDAO.getAllMembers();
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-            sqlException.printStackTrace();
+        } finally {
+            try {
+                ConnectDB.closeConnection();
+            } catch (SQLException exSqlException) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            }
         }
         for (int i = 0; i < allMembers.size(); i++) {
             if (allMembers.get(i).getActive() == 1) {
@@ -170,18 +186,31 @@ public class ModifyEventController implements Initializable {
         if (createEvent()) {
             try {
                 successfulSave = eventDAO.modifyEvent(createdEvent);
-            } catch (SQLException sqlException) {
+            } catch (SQLException exSqlException) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 alertBuilder.exceptionAlert("No es posible acceder a la base de datos. Intente más tarde.");
-                sqlException.printStackTrace();
+            } finally {
+                try {
+                    ConnectDB.closeConnection();
+                } catch (SQLException exSqlException) {
+                    AlertBuilder alertBuilder = new AlertBuilder();
+                    alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+                }
             }
         } if (successfulSave == 1) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.successAlert("¡Registro exitoso!");
             Stage currentStage = (Stage) modifyButton.getScene().getWindow();
             currentStage.close();
+            Stage eventStage = (Stage) ModalConsultEventController.getInstance().deleteButton.getScene().getWindow();
+            eventStage.close();
             ConsultEventsController.getInstance().populateTable();
         }
+    }
+
+    public void cancelButton() {
+        Stage stage = (Stage) modifyButton.getScene().getWindow();
+        stage.close();
     }
 
 
