@@ -1,13 +1,27 @@
+/**
+ * @author Gabriel Flores
+ */
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IEventDAO;
 import SGP.CA.Domain.Event;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class EventDAO implements IEventDAO {
 
+    /**
+     *
+     * @param event Objeto tipo Event que contiene todos los datos
+     * del evento que se desea almacenar en la base de datos.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public int saveEvent(Event event) throws SQLException {
@@ -28,6 +42,16 @@ public class EventDAO implements IEventDAO {
         databaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param event Objeto tipo Event que contiene todos los datos
+     * del evento que se desea modificar en la base de datos.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     public int modifyEvent(Event event) throws SQLException {
         ConnectDB databaseConnection = new ConnectDB();
@@ -50,6 +74,16 @@ public class EventDAO implements IEventDAO {
         return successfulUpdate;
     }
 
+    /**
+     *
+     * @param idEvent ID del Evento que se desea eliminar de la base
+     * de datos.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
+
     @Override
     public int deleteEvent(int idEvent) throws SQLException {
         ConnectDB databaseConnection = new ConnectDB();
@@ -61,6 +95,16 @@ public class EventDAO implements IEventDAO {
         databaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param idEvent ID del Evento que se desea buscar en la base
+     * de datos.
+     * @return event Objeto tipo Event que contiene todos los datos
+     * del Evento buscado en la base de datos.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public Event searchEventByEventID(int idEvent) throws SQLException {
@@ -88,6 +132,14 @@ public class EventDAO implements IEventDAO {
         databaseConnection.closeConnection();
         return event;
     }
+
+    /**
+     *
+     * @return allEvents Lista que contiene todos los Eventos encontrados
+     * en la base de datos.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public ArrayList<Event> getAllEvent() throws SQLException {

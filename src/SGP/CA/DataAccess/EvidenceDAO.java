@@ -1,3 +1,7 @@
+/**
+ * @author Gabriel Flores
+ */
+
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IEvidenceDAO;
@@ -10,6 +14,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class EvidenceDAO implements IEvidenceDAO {
+
+    /**
+     *
+     * @param evidence Objeto tipo Evidence que contiene toda la información
+     * que se desea guardar en la base de datos.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public int saveEvidence(Evidence evidence) throws SQLException {
@@ -27,6 +41,16 @@ public class EvidenceDAO implements IEvidenceDAO {
         return successfulUpdate;
     }
 
+    /**
+     *
+     * @param idEvidence Número entero que contiene el ID de la Evidencia
+     * a eliminar.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
+
     public int deleteEvidence(int idEvidence) throws SQLException {
         ConnectDB databaseConnection = new ConnectDB();
         Connection connection = databaseConnection.getConnection();
@@ -36,6 +60,16 @@ public class EvidenceDAO implements IEvidenceDAO {
         int successfulUpdate = preparedStatement.executeUpdate();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param idEvidence Número entero que contiene el ID de la Evidencia
+     * que se desea buscar en la base de datos.
+     * @return evidence - En caso de encontrar coincidencias, regresa un objeto
+     * tipo Evidencia con toda la información de la Evidencia.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public Evidence searchEvidenceByIDEvidence(int idEvidence) throws SQLException {
@@ -61,6 +95,13 @@ public class EvidenceDAO implements IEvidenceDAO {
         }
         return evidence;
     }
+
+    /**
+     *
+     * @return allEvidences Lista con todas las Evidencias encontradas en la base de datos.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public ArrayList<Evidence> getAllEvidence() throws SQLException {
@@ -91,6 +132,13 @@ public class EvidenceDAO implements IEvidenceDAO {
         return allEvidences;
     }
 
+    /**
+     * @param idMember ID del Miembro del que se desea buscar Evidencias relacionadas.
+     * @return allEvidences Lista con todas las Evidencias encontradas en la base de datos.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
+
     public ArrayList<Evidence> getAllEvidenceFromMember(int idMember) throws SQLException {
         ArrayList<Evidence> allEvidences = new ArrayList<>();
         Evidence evidence = null;
@@ -119,6 +167,17 @@ public class EvidenceDAO implements IEvidenceDAO {
         }
         return allEvidences;
     }
+
+    /**
+     *
+     * @param evidence Objeto tipo Evidencia que contiene todos los datos de
+     * de la Evidencia que se desea modificar.
+     * @param idEvidence ID de la Evidencia que se desea modificar.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     public int modifyEvidence(Evidence evidence, int idEvidence) throws SQLException {
         ConnectDB databaseConnection = new ConnectDB();
