@@ -51,6 +51,7 @@ public class LoginController implements Initializable {
         } catch (SQLException sqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
+            System.exit(0);
         } finally {
             try {
                 ConnectDB.closeConnection();
@@ -76,34 +77,39 @@ public class LoginController implements Initializable {
     }
 
     public void signIn() {
-        Member member = new Member();
-        HashPasswords hashPasswords = new HashPasswords();
-        boolean goodEmail = false;
-        boolean goodPassword = false;
-        for (int i = 0; i < allActiveMembers.size(); i++) {
-            if (allActiveMembers.get(i).getEmail().equals(emailTextField.getText())) {
-                goodEmail = true;
-                if (hashPasswords.isValid(passwordTextField.getText(), allActiveMembers.get(i).getPassword())) {
-                    member = allActiveMembers.get(i);
-                    Member.signedMember = allActiveMembers.get(i);
-                    goodPassword = true;
-                    break;
+        if (!allActiveMembers.isEmpty()) {
+            Member member = new Member();
+            HashPasswords hashPasswords = new HashPasswords();
+            boolean goodEmail = false;
+            boolean goodPassword = false;
+            for (int i = 0; i < allActiveMembers.size(); i++) {
+                if (allActiveMembers.get(i).getEmail().equals(emailTextField.getText())) {
+                    goodEmail = true;
+                    if (hashPasswords.isValid(passwordTextField.getText(), allActiveMembers.get(i).getPassword())) {
+                        member = allActiveMembers.get(i);
+                        Member.signedMember = allActiveMembers.get(i);
+                        goodPassword = true;
+                        break;
+                    }
                 }
             }
-        }
-        if (goodEmail && goodPassword) {
-            if (member.getIsResponsible() == 1) {
-                signedResponsable();
-            } else if (member.getIsResponsible() == 0) {
-                signedMember();
+            if (goodEmail && goodPassword) {
+                if (member.getIsResponsible() == 1) {
+                    signedResponsable();
+                } else if (member.getIsResponsible() == 0) {
+                    signedMember();
+                }
             }
-        }
-        if (!goodEmail) {
+            if (!goodEmail) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.errorAlert("No se encuentran coincidencias con el email introducido.");
+            } else if (!goodPassword) {
+                AlertBuilder alertBuilder = new AlertBuilder();
+                alertBuilder.errorAlert("Contraseña equivocada.");
+            }
+        } else {
             AlertBuilder alertBuilder = new AlertBuilder();
-            alertBuilder.errorAlert("No se encuentran coincidencias con el email introducido.");
-        } else if (!goodPassword) {
-            AlertBuilder alertBuilder = new AlertBuilder();
-            alertBuilder.errorAlert("Contraseña equivocada.");
+            alertBuilder.errorAlert("El acceso a la base de datos está limitado, intente más tarde.");
         }
     }
 
@@ -114,7 +120,8 @@ public class LoginController implements Initializable {
             screenController.addScreen("login", FXMLLoader.load(getClass().getResource("FXML/Login.fxml")));
             screenController.addScreen("responsibleProf", FXMLLoader.load(getClass().getResource("FXML/ResponsibleProfileFXML.fxml")));
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            AlertBuilder alertBuilder = new AlertBuilder();
+            alertBuilder.exceptionAlert("No es posible abrir la ventana.");
         }
         screenController.activate("responsibleProf");
     }
@@ -125,8 +132,9 @@ public class LoginController implements Initializable {
         try {
             screenController.addScreen("login", FXMLLoader.load(getClass().getResource("FXML/Login.fxml")));
             screenController.addScreen("memberProf", FXMLLoader.load(getClass().getResource("FXML/MemberProfileFXML.fxml")));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException exIoException) {
+            AlertBuilder alertBuilder = new AlertBuilder();
+            alertBuilder.exceptionAlert("No es posible abrir la ventana.");
         }
         screenController.activate("memberProf");
     }

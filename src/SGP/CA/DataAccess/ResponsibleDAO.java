@@ -1,15 +1,24 @@
+/**
+ * @author Gabriel Flores
+ */
+
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IResponsibleDAO;
-import SGP.CA.Domain.Responsible;
-import com.mysql.cj.jdbc.exceptions.OperationNotSupportedException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class ResponsibleDAO implements IResponsibleDAO {
+
+    /**
+     *
+     * @param idMember ID del Miembro asociado al Responsable a almacenar.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public int saveResponsible(int idMember) throws SQLException {

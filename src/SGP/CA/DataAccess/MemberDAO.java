@@ -1,3 +1,6 @@
+/**
+ * @author Gabriel Flores
+ */
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IMemberDAO;
@@ -9,6 +12,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MemberDAO implements IMemberDAO {
+
+    /**
+     *
+     * @param member Manda un objeto del tipo Member que contiene toda la información
+     * que se desea guardar del Miembro.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public int saveMember(Member member) throws SQLException {
@@ -35,6 +48,17 @@ public class MemberDAO implements IMemberDAO {
         return successfulUpdate;
     }
 
+    /**
+     *
+     * @param member Manda un objeto del tipo Member que contiene toda la información
+     * que se desea modificar del Miembro.
+     * @param idMember Contiene el ID del Miembro que se desea modificar.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
+
     public int modifyMember (Member member, int idMember) throws SQLException {
         ConnectDB databaseConnection = new ConnectDB();
         Connection connection = databaseConnection.getConnection();
@@ -55,6 +79,15 @@ public class MemberDAO implements IMemberDAO {
         int successfulUpdate = statement.executeUpdate();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param name Nombre del Miembro que se desea buscar en la base de datos.
+     * @return member En caso de encontrar una coincidencia, se regresa un objeto
+     * de tipo Member con toda la información del miembro coincidente.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     @Override
     public Member searchMemberByName(String name) throws SQLException {
@@ -88,6 +121,13 @@ public class MemberDAO implements IMemberDAO {
         return member;
     }
 
+    /**
+     *
+     * @return allMembers Lista con todos los Miembros encontrados en la base de datos.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
+
     @Override
     public ArrayList<Member> getAllMembers() throws SQLException {
         Member member = null;
@@ -118,6 +158,15 @@ public class MemberDAO implements IMemberDAO {
         }
         return allMembers;
     }
+
+    /**
+     *
+     * @param idMember Contiene el ID del Miembro que se desea eliminar.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexión
+     * a la base de datos.
+     */
 
     public int deleteMember(int idMember) throws SQLException {
         ConnectDB databaseConnection = new ConnectDB();
