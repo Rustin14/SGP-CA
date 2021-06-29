@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.TextValidations;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class AddWorkPlanController extends Application {
@@ -56,14 +59,14 @@ public class AddWorkPlanController extends Application {
     }
 
     public void saveButtonEvent() {
-        boolean noEmptyTextField = checkEmptyTextFields();
-        if (!noEmptyTextField) {
+        String noEmptyTextField = checkEmptyTextFields();
+        if (!noEmptyTextField.equals("noEmptyTextFields")) {
             AlertBuilder alertBuilder = new AlertBuilder();
-            String errorMessage = "No has llenado todos los campos";
+            String errorMessage = "No has llenado el campo " + noEmptyTextField;
             alertBuilder.errorAlert(errorMessage);
         }else {
-            boolean noExceededTextLimit = checkTextLimit();
-            if (!noExceededTextLimit) {
+            String noExceededTextLimit = checkTextLimit();
+            if (!noExceededTextLimit.equals("allLimitsRespected")) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String errorMessage = "Clave de plan de trabajo muy extensa";
                 alertBuilder.errorAlert(errorMessage);
@@ -139,21 +142,27 @@ public class AddWorkPlanController extends Application {
         stage.showAndWait();
     }
 
-    public boolean checkEmptyTextFields() {
+    public String checkEmptyTextFields() {
+        TextValidations textValidations = new TextValidations();
         TextField [] textFields = {workPlanKeyTextField, startDateTextField, endDateTextField};
-        for (int i=0; i<textFields.length; i++) {
-            if (textFields[i].getText().isEmpty()) {
-                return false;
-            }
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Clave de plan de trabajo", "Fecha inicio",
+                "Fecha fin"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
         }
-        return true;
+        String emptyTextField = textValidations.checkNoEmptyTextFields(textFieldTexts, textFieldNames);
+        if (!emptyTextField.equals("noEmptyTextFields")){
+            return emptyTextField;
+        }
+        return "noEmptyTextFields";
     }
 
-    public boolean checkTextLimit() {
+    public String checkTextLimit() {
         if (workPlanKeyTextField.getText().length() > 10) {
-            return false;
+            return "Clave de plan de trabajo";
         }
-        return true;
+        return "allLimitsRespected";
     }
 
     public boolean validateWorkPlanKey() {

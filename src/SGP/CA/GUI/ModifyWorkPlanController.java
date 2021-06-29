@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.TextValidations;
 import SGP.CA.DataAccess.ObjectiveDAO;
 import SGP.CA.DataAccess.WorkPlanDAO;
 import SGP.CA.Domain.Objective;
@@ -23,6 +24,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class ModifyWorkPlanController extends Application {
@@ -34,9 +36,6 @@ public class ModifyWorkPlanController extends Application {
 
     @FXML
     private ComboBox<String> objectivesComboBox;
-
-    @FXML
-    private Button modifyComboBox;
 
     @FXML
     private Button saveButton;
@@ -52,9 +51,6 @@ public class ModifyWorkPlanController extends Application {
 
     @FXML
     private TextField endDateTextField;
-
-    @FXML
-    private Button addToPlanButton;
 
     @FXML
     private ComboBox<String> objectivesAddedComboBox;
@@ -155,14 +151,14 @@ public class ModifyWorkPlanController extends Application {
     }
 
     public void saveButtonEvent() {
-        boolean noEmptyTextField = checkEmptyTextFields();
-        if (!noEmptyTextField) {
+        String noEmptyTextField = checkEmptyTextFields();
+        if (!noEmptyTextField.equals("noEmptyTextFields")) {
             AlertBuilder alertBuilder = new AlertBuilder();
             String errorMessage = "No has llenado todos los campos";
             alertBuilder.errorAlert(errorMessage);
         }else {
-            boolean noExceededLimitText = checkTextLimit();
-            if (!noExceededLimitText) {
+            String noExceededLimitText = checkTextLimit();
+            if (!noExceededLimitText.equals("allLimitsRespected")) {
                 AlertBuilder alertBuilder = new AlertBuilder();
                 String errorMessage = "Clave de plan de trabajo muy extensa";
                 alertBuilder.errorAlert(errorMessage);
@@ -246,7 +242,7 @@ public class ModifyWorkPlanController extends Application {
             String exceptionMessage = "No se cargo corectamente el componente del sistema";
             alertBuilder.exceptionAlert(exceptionMessage);
         }
-        ModifyObjectiveController modifyObjectiveController = (ModifyObjectiveController) loader.getController();
+        ModifyObjectiveController modifyObjectiveController = loader.getController();
 
         modifyObjectiveController.getObjective(modifyWorkPlanController, objectiveSelected);
         Scene scene = new Scene(root);
@@ -307,21 +303,27 @@ public class ModifyWorkPlanController extends Application {
         stage.showAndWait();
     }
 
-    public boolean checkEmptyTextFields() {
+    public String checkEmptyTextFields() {
+        TextValidations textValidations = new TextValidations();
         TextField [] textFields = {workPlanKeyTextField, startDateTextField, endDateTextField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Clave de plan de trabajo", "Fecha inicio",
+                "Fecha fin"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
         for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().isEmpty()) {
-                return false;
-            }
+            textFieldTexts.add(textFields[i].getText());
         }
-        return true;
+        String emptyTextField = textValidations.checkNoEmptyTextFields(textFieldTexts, textFieldNames);
+        if (!emptyTextField.equals("noEmptyTextFields")){
+            return emptyTextField;
+        }
+        return "noEmptyTextFields";
     }
 
-    public boolean checkTextLimit() {
+    public String checkTextLimit() {
         if (workPlanKeyTextField.getText().length() > 10) {
-            return false;
+            return "Clave de plan de trabajo";
         }
-        return true;
+        return "allLimitsRespected";
     }
 
     public boolean validateWorkPlanKey() {
