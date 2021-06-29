@@ -11,6 +11,16 @@ import java.sql.SQLException;
 
 public class WorkPlanDAO implements IWorkPlanDAO {
 
+    /**
+     *
+     * @param workPlan manda un objeto del tipo WorkPlan que contiene toda la informacion
+     * que se desea guardar del plan de trabajo.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException se cacha una SQLException en un caso de un posible error de conexion
+     * a la base de datos.
+     */
+
     @Override
     public int saveWorkPlan(WorkPlan workPlan) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -27,6 +37,15 @@ public class WorkPlanDAO implements IWorkPlanDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param workPlanKey clave del plan de trabajo que desea buscar en la base de datos.
+     * @return workPlan En caso de encontrar una coincidencia, se regresa un objeto
+     * del tipo WorkPlan con toda la informacion de la estrategia coincidente.
+     * @throws SQLException Se cacha una SQL Exception en caso de un posible error de conexion
+     * a la base de datos
+     */
 
     @Override
     public WorkPlan searchWorkPlanByWorkPlanKey (String workPlanKey) throws SQLException {
@@ -50,6 +69,17 @@ public class WorkPlanDAO implements IWorkPlanDAO {
         return workplan;
     }
 
+    /**
+     *
+     * @param newWorkPlan Manda un objeto del tipo WorkPlan que contiene toda la informacion
+     * que se desea modificar de la estrategia.
+     * @param oldWorkPlanKey Contiene la clavee del plan de trabajo que se desea modificar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int modifyWorkPlan(WorkPlan newWorkPlan, String oldWorkPlanKey) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -68,6 +98,15 @@ public class WorkPlanDAO implements IWorkPlanDAO {
         return successfulUpdate;
     }
 
+    /**
+     *
+     * @param workPlanKey Contiene la clave del plan de trabajo que se desea eliminar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int deleteWorkPlan(String workPlanKey) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -79,6 +118,13 @@ public class WorkPlanDAO implements IWorkPlanDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @return allWorkPlans Lista con todas los planes de trabajo encontrados en la base de datos.
+     * @throws SQLException se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos.
+     */
 
     @Override
     public ArrayList<WorkPlan> getAllWorkPlans () throws SQLException {

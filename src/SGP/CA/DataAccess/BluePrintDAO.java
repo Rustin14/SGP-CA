@@ -1,3 +1,6 @@
+/**
+ * @autor Hector David
+ */
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IBluePrintDAO;
@@ -10,6 +13,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class BluePrintDAO implements  IBluePrintDAO {
+
+    /**
+     *
+     * @param bluePrint manda un objeto del tipo BluePrint que contiene toda la informacion
+     * que se desea guardar del Anteproyecto
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException se cacha una SQLException en un caso de un posible error de conexion
+     * a la base de datos.
+     */
 
     @Override
     public int saveBluePrint(BluePrint bluePrint) throws SQLException {
@@ -36,6 +49,15 @@ public class BluePrintDAO implements  IBluePrintDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param bluePrintTitle titulo del Anteproyecto que desea buscar en la base de datos.
+     * @return bluePrint En caso de encontrar una coincidencia, se regresa un objeto
+     * del tipo BluePrint con toda la informacion del anteproyecto coincidente.
+     * @throws SQLException Se cacha una SQL Exception en caso de un posible error de conexion
+     * a la base de datos
+     */
 
     @Override
     public BluePrint searchBluePrintByTitle(String bluePrintTitle) throws SQLException {
@@ -66,6 +88,17 @@ public class BluePrintDAO implements  IBluePrintDAO {
         return bluePrint;
     }
 
+    /**
+     *
+     * @param newBluePrint Manda un objeto del tipo BluePrint que contiene toda la informacion
+     * que se desea modificar del anteproyecto.
+     * @param oldBluePrintTitle Contiene el titulo del Anteproyecto que se desea modificar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int modifyBluePrint(BluePrint newBluePrint, String oldBluePrintTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -93,6 +126,15 @@ public class BluePrintDAO implements  IBluePrintDAO {
         return successfulUpdate;
     }
 
+    /**
+     *
+     * @param bluePrintTitle Contiene el titulo del Anteproyecto que se desea eliminar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int deleteBluePrint(String bluePrintTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -104,6 +146,13 @@ public class BluePrintDAO implements  IBluePrintDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @return allBluePrints Lista con todos los Anteproyectos encontrados en la base de datos.
+     * @throws SQLException se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos.
+     */
 
     @Override
     public ArrayList<BluePrint> getAllBluePrints() throws SQLException {

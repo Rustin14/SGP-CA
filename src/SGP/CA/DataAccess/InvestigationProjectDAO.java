@@ -1,3 +1,6 @@
+/**
+ * @autor Hector David
+ */
 package SGP.CA.DataAccess;
 
 import SGP.CA.Domain.InvestigationProject;
@@ -10,6 +13,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class InvestigationProjectDAO implements IInvestigationProjectDAO {
+
+    /**
+     *
+     * @param investigationProject   manda un objetivo del tipo InvestigationProject que contiene toda la informacion
+     * que se desea guardar del Proyecto de investigacion.
+     * @return successfulUpdate Cotiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException se cacha una SQLException en un caso de un posible error de conexion
+     * a la base de datos.
+     */
 
     @Override
     public int saveInvestigationProject(InvestigationProject investigationProject) throws SQLException {
@@ -31,6 +44,15 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param investigationProjectTitle titulo del Proyecto de investigaicon que desea buscar en la base de datos.
+     * @return investigationProject En caso de encontrar una coincidencia, se regresa un objeto
+     * del tipo InvestigationProject con toda la informacion del Proyecto de investigacion coindcidente.
+     * @throws SQLException Se cacha una SQL Exception en caso de un posible error de conexion
+     * a la base de datos
+     */
 
     @Override
     public InvestigationProject searchInvestigationProjectByTitle(String investigationProjectTitle) throws SQLException {
@@ -57,6 +79,17 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
         return investigationProject;
     }
 
+    /**
+     *
+     * @param newInvestigationProject Manda un objeto del tipo InvestigationProject que contiene toda la informacion
+     * que se desea modificar del proyecto de investigacion.
+     * @param oldInvestigationProjectTitle Contiene el titulo del Proyecto de investigacion que se desea modificar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int modifyInvestigationProject (InvestigationProject newInvestigationProject, String oldInvestigationProjectTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -79,6 +112,15 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
         return successfulUpdate;
     }
 
+    /**
+     *
+     * @param investigationProjectTitle Contiene el titulo del proyecto de investigacion que se desea eliminar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int deleteInvestigationProject(String investigationProjectTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -90,6 +132,13 @@ public class InvestigationProjectDAO implements IInvestigationProjectDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @return allInvestigationProjects Lista con todos los proyectos de investigacion encontrados en la base de datos.
+     * @throws SQLException se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos.
+     */
 
     @Override
     public ArrayList<InvestigationProject> getAllInvestigationProjects () throws SQLException {

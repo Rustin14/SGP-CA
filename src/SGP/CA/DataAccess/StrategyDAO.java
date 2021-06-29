@@ -1,3 +1,6 @@
+/**
+ * @autor Hector David
+ */
 package SGP.CA.DataAccess;
 
 import SGP.CA.DataAccess.Interfaces.IStrategyDAO;
@@ -9,6 +12,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class StrategyDAO implements IStrategyDAO {
+
+    /**
+     *
+     * @param strategy manda un objeto del tipo Strategy que contiene toda la informacion
+     * que se desea guardar de la estrategia.
+     * @return successfulUpdate Contiene el número que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado.
+     * @throws SQLException se cacha una SQLException en un caso de un posible error de conexion
+     * a la base de datos.
+     */
 
     @Override
     public int saveStrategy(Strategy strategy) throws SQLException {
@@ -25,6 +38,15 @@ public class StrategyDAO implements IStrategyDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @param strategyTitle titulo de la estrategia que desea buscar en la base de datos.
+     * @return strategy En caso de encontrar una coincidencia, se regresa un objeto
+     * del tipo Strategy con toda la informacion de la estrategia coincidente.
+     * @throws SQLException Se cacha una SQL Exception en caso de un posible error de conexion
+     * a la base de datos
+     */
 
     @Override
     public Strategy searchStrategyByStrategy(String strategyTitle) throws SQLException {
@@ -47,6 +69,17 @@ public class StrategyDAO implements IStrategyDAO {
         return strategy;
     }
 
+    /**
+     *
+     * @param newStrategy Manda un objeto del tipo Strategy que contiene toda la informacion
+     * que se desea modificar de la estrategia.
+     * @param oldStrategy Contiene el titulo de la estrategia que se desea modificar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int modifyStrategy(Strategy newStrategy, String oldStrategy) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -64,6 +97,15 @@ public class StrategyDAO implements IStrategyDAO {
         return successfulUpdate;
     }
 
+    /**
+     *
+     * @param strategyTitle Contiene el titulo de la estrategia que se desea eliminar
+     * @return successfulUpdate Contiene el numero que indica si el guardado de datos fue exitoso.
+     * 1 indica exitoso. 0 indica que no fue posible hacer el guardado
+     * @throws SQLException Se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos
+     */
+
     @Override
     public int deleteStrategy(String strategyTitle) throws SQLException {
         ConnectDB dataBaseConnection = new ConnectDB();
@@ -75,6 +117,13 @@ public class StrategyDAO implements IStrategyDAO {
         dataBaseConnection.closeConnection();
         return successfulUpdate;
     }
+
+    /**
+     *
+     * @return allStrategies Lista con todas las estrategias encontrados en la base de datos.
+     * @throws SQLException se cacha una SQLException en caso de un posible error de conexion
+     * a la base de datos.
+     */
 
     @Override
     public ArrayList<Strategy> getAllStrategy () throws SQLException {
