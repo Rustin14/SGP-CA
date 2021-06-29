@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.TextValidations;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,9 +16,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import SGP.CA.DataAccess.InvestigationProjectDAO;
 
@@ -50,7 +51,6 @@ public class RegisterInvestigationProjectController extends Application {
     @FXML
     private Button exitButton;
 
-
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -66,22 +66,22 @@ public class RegisterInvestigationProjectController extends Application {
     }
 
     public void saveButtonEvent () {
-        boolean noEmptyTextField = checkEmptyTextFields();
-        if (!noEmptyTextField) {
+        String emptyTextField = checkEmptyTextFields();
+        if (!emptyTextField.equals("noEmptyTextFields")) {
             AlertBuilder alertBuilder = new AlertBuilder();
-            String errorMessage = "No has llenado todos los campos";
+            String errorMessage = "No has llenado el campo " + emptyTextField;
             alertBuilder.errorAlert(errorMessage);
         }else {
-            boolean noExceededLimitText = checkTextLimit();
-            if (!noExceededLimitText) {
+            String textFieldExceededLimit = checkTextFieldLimits();
+            if (!textFieldExceededLimit.equals("allLimitsRespected")) {
                 AlertBuilder alertBuilder = new AlertBuilder();
-                String errorMessage = "Limite de texto excedido en algun campo";
+                String errorMessage = "Limite de texto excedido en el campo " + textFieldExceededLimit;
                 alertBuilder.errorAlert(errorMessage);
             }else {
-                boolean validTextFields = validateStringTextFields();
-                if (!validTextFields) {
+                String validTextFields = validateTextFields();
+                if (!validTextFields.equals("allFieldsAreValid")) {
                     AlertBuilder alertBuilder = new AlertBuilder();
-                    String errorMessage = "Solo debes ingresar letras en los campos que no sean fecha de inicio y fecha de finalizacion";
+                    String errorMessage = "Solo debes ingresar letras en el campo " + validTextFields;
                     alertBuilder.errorAlert(errorMessage);
                 }else {
                     InvestigationProjectDAO investigationProjectDAO = new InvestigationProjectDAO();
@@ -98,6 +98,7 @@ public class RegisterInvestigationProjectController extends Application {
                         AlertBuilder alertBuilder = new AlertBuilder();
                         String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
                         alertBuilder.errorAlert(errorMessage);
+                        return;
                     }
                     investigationProject.setAssociatedLgac(lgacField.getText());
                     investigationProject.setParticipants(participantsField.getText());
@@ -158,47 +159,69 @@ public class RegisterInvestigationProjectController extends Application {
         stage.showAndWait();
     }
 
-    public boolean checkEmptyTextFields() {
-        List<TextField> textFields = Arrays.asList(projectTitleField, startDateField,
-                lgacField, endDateField, participantsField, projectManagerField);
-        for (TextField field : textFields) {
-            if (field.getText().isEmpty()) {
-                return false;
+    public String checkEmptyTextFields() {
+        TextValidations textValidations = new TextValidations();
+        TextField [] textFields = {projectTitleField, endDateField,
+                startDateField, lgacField, projectManagerField, participantsField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Titulo de proyecto", "Fecha estimada de fin", "Fecha de inicio",
+                "LGAC asociadas", "Responsable del proyecto", "Participantes"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String emptyTextField = textValidations.checkNoEmptyTextFields(textFieldTexts, textFieldNames);
+        if (emptyTextField.equals("noEmptyTextFields")){
+            String emptyDescription = textValidations.checkNoEmptyDescription(descriptionField.getText());
+            if (!emptyDescription.equals("noEmptyField")){
+                return emptyDescription;
             }
+        }else{
+            return emptyTextField;
         }
-        if (descriptionField.getText().isEmpty()) {
-            return false;
-        }
-        return true;
+        return "noEmptyTextFields";
     }
 
-    public boolean checkTextLimit() {
-        int [] limitTextSizes = {255, 255, 255, 60};
-        TextField [] textFields = {projectTitleField, lgacField,
-                participantsField, projectManagerField};
-        for (int i=0; i<textFields.length; i++) {
-            if (textFields[i].getText().length() > limitTextSizes[i]) {
-                return false;
+    public String checkTextFieldLimits() {
+        TextValidations textValidations = new TextValidations();
+        TextField [] textFields = {projectTitleField, lgacField, projectManagerField, participantsField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Titulo de proyecto", "LGAC asociadas",
+                "Responsable del proyecto", "Participantes"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        int [] textLimits = {255, 255, 60, 60};
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String exceedLimitTextField =textValidations.checkTextFieldsLimits(textFieldTexts, textLimits, textFieldNames);
+        if (exceedLimitTextField.equals("allLimitsRespected")) {
+            String exceededDescriptionLimit = textValidations.checkDescriptionFieldLimit(descriptionField.getText());
+            if (!exceededDescriptionLimit.equals("validField")) {
+                return exceededDescriptionLimit;
             }
+        }else{
+            return exceedLimitTextField;
         }
-        if (descriptionField.getText().length() > 255) {
-            return false;
-        }
-        return true;
+        return "allLimitsRespected";
     }
 
-    public boolean validateStringTextFields() {
-        TextField [] textFields = {projectTitleField, lgacField,
-                participantsField, projectManagerField};
-        for(int i=0; i< textFields.length; i++) {
-            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")) {
-                return false;
+    public String validateTextFields() {
+        TextValidations textValidations = new TextValidations();
+        TextField [] textFields = {projectTitleField, lgacField, projectManagerField, participantsField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Titulo de proyecto", "LGAC asociadas",
+                "Responsable del proyecto", "Participantes"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String invalidTextField = textValidations.validateTextFields(textFieldTexts, textFieldNames);
+        if (invalidTextField.equals("allFieldsAreValid")) {
+            String invalidDescriptionField = textValidations.validateDescriptionField(descriptionField.getText());
+            if (!invalidDescriptionField.equals("ValidField")) {
+                return invalidDescriptionField;
             }
+        }else{
+            return invalidTextField;
         }
-        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")) {
-            return false;
-        }
-        return true;
+        return "allFieldsAreValid";
     }
 
     public static void main(String[] args) {

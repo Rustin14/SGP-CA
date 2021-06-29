@@ -1,5 +1,11 @@
 package SGP.CA.BusinessLogic;
 
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextValidations {
 
     public boolean validatePhoneNumber(String phoneNumber) {
@@ -28,12 +34,76 @@ public class TextValidations {
         return validated;
     }
 
+    public String checkNoEmptyTextFields(ArrayList<String> textFields, ArrayList<String> textFieldNames) {
+        for (int i=0; i< textFields.size(); i++) {
+            if (textFields.get(i).isEmpty()) {
+                return textFieldNames.get(i);
+            }
+        }
+        return "noEmptyTextFields";
+    }
 
+    public String checkTextFieldsLimits(ArrayList<String> textFields, int [] textFieldBoundaries,
+                                        ArrayList<String> textFieldNames) {
+        for (int i=0; i<textFields.size(); i++){
+            if(textFields.get(i).length() > textFieldBoundaries[i]){
+                return textFieldNames.get(i);
+            }
+        }
+        return "allLimitsRespected";
+    }
 
+    public String validateNumberFields(ArrayList<String> numberFields, ArrayList<String> numberFieldNames) {
+        String regularExpression = "[0-9]*";
+        int noMatchFieldIndex = -1;
+        for (int i=0; i< numberFields.size(); i++){
+            if (!numberFields.get(i).matches(regularExpression)){
+                noMatchFieldIndex = i;
+                break;
+            }
+        }
+        if (noMatchFieldIndex != -1){
+            return numberFieldNames.get(noMatchFieldIndex);
+        }
+        return "allFieldsAreValid";
+    }
 
+    public String validateTextFields(ArrayList<String> textFields, ArrayList<String> textFieldNames) {
+        String regularExpression = "[a-zA-Z\\s]*$";
+        int noMatchFieldIndex = -1;
+        for (int i=0; i< textFields.size(); i++) {
+            if (!textFields.get(i).matches(regularExpression)) {
+                noMatchFieldIndex = i;
+                break;
+            }
+        }
+        if (noMatchFieldIndex != -1) {
+            return textFieldNames.get(noMatchFieldIndex);
+        }
+        return "allFieldsAreValid";
+    }
 
+    public String checkNoEmptyDescription(String descriptionText){
+        if (descriptionText.isEmpty()){
+            return "Descripcion";
+        }
+        return "noEmptyField";
+    }
 
+    public String checkDescriptionFieldLimit(String descriptionArea){
+        if (descriptionArea.length() > 255){
+            return "Descripcion";
+        }
+        return "validField";
+    }
 
+    public String validateDescriptionField(String descriptionArea){
+        String regularExpression = "[a-zA-Z\\s]*$";
+        if (!descriptionArea.matches(regularExpression)){
+            return "Descripcion";
+        }
+        return "ValidField";
+    }
 
 
 
