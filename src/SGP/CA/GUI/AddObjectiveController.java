@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.TextValidations;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,7 @@ import SGP.CA.DataAccess.StrategyDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AddObjectiveController extends Application {
 
@@ -87,22 +89,27 @@ public class AddObjectiveController extends Application {
 
     @FXML
     public void addButtonEvent() {
-        boolean noEmptyTextFields = checkEmptyStrategyTextFields();
-        if (!noEmptyTextFields) {
+        String noEmptyTextFields = checkEmptyStrategyTextFields();
+        if (!noEmptyTextFields.equals("noEmptyTextFields")) {
             AlertBuilder alertBuilder = new AlertBuilder();
-            String errorMessage = "debes llenar los campos antes de añadir una estrategia";
+            String errorMessage = "debes llenar el campo" + noEmptyTextFields +"antes de añadir una estrategia";
             alertBuilder.errorAlert(errorMessage);
         }else {
-            boolean noExceededLimits = checkStrategyTextLimit();
-            if (!noExceededLimits) {
+            String noExceededLimits = checkStrategyTextLimit();
+            if (!noExceededLimits.equals("allLimitsRespected")) {
                 AlertBuilder alertBuilder = new AlertBuilder();
-                String errorMessage = "Alguno de los campos excede el limite de texto";
+                String errorMessage = "Limite de texto excedido en el campo " +noExceededLimits;
                 alertBuilder.errorAlert(errorMessage);
             }else {
-                boolean validStrategyTextFields = valideStrategyTextFields();
-                if (!validStrategyTextFields) {
+                String validStrategyTextFields = valideStrategyTextFields();
+                if (!validStrategyTextFields.equals("allFieldsAreValid")) {
                     AlertBuilder alertBuilder = new AlertBuilder();
-                    String errorMessage = "Solo el campo de numero requiere numero los demas solo letras";
+                    String errorMessage;
+                    if (validStrategyTextFields.equals("Numero")){
+                        errorMessage = "Solo requiere de numeros enteros el campo "+validStrategyTextFields;
+                    }else{
+                        errorMessage = "Solo requiere de letras el campo "+validStrategyTextFields;
+                    }
                     alertBuilder.errorAlert(errorMessage);
                 }else {
                     Strategy strategy = new Strategy();
@@ -187,16 +194,16 @@ public class AddObjectiveController extends Application {
                 alertBuilder.exceptionAlert(exceptionMessage);
             }
         }else {
-            boolean noExceededLimitText = checkObjectiveTextLimit();
-            if (!noExceededLimitText) {
+            String noExceededLimitText = checkObjectiveTextLimit();
+            if (!noExceededLimitText.equals("AllLimitsRespected")) {
                 AlertBuilder alertBuilder = new AlertBuilder();
-                String exceptionMessage = "El objetivo o la descripcion es demasiado largo";
+                String exceptionMessage = "Limite de texto en el campo "+ noExceededLimitText + " excedido";
                 alertBuilder.exceptionAlert(exceptionMessage);
             }else {
-                boolean validObjectiveTextFields = validateObjectiveTextFields();
-                if (!validObjectiveTextFields) {
+                String validObjectiveTextFields = validateObjectiveTextFields();
+                if (!validObjectiveTextFields.equals("AllFieldsAreValid")) {
                     AlertBuilder alertBuilder = new AlertBuilder();
-                    String exceptionMessage = "Solo debes ingresar letras en el titulo y la descripcion";
+                    String exceptionMessage = "Solo debes ingresar letras en el campo "+ validObjectiveTextFields;
                     alertBuilder.exceptionAlert(exceptionMessage);
                 }else {
                     if (allStrategies.size() == 0) {
@@ -312,59 +319,80 @@ public class AddObjectiveController extends Application {
         stage.showAndWait();
     }
 
-    public boolean checkObjectiveTextLimit() {
+    public String checkObjectiveTextLimit() {
         if (objectiveTitleTextField.getText().length() > 100) {
-            return false;
+            return "Titulo del objetivo";
         }
         if (descriptionTextArea.getText().length() > 255) {
-            return false;
+            return "Descripcion del objetivo";
         }
-        return true;
+        return "AllLimitsRespected";
     }
 
-    public boolean validateObjectiveTextFields() {
+    public String validateObjectiveTextFields() {
         if (!objectiveTitleTextField.getText().matches("[a-zA-Z\\s]*$")) {
-            return false;
+            return "Titulo del objetivo";
         }
         if (!descriptionTextArea.getText().matches("[a-zA-Z\\s]*$")) {
-            return false;
+            return "Descripcion del objetivo";
         }
-        return true;
+        return "AllFieldsAreValid";
     }
 
-    public boolean valideStrategyTextFields() {
-        TextField [] textFields = {addStrategyTextField, addGoalTextField,
-            addActionTextField, addResultTextField};
-        for(int i=0; i< textFields.length; i++) {
-            if (!textFields[i].getText().matches("[a-zA-Z\\s]*$")) {
-                return false;
-            }
-        }
-        if (!addNumberTextField.getText().matches("[0-9]*")) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean checkStrategyTextLimit() {
-        int [] limitTextSizes = {255, 100, 255, 255};
-        TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField, addResultTextField};
-        for (int i=0; i<textFields.length; i++) {
-            if (textFields[i].getText().length() > limitTextSizes[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean checkEmptyStrategyTextFields() {
-        TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField, addResultTextField};
+    public String valideStrategyTextFields() {
+        TextValidations textValidations = new TextValidations();
+        ArrayList<String> numberFieldTexts = new ArrayList<>(Arrays.asList(addNumberTextField.getText()));
+        ArrayList<String> numberFieldNames = new ArrayList<>(Arrays.asList("Numero"));
+        TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField,
+                addResultTextField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Estrategia", "Meta", "Accion", "Resultado"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
         for (int i=0; i<textFields.length; i++){
-            if (textFields[i].getText().isEmpty()) {
-                return false;
-            }
+            textFieldTexts.add(textFields[i].getText());
         }
-        return true;
+        String invalidTextField = textValidations.validateTextFields(textFieldTexts, textFieldNames);
+        if (invalidTextField.equals("allFieldsAreValid")) {
+            String invalidNumberField = textValidations.validateNumberFields(numberFieldTexts, numberFieldNames);
+            if (!invalidNumberField.equals("allFieldsAreValid")) {
+                return invalidNumberField;
+            }
+        }else{
+            return invalidTextField;
+        }
+        return "allFieldsAreValid";
+    }
+
+    public String checkStrategyTextLimit() {
+        TextValidations textValidations = new TextValidations();
+        TextField [] textFields = {addStrategyTextField, addGoalTextField, addActionTextField, addResultTextField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Estrategia", "Meta", "Accion", "Resultado"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        int [] textLimits = {255, 100, 255, 255};
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String exceedLimitTextField =textValidations.checkTextFieldsLimits(textFieldTexts, textLimits, textFieldNames);
+        if (!exceedLimitTextField.equals("allLimitsRespected")) {
+            return exceedLimitTextField;
+        }
+        return "allLimitsRespected";
+    }
+
+    public String checkEmptyStrategyTextFields() {
+        TextValidations textValidations = new TextValidations();
+        TextField [] textFields = {addNumberTextField, addStrategyTextField, addGoalTextField, addActionTextField,
+                addResultTextField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Numero", "Estrategia", "Meta", "Accion",
+                "Resultado"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String emptyTextField = textValidations.checkNoEmptyTextFields(textFieldTexts, textFieldNames);
+        if (!emptyTextField.equals("noEmptyTextFields")){
+            return emptyTextField;
+        }
+        return "noEmptyTextFields";
     }
 
     public static void main(String[] args) {
