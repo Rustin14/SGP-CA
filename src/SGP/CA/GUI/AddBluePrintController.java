@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.TextValidations;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -85,73 +87,71 @@ public class AddBluePrintController extends Application {
         }
 
         public void saveButtonEvent() {
-            boolean noEmptyTextFields = checkEmptyTextFields();
-            if(!noEmptyTextFields) {
+            String noEmptyTextFields = checkEmptyTextFields();
+            if(!noEmptyTextFields.equals("noEmptyTextFields")) {
                 AlertBuilder alertBuilder = new AlertBuilder();
-                String errorMessage = "No has llenado todos los campos";
+                String errorMessage = "No has llenado el campo " + noEmptyTextFields;
                 alertBuilder.errorAlert(errorMessage);
             }else {
-                boolean noExceededLimitSize = checkTextLimit();
-                if(!noExceededLimitSize) {
+                String noExceededLimitSize = checkTextFieldLimits();
+                if(!noExceededLimitSize.equals("allLimitsRespected")) {
                     AlertBuilder alertBuilder = new AlertBuilder();
-                    String errorMessage = "Limite de texto excedido en algun campo";
+                    String errorMessage = "Limite de texto excedido en el campo " + noExceededLimitSize;
                     alertBuilder.errorAlert(errorMessage);
                 }else {
-                    boolean validDurationField = validateDurationField();
-                    if(!validDurationField) {
+                    String validStringTextFields = validateTextFields();
+                    if(!validStringTextFields.equals("allFieldsAreValid")) {
                         AlertBuilder alertBuilder = new AlertBuilder();
-                        String errorMessage = "Debes ingresar solo numeros en el campo de texto de duracion";
+                        String errorMessage;
+                        if (validStringTextFields.equals("Duracion")){
+                            errorMessage = "Solo debes ingresar numeros en el campo de texto "+ validStringTextFields;
+                        }else{
+                            errorMessage = "Solo debes ingresar letras en el campo de texto "+ validStringTextFields;
+                        }
                         alertBuilder.errorAlert(errorMessage);
                     }else {
-                        boolean validStringTextFields = validateStringTextFields();
-                        if(!validStringTextFields) {
-                            AlertBuilder alertBuilder = new AlertBuilder();
-                            String errorMessage = "Solo debes ingresar letras en los campos que no sean duracion y fecha de inicio";
-                            alertBuilder.errorAlert(errorMessage);
-                        }else {
-                            BluePrint bluePrint = new BluePrint();
-                            BluePrintDAO bluePrintDAO = new BluePrintDAO();
-                            bluePrint.setBluePrintTitle(bluePrintTitleField.getText());
-                            bluePrint.setDescription(descriptionField.getText());
-                            bluePrint.setCoDirector(coDirectorFIeld.getText());
-                            bluePrint.setDuration(Integer.parseInt(durationField.getText()));
-                            bluePrint.setModality(modalityField.getText());
-                            bluePrint.setStudent(studentField.getText());
-                            bluePrint.setAssociatedLgac(lgacField.getText());
-                            bluePrint.setState(stateField.getText());
-                            bluePrint.setRequirements(requirementsTextField.getText());
-                            bluePrint.setReceptionWorkName(receptionWorkName.getText());
-                            bluePrint.setDirector(directorTextField.getText());
-                            try {
-                                String stringStartDate = startDateField.getText();
-                                Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
-                                bluePrint.setStartDate(startDate);
-                                int action = bluePrintDAO.saveBluePrint(bluePrint);
-                                if (action == 1) {
-                                    showConfirmationAlert();
-                                    Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
-                                    stagePrincipal.close();
-                                }else {
-                                    showFailedRegisterAlert();
-                                }
-                            }catch (ParseException exParseException) {
-                                AlertBuilder alertBuilder = new AlertBuilder();
-                                String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
-                                alertBuilder.errorAlert(errorMessage);
-                            }catch (SQLException sqlException) {
-                                AlertBuilder alertBuilder = new AlertBuilder();
-                                String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
-                                alertBuilder.exceptionAlert(exceptionMessage);
-                            }catch (IOException ioException) {
-                                AlertBuilder alertBuilder = new AlertBuilder();
-                                String exceptionMessage = "No se cargo correctamente el componente del sistema";
-                                alertBuilder.exceptionAlert(exceptionMessage);
+                        BluePrint bluePrint = new BluePrint();
+                        BluePrintDAO bluePrintDAO = new BluePrintDAO();
+                        bluePrint.setBluePrintTitle(bluePrintTitleField.getText());
+                        bluePrint.setDescription(descriptionField.getText());
+                        bluePrint.setCoDirector(coDirectorFIeld.getText());
+                        bluePrint.setDuration(Integer.parseInt(durationField.getText()));
+                        bluePrint.setModality(modalityField.getText());
+                        bluePrint.setStudent(studentField.getText());
+                        bluePrint.setAssociatedLgac(lgacField.getText());
+                        bluePrint.setState(stateField.getText());
+                        bluePrint.setRequirements(requirementsTextField.getText());
+                        bluePrint.setReceptionWorkName(receptionWorkName.getText());
+                        bluePrint.setDirector(directorTextField.getText());
+                        try {
+                            String stringStartDate = startDateField.getText();
+                            Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(stringStartDate);
+                            bluePrint.setStartDate(startDate);
+                            int action = bluePrintDAO.saveBluePrint(bluePrint);
+                            if (action == 1) {
+                                showConfirmationAlert();
+                                Stage stagePrincipal = (Stage) saveButton.getScene().getWindow();
+                                stagePrincipal.close();
+                            }else {
+                                showFailedRegisterAlert();
                             }
+                        }catch (ParseException exParseException) {
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String errorMessage = "La fecha ingresada no esta en el formato dd/MM/yyyy";
+                            alertBuilder.errorAlert(errorMessage);
+                            return;
+                        }catch (SQLException sqlException) {
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String exceptionMessage = "No es posible acceder a la base de datos. Intente más tarde";
+                            alertBuilder.exceptionAlert(exceptionMessage);
+                        }catch (IOException ioException) {
+                            AlertBuilder alertBuilder = new AlertBuilder();
+                            String exceptionMessage = "No se cargo correctamente el componente del sistema";
+                            alertBuilder.exceptionAlert(exceptionMessage);
                         }
                     }
                 }
             }
-
         }
 
     public void showConfirmationAlert() throws IOException {
@@ -172,54 +172,81 @@ public class AddBluePrintController extends Application {
         stage.showAndWait();
     }
 
-    public boolean checkEmptyTextFields() {
-        List<TextField> textFields = Arrays.asList(bluePrintTitleField, startDateField,
-                lgacField, stateField, directorTextField, coDirectorFIeld, durationField,
-                modalityField, receptionWorkName, requirementsTextField, studentField);
-        for (TextField field : textFields) {
-            if (field.getText().isEmpty()) {
-                return false;
+    public String checkEmptyTextFields() {
+        TextValidations textValidations = new TextValidations();
+        TextField [] textFields = {bluePrintTitleField, startDateField,lgacField, stateField, directorTextField,
+                coDirectorFIeld, modalityField, receptionWorkName, requirementsTextField, studentField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Titulo de anteproyecto", "Fecha de inicio",
+                "LGAC asociadas", "Estado", "Director", "Codirectores", "Modalidad", "Titulo de trabajo recepcional",
+                "Requisitos", "Estudiantes"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String emptyTextField = textValidations.checkNoEmptyTextFields(textFieldTexts, textFieldNames);
+        if (emptyTextField.equals("noEmptyTextFields")){
+            String emptyDescription = textValidations.checkNoEmptyDescription(descriptionField.getText());
+            if (!emptyDescription.equals("noEmptyField")){
+                return emptyDescription;
             }
+        }else{
+            return emptyTextField;
         }
-        if (descriptionField.getText().isEmpty()) {
-            return false;
-        }
-        return true;
+        return "noEmptyTextFields";
     }
 
-    public boolean checkTextLimit() {
-        int [] limitTextSizes = {255, 255, 50, 50, 30,50, 60, 120, 120};
-        TextField [] textFields = {bluePrintTitleField, lgacField,
-                stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
-                receptionWorkName, requirementsTextField};
-        for (int i=0; i<textFields.length; i++) {
-            if (textFields[i].getText().length() > limitTextSizes[i]) {
-                return false;
+    public String checkTextFieldLimits() {
+        TextValidations textValidations = new TextValidations();
+        TextField [] textFields = {bluePrintTitleField, lgacField, stateField, directorTextField, coDirectorFIeld,
+                modalityField, receptionWorkName, requirementsTextField, studentField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Titulo de anteproyecto", "LGAC asociadas",
+                "Estado", "Director", "Codirector", "Modalidad", "Titulo de trabajo recepcional", "Requisitos",
+                "Estudiante"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        int [] textLimits = {255, 255, 50, 60, 50, 30, 120, 120, 50};
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String exceedLimitTextField =textValidations.checkTextFieldsLimits(textFieldTexts, textLimits, textFieldNames);
+        if (exceedLimitTextField.equals("allLimitsRespected")) {
+            String exceededDescriptionLimit = textValidations.checkDescriptionFieldLimit(descriptionField.getText());
+            if (!exceededDescriptionLimit.equals("validField")) {
+                return exceededDescriptionLimit;
             }
+        }else{
+            return exceedLimitTextField;
         }
-        if (descriptionField.getText().length() > 255) {
-            return false;
-        }
-        return true;
+        return "allLimitsRespected";
     }
 
-    public boolean validateDurationField(){
-        return durationField.getText().matches("[0-9]*");
-    }
-
-    public boolean validateStringTextFields () {
-        TextField [] textFields = {bluePrintTitleField, lgacField,
-                stateField, coDirectorFIeld, modalityField, studentField, directorTextField,
-                receptionWorkName, requirementsTextField};
-        for(int i=0; i< textFields.length; i++) {
-            if (!textFields[i].getText().matches("^[a-zA-Z\\s]*$")) {
-                return false;
+    public String validateTextFields() {
+        TextValidations textValidations = new TextValidations();
+        ArrayList<String> numberFieldTexts = new ArrayList<>(Arrays.asList(durationField.getText()));
+        ArrayList<String> numberFieldNames = new ArrayList<>(Arrays.asList("Duracion"));
+        TextField [] textFields = {bluePrintTitleField, lgacField, stateField, directorTextField, coDirectorFIeld,
+                modalityField, receptionWorkName, requirementsTextField, studentField};
+        ArrayList<String> textFieldNames = new ArrayList<>(Arrays.asList("Titulo de anteproyecto", "LGAC asociadas",
+                "Estado", "Director", "Codirector", "Modalidad", "Titulo de trabajo recepcional", "Requisitos",
+                "Estudiante"));
+        ArrayList<String> textFieldTexts = new ArrayList<>();
+        for (int i=0; i<textFields.length; i++){
+            textFieldTexts.add(textFields[i].getText());
+        }
+        String invalidTextField = textValidations.validateTextFields(textFieldTexts, textFieldNames);
+        if (invalidTextField.equals("allFieldsAreValid")) {
+            String invalidNumberField = textValidations.validateNumberFields(numberFieldTexts, numberFieldNames);
+            if (invalidNumberField.equals("allFieldsAreValid")){
+                String invalidDescriptionField = textValidations.validateDescriptionField(descriptionField.getText());
+                if (!invalidDescriptionField.equals("ValidField")) {
+                    return invalidDescriptionField;
+                }
+            }else{
+                return invalidNumberField;
             }
+        }else{
+            return invalidTextField;
         }
-        if (!descriptionField.getText().matches("[a-zA-Z\\s]*$")) {
-            return false;
-        }
-        return true;
+        return "allFieldsAreValid";
     }
 
     public static void main(String[] args) {
