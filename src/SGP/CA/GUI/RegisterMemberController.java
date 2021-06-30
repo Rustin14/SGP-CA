@@ -1,6 +1,7 @@
 package SGP.CA.GUI;
 
 import SGP.CA.BusinessLogic.HashPasswords;
+import SGP.CA.BusinessLogic.ProjectUtilities;
 import SGP.CA.BusinessLogic.TextValidations;
 import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.LGACDAO;
@@ -13,16 +14,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,9 +68,14 @@ public class RegisterMemberController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        List<TextField> textFields = Arrays.asList(memberNameTF, firstLastNameTF,
+                secondLastNameTF, maximumTF, institutionTF,
+                emailTF, passwordTF, confirmPasswordTF);
+        ProjectUtilities.setArrayTextLimit(textFields, 248);
+        ProjectUtilities.setTextLimit(CURPTF, 18);
+        ProjectUtilities.setTextLimit(phoneNumberTF, 10);
         fillLGACCombo();
-        setTextLimit();
-        setMaxDate();
+        ProjectUtilities.setMaxDate(birthDateTF);
         setMemberTypeCombo();
     }
 
@@ -97,35 +101,6 @@ public class RegisterMemberController implements Initializable {
             return false;
         }
         return true;
-    }
-
-    public void setTextLimit() {
-        final int MAX_CHARS = 252;
-        final int MAX_CURP_CHARS = 18;
-        final int MAX_PHONE_CHARS = 10;
-        List<TextField> textFields = Arrays.asList(memberNameTF, firstLastNameTF,
-                secondLastNameTF, maximumTF, institutionTF,
-                emailTF, passwordTF, confirmPasswordTF);
-        for (TextField field : textFields) {
-            field.setTextFormatter(new TextFormatter<String>(change ->
-                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
-        }
-
-        CURPTF.setTextFormatter(new TextFormatter<String>(change ->
-                change.getControlNewText().length() <= MAX_CURP_CHARS ? change : null));
-
-        phoneNumberTF.setTextFormatter(new TextFormatter<String>(change ->
-                change.getControlNewText().length() <= MAX_PHONE_CHARS ? change : null));
-    }
-
-    public void setMaxDate() {
-        LocalDate maxDate = LocalDate.now();
-        birthDateTF.setDayCellFactory(d ->
-                new DateCell() {
-                    @Override public void updateItem(LocalDate item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setDisable(item.isAfter(maxDate));
-                    }});
     }
 
     public boolean validateCURP() {

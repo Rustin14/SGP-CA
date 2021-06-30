@@ -42,13 +42,13 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="70.0" stroke="BLACK" strokeType="INSIDE" width="185.0" />
-      <Label layoutX="10.0" layoutY="76.0" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
+      <Label fx:id="profileLabel" layoutX="10.0" layoutY="76.0" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-2.0" layoutY="118.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
-      <Label layoutX="10.0" layoutY="122.0" onMouseClicked="#consultEvidence" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
+      <Label fx:id="evidencesLabel" layoutX="10.0" layoutY="122.0" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -59,13 +59,13 @@
          </image>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="166.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
-      <Label layoutX="11.0" layoutY="170.0" onMouseClicked="#consultEvents" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
+      <Label fx:id="eventsLabel" layoutX="11.0" layoutY="170.0" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="213.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
-      <Label layoutX="12.0" layoutY="217.0" onMouseClicked="#consultProjects" prefHeight="27.0" prefWidth="119.0" text="PROYECTOS" textFill="WHITE">
+      <Label fx:id="projectsLabel" layoutX="12.0" layoutY="217.0" prefHeight="27.0" prefWidth="119.0" text="PROYECTOS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

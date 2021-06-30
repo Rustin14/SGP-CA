@@ -1,5 +1,6 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.ProjectUtilities;
 import SGP.CA.BusinessLogic.TextValidations;
 import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EventDAO;
@@ -10,24 +11,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.ResourceBundle;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class ScheduleEventController implements Initializable {
@@ -54,9 +53,11 @@ public class ScheduleEventController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        List<TextField> textFields = Arrays.asList(eventTitleTextField, eventPlaceTextField);
+        ProjectUtilities.setArrayTextLimit(textFields, 248);
+        ProjectUtilities.setTextLimit(hourTextField, 5);
         fillMembersCombo();
-        setTextLimit();
-        setMinimumDate();
+        ProjectUtilities.setMinimumDate(eventDatePicker);
         setRegistrationDate();
     }
 
@@ -90,28 +91,6 @@ public class ScheduleEventController implements Initializable {
 
         eventResponsableCombo.getItems().clear();
         eventResponsableCombo.getItems().addAll(lineNamesObList);
-    }
-
-    public void setTextLimit() {
-        final int MAX_CHARS = 248;
-        final int MAX_HOUR_CHARS = 5;
-        List<TextField> textFields = Arrays.asList(eventTitleTextField, eventPlaceTextField);
-        for (TextField field : textFields) {
-            field.setTextFormatter(new TextFormatter<String>(change ->
-                    change.getControlNewText().length() <= MAX_CHARS ? change : null));
-        }
-        hourTextField.setTextFormatter(new TextFormatter<String>(change ->
-                change.getControlNewText().length() <= MAX_HOUR_CHARS ? change : null));
-    }
-
-    public void setMinimumDate() {
-        LocalDate minimumDate = LocalDate.now();
-        eventDatePicker.setDayCellFactory(date ->
-                new DateCell() {
-                    @Override public void updateItem(LocalDate item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setDisable(item.isBefore(minimumDate));
-                    }});
     }
 
     public void setRegistrationDate() {
@@ -190,14 +169,11 @@ public class ScheduleEventController implements Initializable {
             alertBuilder.successAlert("¡Registro exitoso!");
             Stage currentStage = (Stage) scheduleButton.getScene().getWindow();
             currentStage.close();
-            if (ConsultEventsController.getInstance() == null) {
-                ConsultEventsResponsibleController.getInstance().populateTable();
-            } else {
-                ConsultEventsController.getInstance().populateTable();
-            }
-
+            ConsultEventsController.getInstance().populateTable();
         }
+
     }
+
 
     public void cancelButton() {
         Stage stage = (Stage) scheduleButton.getScene().getWindow();

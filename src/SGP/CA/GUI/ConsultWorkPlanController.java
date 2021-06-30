@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -41,6 +42,18 @@ public class ConsultWorkPlanController extends Application {
 
     @FXML
     private TextField chargeTextField;
+    @FXML
+    private Label profileLabel;
+    @FXML
+    private Label evidencesLabel;
+    @FXML
+    private Label eventsLabel;
+    @FXML
+    private Label projectsLabel;
+    @FXML
+    private Label workPlanLabel;
+    @FXML
+    private Label membersLabel;
 
     private ObservableList<String> workPlanPeriods = FXCollections.observableArrayList();
 
@@ -81,6 +94,7 @@ public class ConsultWorkPlanController extends Application {
         chargeTextField.setText(charge);
         academicBodyTextField.setText("Ingenieria y Tecnología de Software");
         searchAllWorkPlans();
+        setLabelActions();
     }
 
     public void searchAllWorkPlans() {
@@ -242,64 +256,12 @@ public class ConsultWorkPlanController extends Application {
         stage.showAndWait();
     }
 
-    public void consultMembers() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultMember")) {
-            try {
-                ScreenController.instance.addScreen("consultMember", FXMLLoader.load(getClass().getResource("FXML/ConsultMemberFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
-            }
-        }
-        ScreenController.instance.activate("consultMember");
-    }
-
-    public void consultEvidences() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
-            try {
-                ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceResponsibleFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
-            }
-        }
-        ScreenController.instance.activate("consultEvidence");
-    }
-
-    public void consultEvents() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultEvents")) {
-            try {
-                ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsResponsibleFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
-            }
-        }
-        ScreenController.instance.activate("consultEvents");
-    }
-
-    public void consultProjects() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultProjects")) {
-            try {
-                ScreenController.instance.addScreen("consultProjects", FXMLLoader.load(getClass().getResource("FXML/InvestigationProjectConsultResponsibleFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("consultProjects");
-    }
-
-    public void goToProfile() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("responsibleProf")) {
-            try {
-                ScreenController.instance.addScreen("responsibleProf", FXMLLoader.load(getClass().getResource("FXML/ResponsibleProfileFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("responsibleProf");
+    public void setLabelActions() {
+        profileLabel.setOnMouseClicked(event -> SceneSwitcher.goToResponsibleProfile());
+        membersLabel.setOnMouseClicked(event -> SceneSwitcher.consultMembers());
+        evidencesLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvidences());
+        eventsLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvents());
+        projectsLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleProjects());
     }
 
     public static void main(String[] args) {

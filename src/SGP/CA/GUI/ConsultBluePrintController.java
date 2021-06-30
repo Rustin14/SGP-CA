@@ -27,8 +27,6 @@ public class ConsultBluePrintController extends Application {
 
     InvestigationProjectConsultController investigationProjectConsultController;
 
-    InvestigationProjectConsultResponsibleController investigationProjectConsultResponsibleController;
-
     @FXML
     private Button deleteButton;
 
@@ -144,12 +142,6 @@ public class ConsultBluePrintController extends Application {
     public void getBluePrintTitle(InvestigationProjectConsultController stage2Controller, String bluePrintTitle) {
         bluePrintTitleTextField.setText(bluePrintTitle);
         investigationProjectConsultController = stage2Controller;
-        searchProject();
-    }
-
-    public void getBluePrintTitle(InvestigationProjectConsultResponsibleController stage2Controller, String bluePrintTitle) {
-        bluePrintTitleTextField.setText(bluePrintTitle);
-        investigationProjectConsultResponsibleController = stage2Controller;
         searchProject();
     }
 

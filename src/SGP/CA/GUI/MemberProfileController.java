@@ -2,10 +2,9 @@ package SGP.CA.GUI;
 
 import SGP.CA.Domain.Member;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -17,12 +16,20 @@ public class MemberProfileController implements Initializable {
     Label institutionLabel;
     @FXML
     Label maxStudiesLabel;
+    @FXML
+    Label profileLabel;
+    @FXML
+    Label evidencesLabel;
+    @FXML
+    Label eventsLabel;
+    @FXML
+    Label projectsLabel;
 
-    AlertBuilder alertBuilder = new AlertBuilder();
     Member member = Member.signedMember;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setLabelActions();
         setMemberData();
     }
 
@@ -33,38 +40,10 @@ public class MemberProfileController implements Initializable {
         maxStudiesLabel.setText(member.getMaximumStudyLevel());
     }
 
-    public void consultEvidence() {
-        if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
-            try {
-                ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceFXML.fxml")));
-            } catch (IOException ioException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("consultEvidence");
-    }
-
-    public void consultEvents() {
-        if(!ScreenController.instance.isScreenOnMap("consultEvent")) {
-            try {
-                ScreenController.instance.addScreen("consultEvent", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsFXML.fxml")));
-            } catch (IOException ioException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("consultEvent");
-    }
-
-    public void consultProjects() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultProjects")) {
-            try {
-                ScreenController.instance.addScreen("consultProjects", FXMLLoader.load(getClass().getResource("FXML/InvestigationProjectConsultFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("consultProjects");
+    public void setLabelActions() {
+        evidencesLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvidences());
+        projectsLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleProjects());
+        eventsLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvents());
     }
 
 

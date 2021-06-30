@@ -61,7 +61,7 @@ public class RegisterEvidenceController implements Initializable {
     }
 
     public void setTextLimit() {
-        final int MAX_CHARS = 252 ;
+        final int MAX_CHARS = 252;
 
         descriptionArea.setTextFormatter(new TextFormatter<String>(change ->
                 change.getControlNewText().length() <= MAX_CHARS ? change : null));
@@ -110,13 +110,10 @@ public class RegisterEvidenceController implements Initializable {
             alertBuilder.successAlert("¡Registro realizado!");
             Stage stage = (Stage) evidenceTypeCombo.getScene().getWindow();
             stage.close();
-            if(ConsultEvidenceController.getInstance() == null) {
-                ConsultEvidenceResponsibleController.getInstance().populateTable();
-            } else {
-                ConsultEvidenceController.getInstance().populateTable();
-            }
+            ConsultEvidenceController.getInstance().populateTable();
         }
     }
+
 
     public void setRegistrationDate() {
         String patternDate = "dd/MM/yyyy";

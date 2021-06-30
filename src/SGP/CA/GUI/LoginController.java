@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -31,6 +30,7 @@ public class LoginController implements Initializable {
 
     ArrayList<Member> allActiveMembers = new ArrayList<>();
     MemberDAO memberDAO = new MemberDAO();
+    boolean exceptionOcurred = false;
     Scene currentScene;
     ScreenController screenController;
 
@@ -48,10 +48,10 @@ public class LoginController implements Initializable {
         ArrayList<Member> allMembers = new ArrayList<>();
         try {
             allMembers = memberDAO.getAllMembers();
-        } catch (SQLException sqlException) {
+        } catch (SQLException exSqlException) {
             AlertBuilder alertBuilder = new AlertBuilder();
             alertBuilder.exceptionAlert("No es posible conectarse a la base de datos. Intente más tarde.");
-            System.exit(0);
+            exceptionOcurred = true;
         } finally {
             try {
                 ConnectDB.closeConnection();
@@ -77,7 +77,7 @@ public class LoginController implements Initializable {
     }
 
     public void signIn() {
-        if (!allActiveMembers.isEmpty()) {
+        if (!exceptionOcurred) {
             Member member = new Member();
             HashPasswords hashPasswords = new HashPasswords();
             boolean goodEmail = false;

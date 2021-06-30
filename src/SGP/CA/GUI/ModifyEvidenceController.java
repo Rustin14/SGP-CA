@@ -124,13 +124,10 @@ public class ModifyEvidenceController implements Initializable {
             currentStage.close();
             Stage closeEvidence = (Stage) ModalConsultEvidenceController.getInstance().deleteButton.getScene().getWindow();
             closeEvidence.close();
-            if (ConsultEvidenceController.getInstance() == null) {
-                ConsultEvidenceResponsibleController.getInstance().populateTable();
-            } else {
-                ConsultEvidenceController.getInstance().populateTable();
-            }
+            ConsultEvidenceController.getInstance().populateTable();
         }
     }
+
 
     public void cancelButton() {
         Stage stage = (Stage) modifyButton.getScene().getWindow();

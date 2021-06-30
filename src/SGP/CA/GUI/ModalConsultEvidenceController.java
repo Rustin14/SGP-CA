@@ -77,13 +77,10 @@ public class ModalConsultEvidenceController implements Initializable {
         if (databaseResponse == 1) {
             Stage stage = (Stage) deleteButton.getScene().getWindow();
             stage.close();
-            if (ConsultEvidenceController.getInstance() == null) {
-                ConsultEvidenceResponsibleController.getInstance().populateTable();
-            } else {
-                ConsultEvidenceController.getInstance().populateTable();
-            }
+            ConsultEvidenceController.getInstance().populateTable();
         }
     }
+
 
     public void modifyEvidence() {
         SceneSwitcher sceneSwitcher = new SceneSwitcher();

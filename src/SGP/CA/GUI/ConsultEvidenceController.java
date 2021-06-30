@@ -1,23 +1,21 @@
 package SGP.CA.GUI;
 
+import SGP.CA.BusinessLogic.ProjectUtilities;
 import SGP.CA.DataAccess.ConnectDB;
 import SGP.CA.DataAccess.EvidenceDAO;
 import SGP.CA.Domain.Evidence;
 import SGP.CA.Domain.Member;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -34,6 +32,18 @@ public class ConsultEvidenceController implements Initializable {
     TableColumn evidenceTypeColumn;
     @FXML
     TextField searchBar;
+    @FXML
+    Label profileLabel;
+    @FXML
+    Label evidencesLabel;
+    @FXML
+    Label eventsLabel;
+    @FXML
+    Label projectsLabel;
+    @FXML
+    Label workPlanLabel;
+    @FXML
+    Label membersLabel;
 
     private static ConsultEvidenceController consultEvidenceControllerInstance;
 
@@ -54,15 +64,10 @@ public class ConsultEvidenceController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setListView();
-        openEvidenceDataModal();
-        searchEvidence();
-        setTextLimit();
-    }
-
-    public void setTextLimit () {
-        final int MAX_CHARS = 50;
-        searchBar.setTextFormatter(new TextFormatter<String>(change ->
-                change.getControlNewText().length() <= MAX_CHARS ? change : null));
+        setLabelActions();
+        ProjectUtilities.openDataModal(evidenceTable, "FXML/ModalConsultEvidenceFXML.fxml");
+        ProjectUtilities.searchBar(searchBar, evidenceTable, evidenceList);
+        ProjectUtilities.setTextLimit(searchBar, 50);
     }
 
     public void populateTable() {
@@ -89,7 +94,7 @@ public class ConsultEvidenceController implements Initializable {
             }
         }
         evidenceList = auxiliarEvidenceList;
-        searchEvidence();
+        ProjectUtilities.searchBar(searchBar, evidenceTable, evidenceList);
     }
 
     public void registerEvidence() {
@@ -108,79 +113,19 @@ public class ConsultEvidenceController implements Initializable {
         populateTable();
     }
 
-    public void openEvidenceDataModal() {
-        evidenceTable.setRowFactory( tv -> {
-            TableRow<Evidence> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-                    Evidence.selectedEvidence = row.getItem();
-                    SceneSwitcher sceneSwitcher = new SceneSwitcher();
-                    try {
-                        sceneSwitcher.createDialog((Stage) evidenceTable.getScene().getWindow(), "FXML/ModalConsultEvidenceFXML.fxml");
-                    } catch (IOException exIoException) {
-                        AlertBuilder alertBuilder = new AlertBuilder();
-                        alertBuilder.exceptionAlert("Error cargando la ventana. Intente de nuevo.");
-                    }
-                }
-            });
-            return row ;
-        });
-    }
-
-    public void searchEvidence() {
-        FilteredList<Evidence> filteredData = new FilteredList<>(evidenceList, b -> true);
-        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(evidence -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                if (evidence.getEvidenceTitle().toLowerCase().indexOf(lowerCaseFilter) != -1 ) {
-                    return true; // Filter matches first name.
-                } else {
-                    return false; // Does not match.
-                }
-            });
-        });
-        SortedList<Evidence> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(evidenceTable.comparatorProperty());
-        evidenceTable.setItems(sortedData);
-    }
-
-    public void consultEvents() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultEvent")) {
-            try {
-                ScreenController.instance.addScreen("consultEvent", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
+    public void setLabelActions() {
+        if (Member.signedMember.getIsResponsible() == 1) {
+            profileLabel.setOnMouseClicked(event -> SceneSwitcher.goToResponsibleProfile());
+            membersLabel.setOnMouseClicked(event -> SceneSwitcher.consultMembers());
+            evidencesLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvidences());
+            workPlanLabel.setOnMouseClicked(event -> SceneSwitcher.consultWorkPlan());
+            projectsLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleProjects());
+            eventsLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvents());
+        } else {
+            profileLabel.setOnMouseClicked(event -> SceneSwitcher.goToMemberProfile());
+            evidencesLabel.setOnMouseClicked(event -> SceneSwitcher.consultEvidence());
+            projectsLabel.setOnMouseClicked(event -> SceneSwitcher.consultProjects());
         }
-        ScreenController.instance.activate("consultEvent");
-    }
-
-    public void goToProfile() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("memberProf")) {
-            try {
-                ScreenController.instance.addScreen("memberProf", FXMLLoader.load(getClass().getResource("FXML/MemberProfileFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("memberProf");
-    }
-
-    public void consultProjects() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultProjects")) {
-            try {
-                ScreenController.instance.addScreen("consultProjects", FXMLLoader.load(getClass().getResource("FXML/InvestigationProjectConsultFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("consultProjects");
     }
 
 

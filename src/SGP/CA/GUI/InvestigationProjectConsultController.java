@@ -4,6 +4,7 @@ import SGP.CA.DataAccess.BluePrintDAO;
 import SGP.CA.DataAccess.InvestigationProjectDAO;
 import SGP.CA.Domain.BluePrint;
 import SGP.CA.Domain.InvestigationProject;
+import SGP.CA.Domain.Member;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -68,6 +70,18 @@ public class InvestigationProjectConsultController extends Application {
 
     @FXML
     private TextField stateTextField;
+    @FXML
+    private Label profileLabel;
+    @FXML
+    private Label evidencesLabel;
+    @FXML
+    private Label eventsLabel;
+    @FXML
+    private Label projectsLabel;
+    @FXML
+    private Label workPlanLabel;
+    @FXML
+    private Label membersLabel;
 
     private ObservableList<String> investigationProjectTitles = FXCollections.observableArrayList();
 
@@ -253,42 +267,21 @@ public class InvestigationProjectConsultController extends Application {
             bluePrintTitles.add(bluePrint.getBluePrintTitle());
         }
         bluePrintsComboBox.setItems(bluePrintTitles);
+        setLabelActions();
     }
 
-    public void consultEvidences() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultEvidence")) {
-            try {
-                ScreenController.instance.addScreen("consultEvidence", FXMLLoader.load(getClass().getResource("FXML/ConsultEvidenceFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
-            }
+    public void setLabelActions() {
+        if (Member.signedMember.getIsResponsible() == 1) {
+            profileLabel.setOnMouseClicked(event -> SceneSwitcher.goToResponsibleProfile());
+            membersLabel.setOnMouseClicked(event -> SceneSwitcher.consultMembers());
+            evidencesLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvidences());
+            workPlanLabel.setOnMouseClicked(event -> SceneSwitcher.consultWorkPlan());
+            eventsLabel.setOnMouseClicked(event -> SceneSwitcher.consultResponsibleEvents());
+        } else {
+            profileLabel.setOnMouseClicked(event -> SceneSwitcher.goToMemberProfile());
+            evidencesLabel.setOnMouseClicked(event -> SceneSwitcher.consultEvidence());
+            eventsLabel.setOnMouseClicked(event -> SceneSwitcher.consultEvents());
         }
-        ScreenController.instance.activate("consultEvidence");
-    }
-
-    public void consultEvents() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("consultEvents")) {
-            try {
-                ScreenController.instance.addScreen("consultEvents", FXMLLoader.load(getClass().getResource("FXML/ConsultEventsFXML.fxml")));
-            }catch(IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana.");
-            }
-        }
-        ScreenController.instance.activate("consultEvents");
-    }
-
-    public void goToProfile() {
-        AlertBuilder alertBuilder = new AlertBuilder();
-        if(!ScreenController.instance.isScreenOnMap("memberProf")) {
-            try {
-                ScreenController.instance.addScreen("memberProf", FXMLLoader.load(getClass().getResource("FXML/MemberProfileFXML.fxml")));
-            } catch (IOException exIoException) {
-                alertBuilder.exceptionAlert("No es posible acceder a la ventana. Intente de nuevo.");
-            }
-        }
-        ScreenController.instance.activate("memberProf");
     }
 
     public static void main(String[] args) {

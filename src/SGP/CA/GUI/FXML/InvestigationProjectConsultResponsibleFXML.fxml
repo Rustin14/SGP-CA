@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.InvestigationProjectConsultResponsibleController">
+<AnchorPane prefHeight="600.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SGP.CA.GUI.InvestigationProjectConsultController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b2b2b2" height="463.0" layoutX="199.0" layoutY="137.0" stroke="BLACK" strokeType="INSIDE" width="844.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="45.0" layoutX="195.0" stroke="BLACK" strokeType="INSIDE" width="880.0" />
@@ -108,37 +108,37 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-1.0" layoutY="76.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
-      <Label layoutX="13.0" layoutY="82.0" onMouseClicked="#goToProfile" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
+      <Label fx:id="profileLabel" layoutX="13.0" layoutY="82.0" prefHeight="27.0" prefWidth="119.0" text="PERFIL" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="124.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
-      <Label layoutX="13.0" layoutY="128.0" onMouseClicked="#consultMembers" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
+      <Label fx:id="membersLabel" layoutX="13.0" layoutY="128.0" prefHeight="27.0" prefWidth="119.0" text="MIEMBROS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="172.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
-      <Label layoutX="12.0" layoutY="176.0" onMouseClicked="#consultEvents" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
+      <Label fx:id="eventsLabel" layoutX="12.0" layoutY="176.0" prefHeight="27.0" prefWidth="119.0" text="EVENTOS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="220.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
-      <Label layoutX="12.0" layoutY="224.0" onMouseClicked="#consultEvidences" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
+      <Label fx:id="evidencesLabel" layoutX="12.0" layoutY="224.0" prefHeight="27.0" prefWidth="119.0" text="EVIDENCIAS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutX="-3.0" layoutY="264.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
-      <Label layoutX="13.0" layoutY="269.0" onMouseClicked="#consultWorkPlan" prefHeight="27.0" prefWidth="166.0" text="PLAN DE TRABAJO" textFill="WHITE">
+      <Label fx:id="workPlanLabel" layoutX="13.0" layoutY="269.0" prefHeight="27.0" prefWidth="166.0" text="PLAN DE TRABAJO" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="38.0" layoutY="312.0" stroke="BLACK" strokeType="INSIDE" width="189.0" />
-      <Label layoutX="16.0" layoutY="316.0" prefHeight="27.0" prefWidth="119.0" text="PROYECTOS" textFill="WHITE">
+      <Label fx:id="projectsLabel" layoutX="16.0" layoutY="316.0" prefHeight="27.0" prefWidth="119.0" text="PROYECTOS" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

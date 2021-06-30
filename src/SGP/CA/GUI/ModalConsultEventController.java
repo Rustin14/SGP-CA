@@ -84,13 +84,10 @@ public class ModalConsultEventController implements Initializable {
             alertBuilder.successAlert("Evento eliminado.");
             Stage currentStage = (Stage) deleteButton.getScene().getWindow();
             currentStage.close();
-            if (ConsultEventsController.getInstance() == null) {
-                ConsultEventsResponsibleController.getInstance().populateTable();
-            } else {
-                ConsultEventsController.getInstance().populateTable();
-            }
+            ConsultEventsController.getInstance().populateTable();
         }
     }
+
 
     public void modifyEvent() {
         SceneSwitcher sceneSwitcher = new SceneSwitcher();
