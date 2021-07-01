@@ -101,14 +101,14 @@ public class MemberDAOTest {
 
     @Test
     public void searchMemberByNameTest () throws SQLException {
-        Member member = memberDAO.searchMemberByName("Michael ");
+        Member member = memberDAO.searchMemberByName("Michael");
 
-        Assert.assertEquals("Michael ", member.getName());
+        Assert.assertEquals("Michael", member.getName());
     }
 
     @Test
     public void getAllMembersTest () throws SQLException {
         ArrayList<Member> allMembers = memberDAO.getAllMembers();
-        Assert.assertEquals("Michael ", allMembers.get(0).getName());
+        Assert.assertEquals("Michael", allMembers.get(0).getName());
     }
 }
