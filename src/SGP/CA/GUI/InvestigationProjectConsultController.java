@@ -226,7 +226,13 @@ public class InvestigationProjectConsultController extends Application {
             alertBuilder.exceptionAlert(exceptionMessage);
         }
         ConsultBluePrintController consultBluePrintController = loader.getController();
-        consultBluePrintController.getBluePrintTitle(investigationProjectConsultController,bluePrintTitleTextField.getText());
+        try{
+            consultBluePrintController.getBluePrintTitle(investigationProjectConsultController,bluePrintTitleTextField.getText());
+        }catch (NullPointerException exNullPointerException) {
+            AlertBuilder alertBuilder = new AlertBuilder();
+            String errorMessage = "No se cargo corectamente el componente del sistema";
+            alertBuilder.errorAlert(errorMessage);
+        }
         Scene scene = new Scene(root);
         stage2.setScene(scene);
         stage2.alwaysOnTopProperty();

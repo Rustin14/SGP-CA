@@ -137,8 +137,6 @@ public class RegisterInvestigationProjectController extends Application {
             Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
             stagePrincipal.close();
         }
-        Stage stagePrincipal = (Stage) exitButton.getScene().getWindow();
-        stagePrincipal.close();
     }
 
     public void showConfirmationAlert() throws IOException {
